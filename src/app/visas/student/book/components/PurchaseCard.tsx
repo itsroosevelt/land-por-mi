@@ -42,7 +42,7 @@ export default function PurchaseCard() {
             {/* Quote Column */}
             <div className="flex-1 flex flex-col">
               <p className="italic text-xs text-slate-300 leading-relaxed">
-                "Antes de leer la guía no sabía por dónde empezar. Gracias a Udreamms entendí cada paso del proceso y llegué mucho más preparado a mi entrevista."
+                "Antes de leer la guía no sabía por dónde empezar. Gracias a Por mí entendí cada paso del proceso y llegué mucho más preparado a mi entrevista."
               </p>
               <div className="mt-2">
                 <span className="block font-bold text-white text-xs">— Carlos M.</span>

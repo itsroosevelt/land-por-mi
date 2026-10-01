@@ -56,7 +56,7 @@ export default function PartnershipsPage() {
               {/* Left Column: Benefits */}
               <div className="space-y-12">
                 <div>
-                  <h2 className="text-3xl font-medium text-[#1d1d1f] mb-6">¿Por qué aliarse con Udreamms?</h2>
+                  <h2 className="text-3xl font-medium text-[#1d1d1f] mb-6">¿Por qué aliarse con Por mí?</h2>
                   <p className="text-[#86868b] text-lg font-medium leading-relaxed">
                     Ofrecemos una infraestructura sólida para que las escuelas y agencias puedan brindar un servicio de relocalización y soporte académico de primer nivel.
                   </p>

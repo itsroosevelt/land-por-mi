@@ -90,11 +90,11 @@ export const EmbassyInterviewStep: React.FC = () => {
         <div className="flex items-center gap-2 bg-white px-4 py-2 rounded-xl border border-emerald-300 shadow-inner shrink-0">
           <Lock className="w-4 h-4 text-emerald-600" />
           <span className="text-sm sm:text-base font-mono font-black tracking-wider text-slate-900 select-all">
-            @Udreamms2026
+            @Por mí2026
           </span>
           <Button
             type="button"
-            onClick={() => handleCopy('@Udreamms2026', 'std_pwd', 'Contraseña estándar')}
+            onClick={() => handleCopy('@Por mí2026', 'std_pwd', 'Contraseña estándar')}
             className="h-7 px-2.5 rounded-lg text-xs font-bold bg-emerald-600 hover:bg-emerald-700 text-white flex items-center gap-1 cursor-pointer"
           >
             {copiedKey === 'std_pwd' ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}

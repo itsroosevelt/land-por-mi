@@ -18,13 +18,14 @@ export default function UdreammsAppShowcase() {
                         </h2>
                         <div className="w-16 h-16 md:w-24 md:h-24 rounded-2xl flex items-center justify-center shadow-2xl group-hover:scale-105 transition-transform duration-500 overflow-hidden shrink-0">
                             <img
-                                src="/icons/new-icon-udreamms.png"
-                                alt="Udreamms App Logo"
+                                src="/icons/new-icon-udreamms-192.webp"
+                                alt="Por mí App Logo"
+                                loading="lazy"
                                 className="w-full h-full object-cover"
                             />
                         </div>
                         <h2 className="text-5xl md:text-7xl font-medium tracking-tighter text-white leading-none">
-                            Udreamms
+                            Por mí
                         </h2>
                     </div>
 
@@ -39,7 +40,7 @@ export default function UdreammsAppShowcase() {
                     <div className="relative">
                         <Button onClick={() => sendMetaEvent('Lead', { source: 'UdreammsAppShowcase: Descargar' })} className="rounded-full bg-white text-black hover:bg-gradient-to-r hover:from-[#2d1b4e] hover:to-[#9b4dca] hover:text-white font-medium px-12 py-8 text-xl shadow-2xl transition-all border-none flex items-center gap-3">
                             <Smartphone className="w-6 h-6" />
-                            Descargar Udreamms App
+                            Descargar Por mí App
                         </Button>
                         <span className="absolute -top-3 -right-3 bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest shadow-lg border border-white/20 select-none animate-pulse">
                             Próximamente

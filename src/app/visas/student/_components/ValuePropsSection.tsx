@@ -55,7 +55,7 @@ export default function ValuePropsSection() {
                     <div className="text-center mt-24 md:mt-32 max-w-4xl mx-auto">
                         <h2 className="text-4xl md:text-5xl font-medium tracking-tight text-[#1a2b3b] leading-tight">
                             Hacemos que tu sueño de estudiar en Estados Unidos se haga posible con <br />
-                            <span className="bg-gradient-to-r from-[#2d1b4e] to-[#9b4dca] bg-clip-text text-transparent font-semibold">Udreamms</span>
+                            <span className="bg-gradient-to-r from-[#2d1b4e] to-[#9b4dca] bg-clip-text text-transparent font-semibold">Por mí</span>
                         </h2>
                     </div>
                 </FadeIn>

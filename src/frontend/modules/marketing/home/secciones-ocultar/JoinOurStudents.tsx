@@ -48,7 +48,7 @@ const studentVideos = [
     id: 6,
     videoId: baseVideos[1],
     handle: "@udreamms",
-    title: "Comunidad Udreamms 🤝"
+    title: "Comunidad Por mí 🤝"
   },
   {
     id: 7,
@@ -197,7 +197,7 @@ export default function JoinOurStudents() {
                   <div className="flex items-center gap-2 mb-3">
                     <img
                       src="/icons/new-icon-udreamms.png"
-                      alt="Udreamms Logo"
+                      alt="Por mí Logo"
                       className="w-5 h-5 object-contain"
                     />
                     <span className="font-medium text-sm tracking-wide">{story.handle}</span>

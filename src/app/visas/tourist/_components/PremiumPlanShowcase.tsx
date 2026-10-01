@@ -12,28 +12,28 @@ const features = [
         title: "Vuelos y Traslados Internos",
         description: "Gestionamos tus boletos y logística de transporte en USA.",
         icon: Plane,
-        image: "/assets/generated/tourist_premium_showcase.png"
+        image: "/assets/f.jpg"
     },
     {
         id: "hospedaje",
         title: "Hospedaje 4–5 Estrellas",
         description: "Seleccionamos los mejores hoteles para que tu familia descanse al máximo.",
         icon: Hotel,
-        image: "/assets/generated/tourist_premium_showcase.png"
+        image: "/assets/f.jpg"
     },
     {
         id: "itinerario",
         title: "Itinerario de 8 Días / 7 Noches",
         description: "Totalmente planificado para que no te preocupes por nada.",
         icon: Calendar,
-        image: "/assets/generated/tourist_premium_showcase.png"
+        image: "/assets/f.jpg"
     },
     {
         id: "tickets",
         title: "Actividades y Tickets Incluidos",
         description: "Entradas a actividades turísticas del destino que elijas.",
         icon: Sparkles,
-        image: "/assets/generated/tourist_premium_showcase.png"
+        image: "/assets/f.jpg"
     },
 ];
 

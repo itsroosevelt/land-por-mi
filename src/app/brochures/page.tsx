@@ -16,56 +16,56 @@ const brochures = [
     id: 1,
     title: "Estudia Inglés en Utah",
     description: "Orem, Salt Lake City",
-    image: "/assets/brochure-utah.jpg",
+    image: "/assets/f.jpg",
     tag: "Aventura"
   },
   {
     id: 2,
     title: "Estudia Inglés en Florida",
     description: "Miami, Orlando, Boca Ratón, Jacksonville, Aventura",
-    image: "/assets/brochure-florida.jpg",
+    image: "/assets/f.jpg",
     tag: "Sol & Playa"
   },
   {
     id: 3,
     title: "Estudia Inglés en New York",
     description: "New York, New Jersey",
-    image: "/assets/brochure-newyork.jpg",
+    image: "/assets/f.jpg",
     tag: "Metrópolis"
   },
   {
     id: 4,
     title: "Estudia Inglés en California",
     description: "California",
-    image: "/assets/brochure-california.jpg",
+    image: "/assets/f.jpg",
     tag: "Tech"
   },
   {
     id: 5,
     title: "Estudia Inglés en Washington D.C.",
     description: "Washington D.C. - La capital de Estados Unidos",
-    image: "/assets/brochure-washington.jpg",
+    image: "/assets/f.jpg",
     tag: "Capital"
   },
   {
     id: 6,
     title: "Estudia Inglés en Virginia",
     description: "Virginia - Historia y belleza natural",
-    image: "/assets/brochure-virginia.jpg",
+    image: "/assets/f.jpg",
     tag: "Naturaleza"
   },
   {
     id: 7,
     title: "Estudia Inglés en Boston",
     description: "Boston - Cuna de la educación en Estados Unidos",
-    image: "/assets/brochure-boston.jpg",
+    image: "/assets/f.jpg",
     tag: "Académico"
   },
   {
     id: 8,
     title: "Estudia Inglés en Georgia",
     description: "Atlanta",
-    image: "/assets/brochure-georgia.jpg",
+    image: "/assets/f.jpg",
     tag: "Dinámico"
   }
 ];

@@ -188,7 +188,7 @@ export default function LuxorPage() {
                 <div className="text-blue-500 font-semibold text-[10px] md:text-xs tracking-[0.2em] uppercase mb-3">Paso 3</div>
                 <h3 className="text-xl md:text-2xl font-medium text-white mb-4">Escanea el código de tu servicio y paga con descuento</h3>
                 <p className="text-white/70 text-xs md:text-sm mb-4 font-light leading-relaxed">
-                  Escanea el código del servicio que elegiste aquí en la plataforma de Udreamms y paga tu servicio con el descuento adquirido utilizando tus monedas LUXOR.
+                  Escanea el código del servicio que elegiste aquí en la plataforma de Por mí y paga tu servicio con el descuento adquirido utilizando tus monedas LUXOR.
                 </p>
               </div>
               <div className="md:w-1/2 w-full flex gap-4 justify-center">
@@ -203,7 +203,7 @@ export default function LuxorPage() {
                 <div className="text-blue-500 font-semibold text-[10px] md:text-xs tracking-[0.2em] uppercase mb-3">Paso 4</div>
                 <h3 className="text-xl md:text-2xl font-medium text-white mb-4">Recibe tus accesos y comienza</h3>
                 <p className="text-white/70 text-xs md:text-sm mb-4 font-light leading-relaxed">
-                  Después de pagar y que en Phantom veas el mensaje de pago realizado, regresa a tu plataforma y abre tu correo electrónico. Te llegará el usuario y contraseña para que ingreses a tu portal, donde podrás adjuntar documentos, recibir notificaciones de cómo está tu proceso y adquirir videos de preparación, productos de Udreamms y acceso a miles de herramientas para ser exitoso al llegar a Estados Unidos.
+                  Después de pagar y que en Phantom veas el mensaje de pago realizado, regresa a tu plataforma y abre tu correo electrónico. Te llegará el usuario y contraseña para que ingreses a tu portal, donde podrás adjuntar documentos, recibir notificaciones de cómo está tu proceso y adquirir videos de preparación, productos de Por mí y acceso a miles de herramientas para ser exitoso al llegar a Estados Unidos.
                 </p>
               </div>
               <div className="md:w-1/2 w-full flex gap-4 justify-center">

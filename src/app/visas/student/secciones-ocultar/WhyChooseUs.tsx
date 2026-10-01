@@ -94,7 +94,7 @@ export default function WhyChooseUs() {
         <div className="mb-12 flex flex-col md:flex-row justify-between items-end gap-6">
           <div className="max-w-4xl">
             <h2 className="text-4xl md:text-6xl font-medium tracking-tight mb-4 text-black">
-              Por qué Udreamms es <br />
+              Por qué Por mí es <br />
               <span className="text-gray-400">la mejor decisión.</span>
             </h2>
             <p className="text-xl text-gray-500 font-normal leading-relaxed max-w-2xl">

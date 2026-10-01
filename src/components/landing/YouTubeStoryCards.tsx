@@ -156,7 +156,7 @@ export default function YouTubeStoryCards({
                   <div className="flex items-center gap-2 mb-3">
                     <img
                       src="/icons/new-icon-udreamms.png"
-                      alt="Udreamms"
+                      alt="Por mí"
                       width={20}
                       height={20}
                       className="w-5 h-5 object-contain"

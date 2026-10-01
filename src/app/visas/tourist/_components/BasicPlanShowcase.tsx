@@ -13,7 +13,7 @@ const features = [
         description: "Analizamos tus puntos fuertes y débiles de forma personalizada.",
         icon: Users,
         color: "bg-red-50 text-red-600",
-        image: "/assets/generated/tourist_basic_showcase.png"
+        image: "/assets/f.jpg"
     },
     {
         id: "gestion",
@@ -21,7 +21,7 @@ const features = [
         description: "Nos encargamos del formulario DS-160 y toda la burocracia por ti.",
         icon: FileText,
         color: "bg-yellow-50 text-yellow-600",
-        image: "/assets/generated/tourist_basic_showcase.png"
+        image: "/assets/f.jpg"
     },
     {
         id: "simulacion",
@@ -29,7 +29,7 @@ const features = [
         description: "Acompañamiento personalizado para que vayas con total seguridad.",
         icon: Video,
         color: "bg-blue-50 text-blue-600",
-        image: "/assets/generated/tourist_basic_showcase.png"
+        image: "/assets/f.jpg"
     },
 ];
 
@@ -158,7 +158,7 @@ export default function BasicPlanShowcase() {
                     <div className="h-px w-12 bg-white/20" />
                     <p className="text-sm font-medium text-slate-400 flex items-center gap-2">
                         <span className="w-1.5 h-1.5 rounded-full bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.6)]" />
-                        Gestión garantizada por expertos Udreamms
+                        Gestión garantizada por expertos Por mí
                     </p>
                     <div className="h-px w-12 bg-white/20" />
                 </div>

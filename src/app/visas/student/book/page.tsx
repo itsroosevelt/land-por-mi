@@ -23,15 +23,15 @@ function BookHeader() {
       <div className="w-full px-4 md:px-8 lg:px-12 h-16 flex items-center justify-between">
         {/* GRUPO IZQUIERDA: LOGO + TITULO */}
         <Link href="/" className="flex items-center gap-2 shrink-0 group font-sans">
-          <div className="w-8 h-8 relative transition-transform duration-300 group-hover:scale-110">
+          <div className="w-8 h-8 relative transition-transform duration-300 group-hover:scale-110 overflow-hidden rounded-full bg-black/5">
             <img
               src="/icons/new-icon-udreamms.png"
-              alt="Udreamms"
-              className="object-contain w-full h-full"
+              alt="Por mí"
+              className="w-full h-full object-cover object-center"
             />
           </div>
           <span className="text-xl font-bold tracking-tight text-white font-sans">
-            Udreamms
+            Por mí
           </span>
         </Link>
 

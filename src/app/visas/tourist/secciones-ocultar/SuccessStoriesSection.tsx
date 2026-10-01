@@ -17,7 +17,7 @@ const studentVideos = [
     { id: 3, videoId: baseVideos[2], handle: "@udreamms", title: "Experiencias inolvidables 🎓" },
     { id: 4, videoId: baseVideos[3], handle: "@udreamms", title: "Viviendo el sueño americano 🗽" },
     { id: 5, videoId: baseVideos[0], handle: "@udreamms", title: "Explorando nuevas ciudades 🌆" },
-    { id: 6, videoId: baseVideos[1], handle: "@udreamms", title: "Comunidad Udreamms 🤝" },
+    { id: 6, videoId: baseVideos[1], handle: "@udreamms", title: "Comunidad Por mí 🤝" },
     { id: 7, videoId: baseVideos[2], handle: "@udreamms", title: "Historias que inspiran 🚀" }
 ];
 
@@ -130,7 +130,7 @@ export default function SuccessStoriesSection() {
                                     <div className="flex items-center gap-2 mb-3">
                                         <img
                                             src="/icons/new-icon-udreamms.png"
-                                            alt="Udreamms Logo"
+                                            alt="Por mí Logo"
                                             className="w-5 h-5 object-contain"
                                         />
                                         <span className="font-medium text-sm tracking-wide">{story.handle}</span>

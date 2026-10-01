@@ -14,7 +14,7 @@ export default function CtaVideoSection() {
       />
       <div className="w-full max-w-7xl mx-auto px-4 md:px-8 flex flex-col items-center justify-center font-sans">
         <h2 className="text-xl md:text-2xl lg:text-3xl font-semibold text-white leading-snug font-sans w-full max-w-3xl mx-auto">
-          Udreamms ha ayudado a cientos de estudiantes <br className="hidden md:inline" /> a iniciar con éxito su camino <br className="hidden md:inline" /> para estudiar en Estados Unidos
+          Por mí ha ayudado a cientos de estudiantes <br className="hidden md:inline" /> a iniciar con éxito su camino <br className="hidden md:inline" /> para estudiar en Estados Unidos
         </h2>
 
         {/* Centered Video */}

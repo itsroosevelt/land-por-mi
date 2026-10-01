@@ -7,7 +7,7 @@ import { SidebarProvider } from "@/components/SidebarContext";
 import { Toaster } from "sonner";
 import GoogleAnalytics from "@/components/analytics/GoogleAnalytics";
 import OrganizationJsonLd from "@/components/seo/OrganizationJsonLd";
-import { rootMetadata } from "@/lib/seo";
+import { rootMetadata, SITE_FAVICON_URL } from "@/lib/seo";
 
 const montserrat = Montserrat({
   subsets: ["latin"],
@@ -34,6 +34,9 @@ export default function RootLayout({
   return (
     <html lang="es" suppressHydrationWarning>
       <head>
+        <link rel="icon" href={SITE_FAVICON_URL} sizes="any" />
+        <link rel="apple-touch-icon" href={SITE_FAVICON_URL} />
+        <link rel="shortcut icon" href={SITE_FAVICON_URL} />
         {/* Meta Pixel Code */}
         <script
           dangerouslySetInnerHTML={{

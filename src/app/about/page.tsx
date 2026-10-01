@@ -66,7 +66,7 @@ const AboutPage = () => {
                   transition={{ delay: 0.2 }}
                   className="text-xl md:text-2xl text-[#86868b] font-medium max-w-3xl leading-relaxed"
                 >
-                  Udreamms LLC es el puente entre el talento internacional y las oportunidades académicas en Estados Unidos, eliminando barreras con honestidad y estrategia.
+                  Por mí LLC es el puente entre el talento internacional y las oportunidades académicas en Estados Unidos, eliminando barreras con honestidad y estrategia.
                 </motion.p>
                 <motion.a
                   initial={{ opacity: 0 }}
@@ -138,7 +138,7 @@ const AboutPage = () => {
                     </div>
                     <h4 className="text-2xl font-medium text-[#1d1d1f] mb-4 tracking-tight">Transparencia Radical</h4>
                     <p className="text-[#86868b] text-lg font-medium leading-relaxed">
-                      Udreamms LLC es una empresa privada. No somos agentes gubernamentales, por eso te garantizamos información honesta y sin tecnicismos confusos sobre tu visa y admisión.
+                      Por mí LLC es una empresa privada. No somos agentes gubernamentales, por eso te garantizamos información honesta y sin tecnicismos confusos sobre tu visa y admisión.
                     </p>
                   </div>
 

@@ -22,7 +22,7 @@ export default function GuideFeatureInfo() {
           </h2>
 
           <p className="text-base md:text-lg text-slate-300 leading-relaxed max-w-xl">
-            En <strong className="font-extrabold bg-gradient-to-r from-[#c084fc] to-[#f472b6] bg-clip-text text-transparent">Udreamms</strong> transformamos procesos complejos en pasos simples y claros para que cumplas tu sueño de estudiar en Estados Unidos.
+            En <strong className="font-extrabold bg-gradient-to-r from-[#c084fc] to-[#f472b6] bg-clip-text text-transparent">Por mí</strong> transformamos procesos complejos en pasos simples y claros para que cumplas tu sueño de estudiar en Estados Unidos.
           </p>
 
           {/* Bullet list with icons */}

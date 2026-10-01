@@ -14,7 +14,7 @@ export default function BookChapters() {
             Cuando obtengas este libro, esto es lo que encontrarás...
           </h2>
           <p className="text-base md:text-lg text-slate-200 leading-relaxed font-sans w-full">
-            Dentro del libro de <strong className="text-white font-bold">Udreamms</strong> te compartiremos links oficiales y el proceso paso a paso para ayudarte a obtener tu visa de estudiante.
+            Dentro del libro de <strong className="text-white font-bold">Por mí</strong> te compartiremos links oficiales y el proceso paso a paso para ayudarte a obtener tu visa de estudiante.
           </p>
 
           <div className="w-20 h-[3px] bg-white rounded-full my-2 mx-auto" />

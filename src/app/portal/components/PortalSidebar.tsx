@@ -123,10 +123,10 @@ export default function PortalSidebar({
           {/* Mobile Header with close button */}
           <div className="flex md:hidden items-center justify-between mb-3 pb-3 border-b border-slate-100 px-2">
             <Link href="/" className="flex items-center gap-2 cursor-pointer" onClick={onCloseMobile}>
-              <div className="w-7 h-7 relative shrink-0">
-                <img src="/icons/new-icon-udreamms.png" alt="Udreamms" className="object-contain w-full h-full" />
+              <div className="w-7 h-7 relative shrink-0 overflow-hidden rounded-full bg-black/5">
+                <img src="/icons/new-icon-udreamms.png" alt="Por mí" className="w-full h-full object-cover object-center" />
               </div>
-              <span className="text-lg font-bold tracking-tight text-black">Udreamms</span>
+              <span className="text-lg font-bold tracking-tight text-black">Por mí</span>
             </Link>
             <button
               onClick={onCloseMobile}
@@ -137,7 +137,7 @@ export default function PortalSidebar({
             </button>
           </div>
 
-          {/* Desktop/Tablet Header with Udreamms Logo & Hamburger Toggle */}
+          {/* Desktop/Tablet Header with Por mí Logo & Hamburger Toggle */}
           {isSidebarCollapsed ? (
             <div className="hidden md:flex flex-col items-center gap-3 mb-4 pb-3 border-b border-slate-100 px-1">
               <button
@@ -147,26 +147,26 @@ export default function PortalSidebar({
               >
                 <Menu className="w-4 h-4 shrink-0 text-black" />
               </button>
-              <Link href="/" title="Udreamms" className="w-7 h-7 relative cursor-pointer group">
+              <Link href="/" title="Por mí" className="w-7 h-7 relative cursor-pointer group overflow-hidden rounded-full bg-black/5">
                 <img
                   src="/icons/new-icon-udreamms.png"
-                  alt="Udreamms"
-                  className="object-contain w-full h-full group-hover:scale-110 transition-transform"
+                  alt="Por mí"
+                  className="w-full h-full object-cover object-center group-hover:scale-110 transition-transform"
                 />
               </Link>
             </div>
           ) : (
             <div className="hidden md:flex items-center justify-between mb-4 pb-3 border-b border-slate-100 px-2">
               <Link href="/" className="flex items-center gap-2 cursor-pointer group">
-                <div className="w-7 h-7 relative shrink-0">
+                <div className="w-7 h-7 relative shrink-0 overflow-hidden rounded-full bg-black/5">
                   <img
                     src="/icons/new-icon-udreamms.png"
-                    alt="Udreamms"
-                    className="object-contain w-full h-full group-hover:scale-105 transition-transform"
+                    alt="Por mí"
+                    className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform"
                   />
                 </div>
                 <span className="text-lg font-bold tracking-tight text-black">
-                  Udreamms
+                  Por mí
                 </span>
               </Link>
               <button
@@ -257,7 +257,7 @@ export default function PortalSidebar({
         </Link>
 
         <a
-          href="https://wa.me/13854162224?text=Hola%2C%20necesito%20soporte%20con%20mi%20portal%20Udreamms"
+          href="https://wa.me/13854162224?text=Hola%2C%20necesito%20soporte%20con%20mi%20portal%20Por mí"
           target="_blank"
           rel="noopener noreferrer"
           title={isSidebarCollapsed ? 'Soporte por WhatsApp' : undefined}
@@ -472,7 +472,7 @@ export default function PortalSidebar({
               {!isSidebarCollapsed && (
                 <div className="min-w-0 text-left flex-1">
                   <p className="text-xs font-bold text-black truncate leading-tight">
-                    {user.displayName || 'Usuario Udreamms'}
+                    {user.displayName || 'Usuario Por mí'}
                   </p>
                   <p className="text-[10px] text-slate-500 truncate leading-tight mt-0.5 font-medium">
                     {user.email}
@@ -501,7 +501,7 @@ export default function PortalSidebar({
                         Tu Cuenta
                       </p>
                       <p className="text-sm font-bold truncate text-black">
-                        {user.displayName || 'Usuario Udreamms'}
+                        {user.displayName || 'Usuario Por mí'}
                       </p>
                       <p className="text-xs truncate text-slate-500 font-medium">{user.email}</p>
                     </div>

@@ -68,7 +68,7 @@ export default function CheckoutForm({
               {/* Información y Precio */}
               <div className="flex flex-col justify-center font-sans text-left">
                 <span className="text-emerald-400 font-bold text-xs uppercase tracking-wider mb-1 font-sans">
-                  Guía Oficial Udreamms
+                  Guía Oficial Por mí
                 </span>
                 <h3 className="text-lg md:text-xl font-bold text-white leading-snug font-sans">
                   Visa de Estudiante F-1

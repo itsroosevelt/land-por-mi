@@ -18,7 +18,7 @@ export default function SocialProofSection() {
                     <FadeIn delay={0.1} className="bg-white p-6 rounded-2xl shadow-[0_2px_10px_rgb(0,0,0,0.03)] border border-slate-100 flex flex-col">
                         <div className="flex items-center gap-3 mb-4">
                             <div className="w-12 h-12 relative rounded-full overflow-hidden border-2 border-green-100">
-                                <img src="/assets/generated/testimonial_man.png" alt="Jose Martinez" className="w-full h-full object-cover" />
+                                <img src="/assets/f.jpg" alt="Jose Martinez" className="w-full h-full object-cover" />
                             </div>
                             <div>
                                 <div className="font-medium text-sm text-slate-900">Jose Martinez</div>
@@ -43,7 +43,7 @@ export default function SocialProofSection() {
                         <div className="absolute top-0 left-0 w-full h-1 bg-[#00A884]"></div>
                         <div className="flex items-center gap-3 mb-4 mt-2">
                             <div className="w-12 h-12 relative rounded-full overflow-hidden border-2 border-white/50">
-                                <img src="/assets/generated/testimonial_woman.png" alt="Ana Ruiz" className="w-full h-full object-cover" />
+                                <img src="/assets/f.jpg" alt="Ana Ruiz" className="w-full h-full object-cover" />
                             </div>
                             <div>
                                 <div className="font-medium text-sm text-slate-900">Ana Ruiz</div>

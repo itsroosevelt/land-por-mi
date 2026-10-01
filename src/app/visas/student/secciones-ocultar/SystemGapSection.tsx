@@ -59,7 +59,7 @@ export default function SystemGapSection() {
                     <FadeIn delay={0.2} className="relative rounded-3xl overflow-hidden w-full md:w-[480px] h-[620px] mt-0 mx-auto md:mr-0 group">
                         {/* Using a placeholder or existing student image */}
                         <img
-                            src="/assets/generated/student_stress.png"
+                            src="/assets/f.jpg"
                             alt="Estudiante preocupado"
                             className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                             onError={(e) => {

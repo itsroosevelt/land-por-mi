@@ -19,7 +19,7 @@ export default function BookPromoSection() {
                                 ¿Te gustaría hacer el <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#2d1b4e] to-[#9b4dca] font-normal">proceso por ti mismo?</span>
                             </h2>
                             <p className="text-base text-slate-300 leading-relaxed mb-6">
-                                Udreamms creó este libro digital para guiarte paso a paso en tu proceso de visa, para que puedas hacerlo a tu ritmo y sin complicaciones.
+                                Por mí creó este libro digital para guiarte paso a paso en tu proceso de visa, para que puedas hacerlo a tu ritmo y sin complicaciones.
                             </p>
                             
                             <div className="mb-6 inline-block text-left w-full max-w-lg">
@@ -45,8 +45,8 @@ export default function BookPromoSection() {
                         <ScaleIn>
                             <div className="relative w-full aspect-[4/5] mx-auto overflow-hidden">
                                 <img 
-                                    src="/book-udreamms.jpeg" 
-                                    alt="Libro Digital Udreamms - Paso a paso para tu visa" 
+                                    src="/assets/f.jpg" 
+                                    alt="Libro Digital Por mí - Paso a paso para tu visa" 
                                     className="w-full h-full object-cover block"
                                 />
                                 {/* Difuminado súper pesado para perder completamente los bordes en el fondo negro */}

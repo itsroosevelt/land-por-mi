@@ -1382,7 +1382,7 @@ export default function FormularioConsular({ isStudent, applicantId, onNameChang
       <div className="bg-white border-2 border-emerald-200 rounded-3xl p-6 shadow-md flex items-center justify-center gap-3 text-center">
         <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0" />
         <p className="text-xs text-slate-600">
-          <strong className="text-slate-900">Tu información ya está sincronizada.</strong> El equipo consular de Udreamms puede ver cada dato en tiempo real, no importa en qué punto del formulario estés.
+          <strong className="text-slate-900">Tu información ya está sincronizada.</strong> El equipo consular de Por mí puede ver cada dato en tiempo real, no importa en qué punto del formulario estés.
         </p>
       </div>
 

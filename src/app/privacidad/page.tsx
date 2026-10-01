@@ -39,7 +39,7 @@ export default function PrivacyPage() {
                 transition={{ delay: 0.2 }}
                 className="text-xl md:text-2xl text-[#86868b] font-medium max-w-2xl leading-relaxed"
               >
-                En Udreamms LLC, valoramos su confianza. Por eso somos transparentes sobre cómo manejamos su información personal durante su proceso educativo.
+                En Por mí LLC, valoramos su confianza. Por eso somos transparentes sobre cómo manejamos su información personal durante su proceso educativo.
               </motion.p>
 
               <motion.div
@@ -65,7 +65,7 @@ export default function PrivacyPage() {
                   Introducción
                 </h2>
                 <p className="text-[#86868b] font-medium leading-relaxed text-lg">
-                  Udreamms LLC ("nosotros", "nuestro" o "la Empresa"), valoramos su privacidad y estamos comprometidos a proteger su información personal. Esta Política de Privacidad explica detalladamente cómo recopilamos, usamos, compartimos y protegemos la información de los usuarios que utilizan nuestros servicios de consultoría educativa y trámites logísticos.
+                  Por mí LLC ("nosotros", "nuestro" o "la Empresa"), valoramos su privacidad y estamos comprometidos a proteger su información personal. Esta Política de Privacidad explica detalladamente cómo recopilamos, usamos, compartimos y protegemos la información de los usuarios que utilizan nuestros servicios de consultoría educativa y trámites logísticos.
                 </p>
               </div>
 

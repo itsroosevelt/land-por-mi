@@ -94,7 +94,7 @@ export default function WhyUdreammsSection() {
                 <div className="mb-12 flex flex-col md:flex-row justify-between items-end gap-6">
                     <div className="max-w-4xl">
                         <h2 className="text-4xl md:text-6xl font-medium tracking-tight mb-4 text-white">
-                            Por qué Udreamms es <br />
+                            Por qué Por mí es <br />
                             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#2d1b4e] to-[#9b4dca]">la mejor decisión.</span>
                         </h2>
                         <p className="text-xl text-slate-300 font-normal leading-relaxed max-w-2xl">

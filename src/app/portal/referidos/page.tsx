@@ -78,8 +78,8 @@ export default function ReferidosPage() {
 
   const handleOpenWhatsAppChat = () => {
     const text = encodeURIComponent(
-      `👋 *Registro de Referido - Programa Udreamms*\n\n` +
-      `Hola equipo de Udreamms, soy ${user?.displayName || 'cliente registrado'} (${user?.email || 'N/A'}).\n` +
+      `👋 *Registro de Referido - Programa Por mí*\n\n` +
+      `Hola equipo de Por mí, soy ${user?.displayName || 'cliente registrado'} (${user?.email || 'N/A'}).\n` +
       `Quiero notificar que recomendé a una persona para su trámite de visa.`
     );
     window.open(`https://wa.me/13854162224?text=${text}`, '_blank');
@@ -249,7 +249,7 @@ export default function ReferidosPage() {
         <div className="space-y-1 leading-relaxed font-normal">
           <p className="font-medium text-amber-900">Condiciones y validez del programa:</p>
           <p className="text-amber-800">
-            Esta bonificación de $50 USD aplica por cada persona que contrate un servicio de asesoría de Udreamms, ya sea el servicio básico de Visa Estudiante (F-1) o Visa Turista (B-2) valorado en $380 USD o cualquier paquete de asesoría superior. <em>Nota: Esto no aplica a productos o materiales sueltos que no sean servicios de asesoría migratoria completa.</em>
+            Esta bonificación de $50 USD aplica por cada persona que contrate un servicio de asesoría de Por mí, ya sea el servicio básico de Visa Estudiante (F-1) o Visa Turista (B-2) valorado en $380 USD o cualquier paquete de asesoría superior. <em>Nota: Esto no aplica a productos o materiales sueltos que no sean servicios de asesoría migratoria completa.</em>
           </p>
         </div>
       </div>
@@ -347,7 +347,7 @@ export default function ReferidosPage() {
               ¿Cuánto puedes ganar refiriendo?
             </h3>
             <p className="text-xs text-slate-500 font-normal">
-              Calcula tu ganancia total en dólares en función de cuántas personas recomiendes a Udreamms.
+              Calcula tu ganancia total en dólares en función de cuántas personas recomiendes a Por mí.
             </p>
           </div>
 
@@ -565,14 +565,14 @@ export default function ReferidosPage() {
           <div className="border border-slate-100 rounded-2xl p-4 bg-slate-50 space-y-1.5">
             <h5 className="font-medium text-slate-900">¿Necesito tener un plan activo para referir?</h5>
             <p className="text-slate-600 leading-relaxed font-normal">
-              Todos aplican, incluso si no compras nada. No es necesario haber contratado ningún servicio ni plan previo; con solo haberte registrado en el portal de Udreamms ya tienes acceso total e inmediato al programa de referidos para generar ingresos recomendando nuestros servicios.
+              Todos aplican, incluso si no compras nada. No es necesario haber contratado ningún servicio ni plan previo; con solo haberte registrado en el portal de Por mí ya tienes acceso total e inmediato al programa de referidos para generar ingresos recomendando nuestros servicios.
             </p>
           </div>
 
           <div className="border border-slate-100 rounded-2xl p-4 bg-slate-50 space-y-1.5">
             <h5 className="font-medium text-slate-900">¿Qué servicios califican para los $50 USD?</h5>
             <p className="text-slate-600 leading-relaxed font-normal">
-              Aplica exclusivamente para los servicios completos de asesoría de visa de Udreamms (Servicio Básico de Visa F-1 Estudiante o Visa B-2 Turista valorado en $380 USD o cualquier plan superior). <em>No aplica a productos o materiales digitales sueltos que no sean servicios de asesoría.</em>
+              Aplica exclusivamente para los servicios completos de asesoría de visa de Por mí (Servicio Básico de Visa F-1 Estudiante o Visa B-2 Turista valorado en $380 USD o cualquier plan superior). <em>No aplica a productos o materiales digitales sueltos que no sean servicios de asesoría.</em>
             </p>
           </div>
 

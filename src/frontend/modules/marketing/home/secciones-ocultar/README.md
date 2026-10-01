@@ -6,7 +6,7 @@ Bloques comentados en `src/app/page.tsx`.
 |------------|-----|
 | `Services` | Flujo “qué hacemos” |
 | `ExperienceSection` | Experiencia / diferencial |
-| `WhyChooseUs` | Por qué Udreamms |
+| `WhyChooseUs` | Por qué Por mí |
 | `JoinOurStudents` | Comunidad estudiantes |
 | `YouTubeSubscription` | Suscripción YouTube |
 

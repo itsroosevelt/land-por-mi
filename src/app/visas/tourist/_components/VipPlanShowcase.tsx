@@ -12,28 +12,28 @@ const features = [
         title: "Vuelos y Traslados Internos",
         description: "Logística aérea y terrestre incluida en todas tus rutas.",
         icon: Plane,
-        image: "/assets/generated/tourist_vip_showcase.png"
+        image: "/assets/f.jpg"
     },
     {
         id: "hospedaje",
         title: "Hospedaje 4–5 Estrellas",
         description: "Garantizamos el máximo confort en los mejores hoteles de cada ciudad.",
         icon: Hotel,
-        image: "/assets/generated/tourist_vip_showcase.png"
+        image: "/assets/f.jpg"
     },
     {
         id: "itinerario",
         title: "Itinerario 15 Días - 14 Noches",
         description: "Una inmersión total diseñada cronológicamente para tu deleite.",
         icon: Calendar,
-        image: "/assets/generated/tourist_vip_showcase.png"
+        image: "/assets/f.jpg"
     },
     {
         id: "tickets",
         title: "Actividades y Tickets Incluidos",
         description: "Acceso total a las experiencias más exclusivas de tu ruta.",
         icon: Sparkles,
-        image: "/assets/generated/tourist_vip_showcase.png"
+        image: "/assets/f.jpg"
     },
 ];
 

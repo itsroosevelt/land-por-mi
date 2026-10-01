@@ -60,7 +60,7 @@ export default function SystemGapSection() {
                     {/* Right Column: Video/Image Replacement */}
                     <FadeIn delay={0.2} className="relative rounded-3xl overflow-hidden w-full md:w-[480px] h-[620px] mt-0 mx-auto md:mr-0 group shadow-2xl">
                         <img
-                            src="/assets/generated/visa_preparation_success.png"
+                            src="/assets/f.jpg"
                             alt="Preparación exitosa de visa"
                             className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                         />

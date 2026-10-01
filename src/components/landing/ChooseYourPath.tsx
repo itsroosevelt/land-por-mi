@@ -1,73 +1,18 @@
 "use client";
 
-import Link from "next/link";
+import { useState } from "react";
+import { ArrowLeft } from "lucide-react";
 import { sendMetaEvent } from "@/lib/meta-events";
-import {
-  Search,
-  FileCheck,
-  ClipboardCheck,
-  MessageSquare,
-  MapPin,
-  Activity,
-  Map,
-  Mic,
-  Plane,
-  ShieldCheck,
-  Users,
-  PhoneCall,
-  Clock,
-  Sparkles,
-  Zap,
-  CheckCircle2,
-  Car,
-  Smartphone,
-  Building2
-} from "lucide-react";
-import { Button } from "@/components/ui/button";
-
-const paths = [
-  {
-    title: "Visa de Estudiante F-1",
-    subtitle: "Lanza tu carrera profesional en universidades americanas.",
-    description: "",
-    features: [
-      { text: "Diagnóstico de Perfil 360°", icon: Activity, desc: "Evaluación de probabilidades reales." },
-      { text: "Gestión de Admisión I-20", icon: FileCheck, desc: "Tramitación directa con la universidad." },
-      { text: "Recogida Aeropuerto & Traslado", icon: Car, desc: "Te recibimos personalmente al llegar." },
-      { text: "Sim Card & Móvil USA", icon: Smartphone, desc: "Conectividad total desde el día 1." },
-      { text: "Apertura Cuenta Bancaria", icon: Building2, desc: "Gestión financiera local sin estrés." },
-      { text: "Alojamiento & Vivienda Pro", icon: MapPin, desc: "Opciones seguras cerca de tu escuela." },
-      { text: "Comunidad Udreamms Plus", icon: Users, desc: "Networking y eventos exclusivos." }
-    ],
-    href: "/instructions-payment-student",
-    buttonText: "Solicitar visa ahora",
-    highlighted: true,
-    glowColor: "bg-white/20",
-    tag: "¡Cupos Limitados!",
-    tagColor: "bg-gradient-to-r from-[#2d1b4e] to-[#9b4dca]"
-  },
-  {
-    title: "Visa de Turismo B1/B2",
-    subtitle: "Viajes de placer, negocios o salud sin fronteras.",
-    description: "",
-    features: [
-      { text: "Auditoría de Perfil de Riesgo", icon: Search, desc: "Detectamos debilidades antes de aplicar." },
-      { text: "Optimización DS-160", icon: FileCheck, desc: "Redacción estratégica sin errores." },
-      { text: "Narrativa de Viaje Coherente", icon: Map, desc: "Propósito sólido y veraz ante el cónsul." },
-      { text: "Entrenamiento Anti-Trampa", icon: Mic, desc: "Respuestas seguras a preguntas críticas." },
-      { text: "Monitoreo de Citas 24/7", icon: Clock, desc: "Buscamos adelantar tu fecha de entrevista." },
-      { text: "Dossier de Evidencias Pro", icon: ClipboardCheck, desc: "Qué documentos llevar y cuáles no." }
-    ],
-    href: "/instructions-payment-tourist",
-    buttonText: "Solicitar visa ahora",
-    glowColor: "bg-white/20",
-    tag: "¡Cupos Limitados!",
-    tagColor: "bg-gradient-to-r from-[#2d1b4e] to-[#9b4dca]"
-  }
-];
+import { LATAM_COUNTRIES, type LatamCountry } from "@/lib/latam-countries";
+import { getCountrySocialLinks } from "@/lib/country-socials";
 
 export default function ChooseYourPath() {
-  const commonGradient = "from-blue-600 to-cyan-600";
+  const [selectedCountry, setSelectedCountry] = useState<LatamCountry | null>(null);
+
+  const selectCountry = (country: LatamCountry) => {
+    setSelectedCountry(country);
+    sendMetaEvent('Lead', { source: 'Planes Country', country: country.name });
+  };
 
   return (
     <section id="planes" className="pt-20 md:pt-28 pb-16 md:pb-20 bg-[#050507] relative overflow-hidden font-sans">
@@ -79,78 +24,91 @@ export default function ChooseYourPath() {
 
       <div className="container max-w-[1500px] mx-auto px-6 relative z-10">
 
-        {/* Header Centrado Simplificado - "Planes" tamaño reducido */}
-        <div className="mb-12 md:mb-20 max-w-4xl mx-auto text-center">
+        <div className="mb-12 md:mb-16 max-w-4xl mx-auto text-center">
           <h2 className="text-3xl md:text-4xl font-normal tracking-tight text-white leading-tight mb-4">
-            Vive y Estudia en Estados Unidos
+            Ayúdanos a unir a toda Latinoamérica con tecnología
           </h2>
-          <p className="text-base text-slate-400 max-w-2xl mx-auto leading-relaxed">
-            Selecciona la ruta ideal para tu objetivo. Estrategias probadas para turismo, educación y eventos mundiales.
+          <p className="text-base text-slate-400 max-w-3xl mx-auto leading-relaxed">
+            Haz clic en tu bandera, se desplegarán algunos enlaces. Haz clic en ellos y únete a la red de empresarios y emprendedores, y accede a servicios tecnológicos para tu negocio.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 max-w-5xl gap-5 md:gap-6 lg:gap-8 mx-auto">
-          {paths.map((path, index) => (
-            <div key={index} className="relative group w-full flex flex-col">
+        {selectedCountry ? (
+          /* País elegido: solo su bandera, sus redes y la cápsula de preguntas */
+          <div className="max-w-xl mx-auto flex flex-col items-center text-center">
+            <img
+              src={`/flags/${selectedCountry.code}.svg`}
+              alt={`Bandera de ${selectedCountry.name}`}
+              className="w-[120px] h-20 object-cover shadow-lg mb-4"
+            />
+            <h3 className="text-2xl font-medium text-white tracking-tight mb-8">{selectedCountry.name}</h3>
 
-              {/* Glow Effect Background */}
-              <div className={`absolute -inset-2 ${path.glowColor} rounded-[2rem] blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
-
-              {/* Card Content */}
-              <div className="relative flex-1 bg-black border border-white/10 rounded-[2rem] p-5 md:p-6 lg:p-8 flex flex-col ring-1 ring-white/5 shadow-2xl overflow-hidden hover:bg-black transition-colors duration-300">
-
-                {/* Visual Accent */}
-                <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 blur-3xl" />
-
-                {/* Floating Tag for FIFA */}
-                {path.tag && (
-                  <div className={`absolute top-0 right-0 ${path.tagColor} text-white text-[10px] font-medium uppercase tracking-widest px-3 py-1.5 md:px-6 md:py-2 rounded-bl-3xl shadow-lg z-20 animate-pulse`}>
-                    {path.tag}
-                  </div>
-                )}
-
-                <div className="flex flex-col items-center text-center mb-4 md:mb-6 lg:mb-8">
-                  <h3 className="text-xl md:text-2xl font-normal text-white tracking-tight mb-3 md:mb-4 leading-relaxed">{path.title}</h3>
-                  <p className="text-slate-400 text-sm font-light leading-loose">{path.subtitle}</p>
-                </div>
-
-                {/* Price/Description removed as requested */}
-                <div className="mb-0"></div>
-
-
-                <div className="flex flex-col items-center gap-3 mt-2 mb-5 md:mb-8 w-full">
-                  <Link 
-                    href={path.href} 
-                    onClick={() => sendMetaEvent('Lead', { source: 'ChooseYourPath: ' + path.title })}
-                    className={`w-full py-2.5 md:py-3 rounded-full bg-transparent text-white font-normal text-base shadow-2xl hover:scale-[1.03] active:scale-95 transition-all duration-300 border border-white/40 hover:bg-gradient-to-r hover:from-[#2d1b4e] hover:to-[#9b4dca] hover:border-[#2d1b4e] hover:[transition-property:transform,box-shadow] text-center`} 
-                    aria-label={`Ir a ${path.title}`}
-                  >
-                    {path.buttonText}
-                  </Link>
-                </div>
-
-                <div className="space-y-4 md:space-y-5 flex-1">
-                  <p className="text-white font-normal text-xs uppercase tracking-widest opacity-50 mb-3 md:mb-5 text-center">¿Qué incluye el paquete?</p>
-                  {path.features.map((feature, fIndex) => (
-                    <li key={fIndex} className="flex items-start gap-3 text-slate-300 group/item cursor-default leading-loose">
-                      <div className="mt-1.5 transition-transform group-hover/item:scale-110 shrink-0">
-                        <feature.icon className="w-5 h-5 text-white" strokeWidth={1.5} />
-                      </div>
-                      <span className="text-sm font-normal text-slate-100 group-hover/item:text-white transition-colors">
-                        {feature.text}
-                      </span>
-                    </li>
-                  ))}
-                </div>
-
-
-
-              </div>
+            <span className="text-[10px] font-medium uppercase tracking-[0.3em] text-gray-500 mb-6 block">Síguenos</span>
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-x-8 gap-y-5 mb-10">
+              {getCountrySocialLinks(selectedCountry.code, selectedCountry.name).map((social) => (
+                <a
+                  key={social.network}
+                  href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => sendMetaEvent('Lead', { source: 'Planes Country Social', country: selectedCountry.name, network: social.label })}
+                  className="group flex items-center gap-3 transition-all duration-300 hover:translate-x-1"
+                >
+                  <img
+                    src={social.imgSrc}
+                    alt={social.label}
+                    className="w-10 h-10 shrink-0 rounded-lg object-cover border border-white/10 shadow-sm transition-all duration-300 group-hover:border-white/40"
+                  />
+                  <span className="text-[11px] font-medium text-gray-400 group-hover:text-white uppercase tracking-wider">{social.label}</span>
+                </a>
+              ))}
             </div>
+
+            <a
+              href={`https://wa.me/13858882799?text=${encodeURIComponent(`Hola, soy de ${selectedCountry.name} y tengo preguntas antes de empezar`)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => sendMetaEvent('Contact', { source: 'Planes Country WhatsApp Button', country: selectedCountry.name })}
+              className="inline-flex items-center justify-center px-8 py-3 text-sm sm:text-base font-medium text-white rounded-full bg-transparent border border-white/40 hover:bg-gradient-to-r hover:from-blue-700 hover:to-blue-500 hover:border-blue-600 hover:scale-105 active:scale-95 transition-all duration-300 shadow-lg"
+            >
+              Tengo preguntas antes de empezar
+            </a>
+
+            <button
+              type="button"
+              onClick={() => setSelectedCountry(null)}
+              className="mt-8 inline-flex items-center gap-2 text-sm text-gray-400 hover:text-white transition-colors"
+            >
+              <ArrowLeft className="w-4 h-4" /> Elegir otro país
+            </button>
+          </div>
+        ) : (
+        /* Países de Latinoamérica (misma lista que el menú Comunidad) */
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-4 max-w-6xl mx-auto">
+          {LATAM_COUNTRIES.map((country) => (
+            <button
+              type="button"
+              key={country.code}
+              onClick={() => selectCountry(country)}
+              className="text-left group flex items-center gap-3 md:gap-4 p-3 md:p-4 rounded-2xl bg-black border border-white/10 ring-1 ring-white/5 hover:border-white/30 hover:bg-white/[0.03] transition-all duration-300"
+            >
+              <img
+                src={`/flags/${country.code}.svg`}
+                alt={`Bandera de ${country.name}`}
+                loading="lazy"
+                className="w-12 h-8 md:w-[60px] md:h-10 object-cover shrink-0 shadow-sm transition-transform duration-300 group-hover:scale-105"
+              />
+              <span className="text-sm md:text-base font-medium text-slate-200 group-hover:text-white transition-colors truncate">
+                {country.name}
+              </span>
+            </button>
           ))}
         </div>
+        )}
 
-
+        <p className="mt-12 md:mt-16 text-base text-slate-400 max-w-3xl mx-auto leading-relaxed text-center">
+          Contamos con miles de empresarios e inversionistas en todo tipo de proyectos, y somos la primera comunidad que ayudará a crear los próximos millonarios de <span className="text-white font-medium">The New Technological Republic</span>.
+        </p>
 
       </div>
     </section>

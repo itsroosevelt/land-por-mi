@@ -11,6 +11,7 @@ import {
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { sendMetaEvent } from "@/lib/meta-events";
+import { LATAM_COUNTRIES, type LatamCountry } from "@/lib/latam-countries";
 
 // --- TIPOS DE DATOS ---
 type SubItem = {
@@ -37,37 +38,21 @@ type MenuItemData = {
     actionHref: string;
     items: SubItem[];
     socials?: SocialItem[];
+    countries?: LatamCountry[];
   };
 };
 
 // --- DATA DEL MENÚ ---
 const menuData: MenuItemData[] = [
   {
-    label: "Visas",
-    megaMenu: {
-      title: "Tu camino a USA",
-      description: "Asesoría experta para cada tipo de viajero.",
-      actionText: "Evaluar mi perfil",
-      actionHref: "/#quiz", // Placeholder for smart quiz link
-      items: [
-        { title: "Visa de Estudiante", desc: "F-1: Estudia y vive en USA", href: "/visas/student", icon: GraduationCap, colorClass: "text-blue-400 bg-blue-500/10" },
-        { title: "Visa de Turismo", desc: "B1/B2: Viaja sin preocupaciones", href: "/visas/tourist", icon: Plane, colorClass: "text-sky-400 bg-sky-500/10" }
-      ]
-    }
-  },
-  {
-    label: "Comunidad",
+    label: "COMUNIDAD",
     megaMenu: {
       title: "Nuestra Comunidad",
-      description: "Únete a la red Udreamms y aprovecha beneficios exclusivos.",
+      description: "Únete a la red Por mí y aprovecha beneficios exclusivos.",
       actionText: "Unirme ahora",
       actionHref: "/contact",
-      items: [
-        { title: "Udreamms App", desc: "Todo en tu bolsillo", href: "/portal", icon: LayoutGrid, colorClass: "text-pink-400 bg-pink-500/10" },
-        { title: "Referidos", desc: "Gana $50 por amigo", href: "/referrals", icon: Gift, colorClass: "text-emerald-400 bg-emerald-500/10" },
-        { title: "Instituciones Educativas", desc: "Alianzas estratégicas", href: "/partnerships", icon: Building2, colorClass: "text-indigo-400 bg-indigo-500/10" },
-        { title: "Embajadores", desc: "Representa a Udreamms", href: "/contact", icon: Users, colorClass: "text-amber-400 bg-amber-500/10" },
-      ],
+      items: [],
+      countries: LATAM_COUNTRIES,
       socials: [
         { label: "Facebook", href: "https://www.facebook.com/udreamms/", imgSrc: "/assets/f.jpg" },
         { label: "Instagram", href: "https://www.instagram.com/udreamms/", imgSrc: "/assets/i.jpg" },
@@ -78,9 +63,11 @@ const menuData: MenuItemData[] = [
       ]
     }
   },
-  { label: "FAQs", href: "/#faqs" },
-  { label: "¡Estoy listo para empezar!", href: "/contact" },
+  { label: "FAQS", href: "/#faqs" },
   { label: "LUXOR", href: "/luxor" },
+  // TODO: definir los enlaces de Excelsior y STABLECOIN
+  { label: "EXCELSIOR", href: "#" },
+  { label: "STABLECOIN", href: "#" },
 ];
 
 export default function Header() {
@@ -96,12 +83,20 @@ export default function Header() {
   ].includes(pathname);
 
   useEffect(() => {
+    // En la home la barra se mantiene transparente mientras esté sobre el video del hero.
+    const isHome = pathname === "/";
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 10);
+      const threshold = isHome ? window.innerHeight - 56 : 10;
+      setIsScrolled(window.scrollY > threshold);
     };
+    handleScroll();
     window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+    window.addEventListener("resize", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleScroll);
+    };
+  }, [pathname]);
 
   const handleMouseEnter = (label: string) => {
     if (isVisaLandingPage) return; // No mostrar mega menu en landings de visa
@@ -125,11 +120,11 @@ export default function Header() {
 
           {/* GRUPO IZQUIERDA: LOGO + NAV */}
           <div className="flex items-center gap-4 lg:gap-12 h-full">
-            <Link href="/" className="flex items-center gap-2 z-50 shrink-0 group">
-              <div className="w-7 h-7 relative transition-transform duration-300 group-hover:scale-110">
-                <img src="/icons/new-icon-udreamms.png" alt="Udreamms" className="object-contain w-full h-full drop-shadow-[0_0_10px_rgba(255,255,255,0.2)]" />
+            <Link href="/" className="flex items-center gap-2.5 z-50 shrink-0 group">
+              <div className="relative w-8 h-8 overflow-hidden rounded-full bg-black shadow-[0_0_20px_rgba(255,255,255,0.08)] transition-transform duration-300 group-hover:scale-110">
+                <img src="/icons/logo-por-mi.webp" alt="Por mí" className="w-full h-full object-cover object-center" />
               </div>
-              <span className="text-lg font-medium tracking-tight text-white group-hover:text-white transition-colors">Udreamms</span>
+              <span className="text-lg font-semibold tracking-tighter text-white group-hover:text-white transition-colors">POR MÍ</span>
             </Link>
 
             {/* DESKTOP NAV - Ocultar en landings de visa */}
@@ -145,7 +140,7 @@ export default function Header() {
                       href={item.href || "#"}
                       {...(item.href?.startsWith("http") ? { target: "_blank", rel: "noopener noreferrer" } : {})}
                       className={`
-                        px-3 py-1.5 text-[12px] xl:text-[13px] font-medium tracking-wide transition-all duration-300 flex items-center gap-1.5 rounded-full hover:bg-white/5
+                        px-3 py-1.5 text-[12px] xl:text-[13px] font-semibold tracking-tight transition-all duration-300 flex items-center gap-1.5 rounded-full hover:bg-white/5
                         ${activeMenu === item.label ? "text-white bg-white/5" : "text-white/80 hover:text-white"}
 
                       `}
@@ -157,21 +152,26 @@ export default function Header() {
                     </Link>
                   </div>
                 ))}
+                <Link
+                  href="/staff"
+                  className="px-3 py-1.5 text-[12px] xl:text-[13px] font-semibold tracking-tight transition-all duration-300 flex items-center gap-1.5 rounded-full hover:bg-white/5 text-white/80 hover:text-white"
+                >
+                  <Lock className="w-3 h-3" /> STAFF
+                </Link>
               </nav>
             )}
           </div>
 
           {/* GRUPO DERECHA: ACCIONES */}
           <div className="hidden lg:flex items-center gap-3 z-50">
-            {/* Solo mostrar Staff si NO es landing de visa, o podrías dejarlo oculto si quieres algo más limpio */}
-            {!isVisaLandingPage && (
-              <Link href="/staff" className="text-[10px] font-medium text-gray-400 hover:text-white transition-colors uppercase tracking-widest flex items-center gap-1.5 opacity-80 hover:opacity-100 mr-1">
-                <Lock className="w-3 h-3 text-white" /> Staff
-              </Link>
-            )}
+            <Link href="/tienda">
+              <Button className="bg-transparent text-white border border-white/60 hover:bg-white/10 hover:border-white rounded-full h-9 w-32 px-0 font-semibold text-xs transition-all duration-300 hover:scale-105">
+                Tienda
+              </Button>
+            </Link>
 
             <Link href="/login">
-              <Button className="bg-white text-black hover:bg-white/90 rounded-full h-8 px-4 font-semibold text-xs transition-all duration-300 hover:scale-105 shadow-md">
+              <Button className="bg-white text-black hover:bg-white/90 rounded-full h-9 w-32 px-0 font-semibold text-xs transition-all duration-300 hover:scale-105 shadow-md">
                 Comenzar
               </Button>
             </Link>
@@ -180,8 +180,13 @@ export default function Header() {
           {/* MOBILE & TABLET ACTIONS */}
           {!isVisaLandingPage && (
             <div className="lg:hidden flex items-center gap-2 z-50">
+              <Link href="/tienda" className="shrink-0">
+                <Button className="bg-transparent text-white border border-white/60 hover:bg-white/10 rounded-full h-8 w-24 px-0 font-semibold text-xs transition-all duration-300 active:scale-95">
+                  Tienda
+                </Button>
+              </Link>
               <Link href="/login" className="shrink-0">
-                <Button className="bg-white text-black hover:bg-white/90 rounded-full h-8 px-3.5 font-semibold text-xs transition-all duration-300 active:scale-95 shadow-md">
+                <Button className="bg-white text-black hover:bg-white/90 rounded-full h-8 w-24 px-0 font-semibold text-xs transition-all duration-300 active:scale-95 shadow-md">
                   Comenzar
                 </Button>
               </Link>
@@ -256,6 +261,28 @@ export default function Header() {
                               </Link>
                             ))}
                           </div>
+
+                          {item.megaMenu.countries && (
+                            <div className={item.megaMenu.items.length ? "mt-8 pt-6 border-t border-white/5" : ""}>
+                              <span className="text-[10px] font-medium uppercase tracking-[0.3em] text-gray-500 mb-4 block">Países</span>
+                              <div className="grid grid-cols-4 gap-2">
+                                {item.megaMenu.countries.map((country) => (
+                                  <Link
+                                    key={country.code}
+                                    href="/contact"
+                                    className="group flex items-center gap-2.5 px-3 py-2 rounded-xl transition-all duration-300 hover:bg-white/[0.03] border border-transparent hover:border-white/5"
+                                  >
+                                    <img
+                                      src={`/flags/${country.code}.svg`}
+                                      alt={`Bandera de ${country.name}`}
+                                      className="w-[30px] h-5 object-cover shrink-0 shadow-sm"
+                                    />
+                                    <span className="text-sm text-gray-400 group-hover:text-white transition-colors truncate">{country.name}</span>
+                                  </Link>
+                                ))}
+                              </div>
+                            </div>
+                          )}
                         </div>
 
                         {/* COL 3: SOCIALS (2 cols - Only if they exist) */}
@@ -309,11 +336,8 @@ export default function Header() {
           >
             <div className="p-6 max-w-lg mx-auto">
               <div className="flex justify-between items-center mb-8">
-                <div className="flex items-center gap-2">
-                  <div className="w-7 h-7 relative">
-                    <img src="/icons/new-icon-udreamms.png" alt="Udreamms" className="object-contain w-full h-full" />
-                  </div>
-                  <span className="text-xl font-medium text-white tracking-tight">Udreamms</span>
+                <div className="flex items-center gap-2.5">
+                  <span className="text-xl font-medium text-white tracking-tight">POR MÍ</span>
                 </div>
                 <button
                   onClick={() => setIsMobileMenuOpen(false)}
@@ -357,6 +381,26 @@ export default function Header() {
                             </div>
                           </Link>
                         ))}
+
+                        {item.megaMenu.countries && (
+                          <div className={`grid grid-cols-2 gap-1 ${item.megaMenu.items.length ? "mt-4 pt-4 border-t border-white/5" : ""}`}>
+                            {item.megaMenu.countries.map((country) => (
+                              <Link
+                                key={country.code}
+                                href="/contact"
+                                onClick={() => setIsMobileMenuOpen(false)}
+                                className="flex items-center gap-2.5 py-2 px-3 rounded-xl hover:bg-white/5 active:bg-white/10 transition-colors"
+                              >
+                                <img
+                                  src={`/flags/${country.code}.svg`}
+                                  alt={`Bandera de ${country.name}`}
+                                  className="w-[30px] h-5 object-cover shrink-0 shadow-sm"
+                                />
+                                <span className="text-gray-300 text-sm truncate">{country.name}</span>
+                              </Link>
+                            ))}
+                          </div>
+                        )}
 
                         {item.megaMenu.socials && (
                           <div className="grid grid-cols-3 gap-3 mt-4 pt-4 border-t border-white/5">

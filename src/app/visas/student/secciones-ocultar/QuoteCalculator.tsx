@@ -151,7 +151,7 @@ export const QuoteCalculator = ({ onComplete }: { onComplete: (total: number) =>
     if (isInterculturalProgram) return getProgramPrice();
     let total = BASE_SERVICES.sevis;
     const totalPersons = quoteData.f1Count + quoteData.f2Count;
-    total += (quoteData.f1Count * 300) + (quoteData.f2Count * 200); // Udreamms
+    total += (quoteData.f1Count * 300) + (quoteData.f2Count * 200); // Por mí
     total += totalPersons * 185; // Embassy
     const selectedSchool = schools.find(s => s.name === quoteData.school);
     if (selectedSchool) total += selectedSchool.price;
@@ -467,7 +467,7 @@ export const QuoteCalculator = ({ onComplete }: { onComplete: (total: number) =>
                       <>
                         <SummaryItem label={`Aplicación ${quoteData.school}`} price={schools.find(s => s.name === quoteData.school)?.price || 0} />
                         <SummaryItem label="SEVIS Fee" price={BASE_SERVICES.sevis} />
-                        <SummaryItem label="Servicios Udreamms" price={(quoteData.f1Count * 300) + (quoteData.f2Count * 200)} />
+                        <SummaryItem label="Servicios Por mí" price={(quoteData.f1Count * 300) + (quoteData.f2Count * 200)} />
                         <SummaryItem label="Citas Consulares" price={(quoteData.f1Count + quoteData.f2Count) * 185} />
                         {quoteData.airportService && <SummaryItem label="Airport Pickup" price={150} />}
                         {quoteData.housingService && <SummaryItem label="Housing Service" price={250} />}
@@ -498,7 +498,7 @@ export const QuoteCalculator = ({ onComplete }: { onComplete: (total: number) =>
                       <span className="text-3xl">🎉</span>
                     </div>
                     <h2 className="text-4xl font-medium text-white tracking-tight">¡Ahorra $80 USD!</h2>
-                    <p className="text-white/80 font-normal">Si inicias tu proceso hoy, te descontamos $80 de los servicios de Udreamms.</p>
+                    <p className="text-white/80 font-normal">Si inicias tu proceso hoy, te descontamos $80 de los servicios de Por mí.</p>
 
                     <div className="bg-white/5 border border-white/10 rounded-xl p-6">
                       <div className="flex justify-between text-gray-400 line-through">

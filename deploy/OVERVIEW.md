@@ -53,7 +53,7 @@ Build: `npm run build` → salida `.next/`.
 
 ### Firebase (datos y automatización)
 
-| Servicio | Uso en uDreamms |
+| Servicio | Uso en Por mí |
 |----------|-----------------|
 | **Firestore** | Órdenes crypto, sesiones QR, datos de aplicación/onboarding, mensajes |
 | **Authentication** | `/portal` (email/password) |

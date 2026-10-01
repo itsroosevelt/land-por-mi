@@ -268,7 +268,7 @@ function PortalLayoutContent({ children }: { children: React.ReactNode }) {
           </button>
           <Link href="/" className="flex items-center gap-2">
             <div className="w-6 h-6 relative shrink-0">
-              <img src="/icons/new-icon-udreamms.png" alt="Udreamms" className="object-contain w-full h-full" />
+              <img src="/icons/new-icon-udreamms.png" alt="Por mí" className="object-contain w-full h-full" />
             </div>
             <span className="font-bold text-sm text-slate-900 tracking-tight">Portal</span>
           </Link>

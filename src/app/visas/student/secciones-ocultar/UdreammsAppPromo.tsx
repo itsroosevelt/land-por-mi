@@ -24,7 +24,7 @@ export default function UdreammsAppPromo() {
                                 className="w-full h-full object-cover"
                             />
                         </span>
-                        <span>Udreamms</span>
+                        <span>Por mí</span>
                     </h2>
                     <h2 className="text-5xl md:text-7xl lg:text-[8rem] font-medium text-white leading-[1.1] tracking-[-0.04em]">
                         para comenzar
@@ -54,7 +54,7 @@ export default function UdreammsAppPromo() {
                         className="flex items-center gap-3 bg-white text-[#D31245] px-10 py-5 rounded-full text-lg font-medium hover:bg-gray-100 transition-all duration-300 shadow-xl shadow-black/10"
                     >
                         <Smartphone className="w-5 h-5" />
-                        Descargar Udreamms App
+                        Descargar Por mí App
                     </a>
                     <span className="absolute -top-3 -right-3 bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest shadow-lg border border-white/20 select-none animate-pulse">
                         Próximamente

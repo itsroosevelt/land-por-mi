@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 
 export const SITE_URL = "https://udreamms.com";
-export const SITE_NAME = "Udreamms";
+export const SITE_NAME = "Por mí";
 
 /** URL estable del logo (Google Search favicon + schema.org). */
 export const SITE_LOGO_PATH = "/icons/new-icon-udreamms.png";
 export const SITE_LOGO_URL = `${SITE_URL}${SITE_LOGO_PATH}`;
+export const SITE_FAVICON_URL = "/icons/favicon-por-mi.png";
 
 export const DEFAULT_DESCRIPTION =
   "Asesoría experta para visas, estudios y nueva vida en Estados Unidos. Tecnología y soporte humano en un solo lugar.";
@@ -45,23 +46,23 @@ const PAGE_SEO: Record<
   { title: string; description: string }
 > = {
   "/": {
-    title: "Udreamms | Tu Sueño en USA",
+    title: "Por mí | Tu Sueño en USA",
     description: DEFAULT_DESCRIPTION,
   },
   "/about": {
-    title: "Acerca de Udreamms",
+    title: "Acerca de Por mí",
     description:
-      "Conoce la historia, valores y equipo detrás de Udreamms. Transparencia y acompañamiento en tu proceso hacia Estados Unidos.",
+      "Conoce la historia, valores y equipo detrás de Por mí. Transparencia y acompañamiento en tu proceso hacia Estados Unidos.",
   },
   "/destinos": {
     title: "Destinos en USA",
     description:
-      "Explora ciudades y destinos populares para estudiar, trabajar y vivir en Estados Unidos con Udreamms.",
+      "Explora ciudades y destinos populares para estudiar, trabajar y vivir en Estados Unidos con Por mí.",
   },
   "/courses": {
     title: "Cursos de Inglés en USA",
     description:
-      "Programas de inglés en escuelas aliadas en Estados Unidos. Planifica tu formación con asesoría Udreamms.",
+      "Programas de inglés en escuelas aliadas en Estados Unidos. Planifica tu formación con asesoría Por mí.",
   },
   "/services": {
     title: "Servicios en USA",
@@ -71,22 +72,22 @@ const PAGE_SEO: Record<
   "/brochures": {
     title: "Brochures y Guías",
     description:
-      "Descarga material informativo y da el primer paso en tu proceso con Udreamms.",
+      "Descarga material informativo y da el primer paso en tu proceso con Por mí.",
   },
   "/contact": {
     title: "Contáctanos",
     description:
-      "Habla con el equipo Udreamms. Resolvemos dudas sobre visas, estudios y tu plan hacia USA.",
+      "Habla con el equipo Por mí. Resolvemos dudas sobre visas, estudios y tu plan hacia USA.",
   },
   "/partnerships": {
     title: "Alianzas Institucionales",
     description:
-      "Universidades y escuelas aliadas. Programas de partnership con Udreamms.",
+      "Universidades y escuelas aliadas. Programas de partnership con Por mí.",
   },
   "/referrals": {
     title: "Programa de Referidos",
     description:
-      "Recomienda Udreamms y gana beneficios. Comparte tu experiencia con quienes sueñan con USA.",
+      "Recomienda Por mí y gana beneficios. Comparte tu experiencia con quienes sueñan con USA.",
   },
   "/faqs": {
     title: "Preguntas Frecuentes",
@@ -95,16 +96,16 @@ const PAGE_SEO: Record<
   },
   "/privacidad": {
     title: "Política de Privacidad",
-    description: "Política de privacidad y tratamiento de datos de Udreamms.",
+    description: "Política de privacidad y tratamiento de datos de Por mí.",
   },
   "/terminos": {
     title: "Términos y Condiciones",
-    description: "Términos y condiciones de uso de los servicios Udreamms.",
+    description: "Términos y condiciones de uso de los servicios Por mí.",
   },
   "/visas/student": {
     title: "Visa de Estudiante F-1",
     description:
-      "Planes y asesoría para visa de estudiante F-1. Estudia en USA con acompañamiento experto Udreamms.",
+      "Planes y asesoría para visa de estudiante F-1. Estudia en USA con acompañamiento experto Por mí.",
   },
   "/visas/tourist": {
     title: "Visa de Turismo B1/B2",
@@ -166,7 +167,7 @@ export function noindexMetadata(title: string): Metadata {
 export const rootMetadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "Udreamms | Tu Sueño en USA",
+    default: "Por mí | Tu Sueño en USA",
     template: "%s",
   },
   description: DEFAULT_DESCRIPTION,
@@ -179,7 +180,7 @@ export const rootMetadata: Metadata = {
     locale: "es_US",
     url: SITE_URL,
     siteName: SITE_NAME,
-    title: "Udreamms | Tu Sueño en USA",
+    title: "Por mí | Tu Sueño en USA",
     description: DEFAULT_DESCRIPTION,
     images: [
       {
@@ -192,7 +193,7 @@ export const rootMetadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Udreamms | Tu Sueño en USA",
+    title: "Por mí | Tu Sueño en USA",
     description: DEFAULT_DESCRIPTION,
   },
   robots: {
@@ -200,14 +201,14 @@ export const rootMetadata: Metadata = {
     follow: true,
     googleBot: { index: true, follow: true },
   },
-  // Google Search favicon: URL estable, PNG, múltiplos de 48px (ver app/icon.png)
+  // Favicon exacto solicitado por el cliente: imagen circular desde Firebase.
   icons: {
     icon: [
-      { url: SITE_LOGO_PATH, type: "image/png", sizes: "48x48" },
-      { url: SITE_LOGO_PATH, type: "image/png", sizes: "192x192" },
-      { url: SITE_LOGO_PATH, type: "image/png", sizes: "512x512" },
+      { url: SITE_FAVICON_URL, type: "image/png", sizes: "48x48" },
+      { url: SITE_FAVICON_URL, type: "image/png", sizes: "192x192" },
+      { url: SITE_FAVICON_URL, type: "image/png", sizes: "512x512" },
     ],
-    apple: [{ url: SITE_LOGO_PATH, type: "image/png", sizes: "180x180" }],
-    shortcut: SITE_LOGO_PATH,
+    apple: [{ url: SITE_FAVICON_URL, type: "image/png", sizes: "180x180" }],
+    shortcut: SITE_FAVICON_URL,
   },
 };

@@ -142,6 +142,12 @@ export default function ApplicationPage({ params }: ApplicationPageProps) {
     useEffect(() => {
         const fetchContact = () => {
             if (!id) return;
+            if (!db) {
+                setLoading(false);
+                setContact(null);
+                toast.error('Firebase no está configurado.');
+                return;
+            }
             try {
                 // 1. Try to find in 'contacts' (Primary CRM source)
                 const docRef = doc(db, 'contacts', id);
@@ -622,7 +628,7 @@ export default function ApplicationPage({ params }: ApplicationPageProps) {
             {/* Footer logo/info */}
             <footer className="absolute bottom-8 left-0 right-0 text-center animate-fade-in pointer-events-none">
                 <p className="text-[10px] font-bold text-neutral-600 uppercase tracking-[0.3em]">
-                    Powered by uDreamms © 2024
+                    Powered by Por mí © 2024
                 </p>
             </footer>
 

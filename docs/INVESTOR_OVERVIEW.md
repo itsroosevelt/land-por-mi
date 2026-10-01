@@ -1,8 +1,8 @@
-# uDreamms — Resumen para inversores
+# Por mí — Resumen para inversores
 
 ## Qué es
 
-**uDreamms** es una plataforma digital de servicios migratorios y experiencias en Estados Unidos. Combina:
+**Por mí** es una plataforma digital de servicios migratorios y experiencias en Estados Unidos. Combina:
 
 1. **Marketing y conversión** — landings de visa turista (B1/B2) y estudiante (F-1), home corporativo, brochures y contacto.
 2. **Pagos** — Stripe (tarjeta) y cripto (Solana: USDC, USDT, SOL, LXR) con QR y confirmación en Firestore.

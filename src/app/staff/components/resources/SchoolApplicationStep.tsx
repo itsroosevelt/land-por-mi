@@ -136,17 +136,17 @@ export const SchoolApplicationStep: React.FC = () => {
                 <h4 className="text-sm font-bold text-amber-950">Código de Agencia para Lumos</h4>
               </div>
               <p className="text-xs text-amber-900">
-                Ingresar en el campo <em>"Agency / Referral Code"</em> para asociar el caso a Udreamms.
+                Ingresar en el campo <em>"Agency / Referral Code"</em> para asociar el caso a Por mí.
               </p>
             </div>
 
             <div className="flex items-center gap-2 bg-white px-3.5 py-1.5 rounded-xl border border-amber-300 shadow-inner shrink-0">
               <span className="text-base font-mono font-black tracking-widest text-slate-900 select-all">
-                UDREAMMS
+                POR MÍ
               </span>
               <Button
                 type="button"
-                onClick={() => handleCopy('UDREAMMS', 'lumos_code', 'Código UDREAMMS')}
+                onClick={() => handleCopy('POR MÍ', 'lumos_code', 'Código POR MÍ')}
                 className="h-7 px-2.5 rounded-lg text-xs font-bold bg-amber-500 hover:bg-amber-600 text-white flex items-center gap-1 cursor-pointer"
               >
                 {copiedKey === 'lumos_code' ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
@@ -166,7 +166,7 @@ export const SchoolApplicationStep: React.FC = () => {
             <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
               <span className="font-bold text-slate-900 block">2. Código y Documentos</span>
               <p className="text-slate-600 text-[11px]">
-                Escribir <strong className="font-mono text-amber-900">UDREAMMS</strong> y adjuntar Pasaporte y Solvencia Bancaria descargados del expediente.
+                Escribir <strong className="font-mono text-amber-900">POR MÍ</strong> y adjuntar Pasaporte y Solvencia Bancaria descargados del expediente.
               </p>
             </div>
             <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
@@ -189,7 +189,7 @@ export const SchoolApplicationStep: React.FC = () => {
                 MILA International Language Academy (Orlando, Florida)
               </h3>
               <p className="text-xs text-purple-900/80">
-                Formulario Oficial JotForm con selección del agente de Udreamms.
+                Formulario Oficial JotForm con selección del agente de Por mí.
               </p>
             </div>
             <a
@@ -213,18 +213,18 @@ export const SchoolApplicationStep: React.FC = () => {
                 <h4 className="text-sm font-bold text-purple-950">Agente Responsable en MILA</h4>
               </div>
               <p className="text-xs text-purple-900">
-                Hacer clic en <em>"Siguiente"</em>, seleccionar <strong>"Valentina Vega Udreamms LLC"</strong> y hacer clic en <em>"Próximo"</em> para comenzar el llenado normal.
+                Hacer clic en <em>"Siguiente"</em>, seleccionar <strong>"Valentina Vega Por mí LLC"</strong> y hacer clic en <em>"Próximo"</em> para comenzar el llenado normal.
               </p>
             </div>
 
             <div className="flex items-center gap-2 bg-white px-3.5 py-1.5 rounded-xl border border-purple-300 shadow-inner shrink-0">
               <UserCheck className="w-4 h-4 text-purple-600" />
               <span className="text-xs font-bold text-slate-900 select-all">
-                Valentina Vega Udreamms LLC
+                Valentina Vega Por mí LLC
               </span>
               <Button
                 type="button"
-                onClick={() => handleCopy('Valentina Vega Udreamms LLC', 'mila_agent', 'Agente Valentina Vega')}
+                onClick={() => handleCopy('Valentina Vega Por mí LLC', 'mila_agent', 'Agente Valentina Vega')}
                 className="h-7 px-2.5 rounded-lg text-xs font-bold bg-purple-600 hover:bg-purple-700 text-white flex items-center gap-1 cursor-pointer"
               >
                 {copiedKey === 'mila_agent' ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}

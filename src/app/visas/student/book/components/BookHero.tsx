@@ -40,7 +40,7 @@ export default function BookHero() {
         <div className="flex flex-col sm:flex-row items-center gap-4 justify-center pt-2">
           {/* Logo Brand */}
           <span className="text-white font-bold text-lg tracking-wide uppercase">
-            Udreamms
+            Por mí
           </span>
 
           <span className="hidden sm:inline text-slate-600">|</span>

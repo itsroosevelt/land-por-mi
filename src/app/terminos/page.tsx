@@ -39,7 +39,7 @@ export default function TermsPage() {
                 transition={{ delay: 0.2 }}
                 className="text-xl md:text-2xl text-[#86868b] font-medium max-w-2xl leading-relaxed"
               >
-                Bienvenido a Udreamms LLC. Al utilizar nuestros servicios, usted acepta los términos descritos en este documento.
+                Bienvenido a Por mí LLC. Al utilizar nuestros servicios, usted acepta los términos descritos en este documento.
               </motion.p>
 
               <motion.div
@@ -69,7 +69,7 @@ export default function TermsPage() {
                     <h2 className="text-2xl font-medium text-amber-900 uppercase tracking-wider">Descargo Legal Importante</h2>
                   </div>
                   <div className="grid gap-6 text-amber-800/80 font-medium">
-                    <p><strong className="text-amber-900">No somos el Gobierno:</strong> Udreamms LLC es una entidad privada. NO estamos afiliados con USCIS ni con ninguna entidad gubernamental de USA.</p>
+                    <p><strong className="text-amber-900">No somos el Gobierno:</strong> Por mí LLC es una entidad privada. NO estamos afiliados con USCIS ni con ninguna entidad gubernamental de USA.</p>
                     <p><strong className="text-amber-900">No garantizamos Visas:</strong> La aprobación es decisión exclusiva de los oficiales consulares. No realizamos reembolsos basados en negaciones de visa.</p>
                     <p><strong className="text-amber-900">No es Asesoría Legal:</strong> Nuestra orientación es estrictamente educativa y de acompañamiento logístico.</p>
                   </div>
@@ -105,7 +105,7 @@ export default function TermsPage() {
                 <div className="p-10 rounded-[3rem] border border-slate-100 bg-white shadow-sm">
                   <div className="flex gap-6 items-start mb-8">
                     <CreditCard className="w-8 h-8 text-primary shrink-0" />
-                    <p className="text-[#86868b] font-medium leading-relaxed">Las tarifas por servicios de asesoría de Udreamms LLC no son reembolsables una vez que el servicio ha comenzado (ej: tras la primera asesoría o llenado de formulario).</p>
+                    <p className="text-[#86868b] font-medium leading-relaxed">Las tarifas por servicios de asesoría de Por mí LLC no son reembolsables una vez que el servicio ha comenzado (ej: tras la primera asesoría o llenado de formulario).</p>
                   </div>
                   <div className="flex gap-6 items-start">
                     <FileWarning className="w-8 h-8 text-primary shrink-0" />

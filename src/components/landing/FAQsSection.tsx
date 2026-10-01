@@ -8,23 +8,23 @@ import WhatsappIcon from "@/components/icons/WhatsappIcon";
 const categories = [
   {
     id: "udreamms",
-    title: "Udreamms",
+    title: "Por mí",
     faqs: [
       {
-        question: "¿Qué es Udreamms?",
-        answer: "Udreamms es un ecosistema creado para ayudar a las personas a cumplir su sueño de vivir y estudiar en Estados Unidos, acompañándolas en todo el proceso de la preparación antes del viaje hasta su adaptación en el país. Brinda guías, recursos y herramientas prácticas para reducir el miedo, facilitar la integración y empoderar a cada estudiante para que logre sus metas y se desarrolle plenamente en el extranjero."
+        question: "¿Qué es Por mí?",
+        answer: "Por mí es un ecosistema creado para ayudar a las personas a cumplir su sueño de vivir y estudiar en Estados Unidos, acompañándolas en todo el proceso de la preparación antes del viaje hasta su adaptación en el país. Brinda guías, recursos y herramientas prácticas para reducir el miedo, facilitar la integración y empoderar a cada estudiante para que logre sus metas y se desarrolle plenamente en el extranjero."
       },
       {
         question: "¿Por dónde empiezo?",
-        answer: "Empiezas identificando en qué etapa te encuentras dentro del roadmap de cuatro fases de Udreamms. Este mapa te guía paso a paso desde cero hasta tu llegada y adaptación en Estados Unidos, para que sepas exactamente qué hacer en cada momento y avances de forma clara hacia tu objetivo de estudiar y vivir en USA."
+        answer: "Empiezas identificando en qué etapa te encuentras dentro del roadmap de cuatro fases de Por mí. Este mapa te guía paso a paso desde cero hasta tu llegada y adaptación en Estados Unidos, para que sepas exactamente qué hacer en cada momento y avances de forma clara hacia tu objetivo de estudiar y vivir en USA."
       },
       {
         question: "¿Quién es la persona ideal para vivir esta experiencia?",
-        answer: "La persona correcta para Udreamms es quien tiene el sueño de estudiar y vivir en Estados Unidos, pero necesita guía clara para saber por dónde empezar y cómo avanzar en el proceso. Es ideal para quienes quieren hacerlo de forma organizada, con acompañamiento en cada etapa, desde la preparación inicial hasta su adaptación en el país."
+        answer: "La persona correcta para Por mí es quien tiene el sueño de estudiar y vivir en Estados Unidos, pero necesita guía clara para saber por dónde empezar y cómo avanzar en el proceso. Es ideal para quienes quieren hacerlo de forma organizada, con acompañamiento en cada etapa, desde la preparación inicial hasta su adaptación en el país."
       },
       {
         question: "¿Qué es Luxor y cómo me beneficia?",
-        answer: "Luxor es una moneda digital creada para los estudiantes de Udreamms, diseñada para que puedan acceder y prepararse antes de su viaje a Estados Unidos sin verse afectados por los cambios del dólar. Al iniciar el proceso, cada estudiante recibe 100 monedas como bienvenida, las cuales pueden utilizarse dentro del ecosistema para acceder a diferentes servicios y herramientas de apoyo."
+        answer: "Luxor es una moneda digital creada para los estudiantes de Por mí, diseñada para que puedan acceder y prepararse antes de su viaje a Estados Unidos sin verse afectados por los cambios del dólar. Al iniciar el proceso, cada estudiante recibe 100 monedas como bienvenida, las cuales pueden utilizarse dentro del ecosistema para acceder a diferentes servicios y herramientas de apoyo."
       }
     ]
   },

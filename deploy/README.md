@@ -1,4 +1,4 @@
-# Despliegue — uDreamms
+# Despliegue — Por mí
 
 Punto de entrada para **todo lo que se publica en producción**. El código de la app sigue en `src/`; aquí está **cómo y dónde** se despliega cada pieza.
 

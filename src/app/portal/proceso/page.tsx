@@ -177,7 +177,7 @@ export default function ProcesoPage() {
           label: '10. Trámite Denegado',
           color: 'bg-red-50 text-red-900 border-red-200',
           dot: 'bg-red-600',
-          desc: 'Consulta con el Staff de Udreamms para conocer opciones de apelación o re-postulación.'
+          desc: 'Consulta con el Staff de Por mí para conocer opciones de apelación o re-postulación.'
         };
       default:
         return {

@@ -9,42 +9,42 @@ const studentVideos = [
     id: 1,
     handle: "@udreamms",
     title: "Nuestros estudiantes logrando sus metas.",
-    thumb: "/assets/hero-campus.jpg",
+    thumb: "/assets/f.jpg",
     video: "/assets/chatbot_media/9.mp4"
   },
   {
     id: 2,
     handle: "@udreamms",
     title: "Tu éxito es nuestra prioridad.",
-    thumb: "/assets/hero-newyork.jpg",
+    thumb: "/assets/f.jpg",
     video: "/assets/chatbot_media/8.mp4"
   },
   {
     id: 3,
     handle: "@udreamms",
     title: "Acompañamiento en cada paso.",
-    thumb: "/assets/hero-living-space.jpg",
+    thumb: "/assets/f.jpg",
     video: "/assets/chatbot_media/7.mp4"
   },
   {
     id: 4,
     handle: "@udreamms",
     title: "Viviendo el sueño americano.",
-    thumb: "/assets/hero-campus.jpg",
+    thumb: "/assets/f.jpg",
     video: "/assets/chatbot_media/6.mp4"
   },
   {
     id: 5,
     handle: "@udreamms",
     title: "Explorando la ciudad.",
-    thumb: "/assets/hero-newyork.jpg",
+    thumb: "/assets/f.jpg",
     video: "/assets/chatbot_media/9.mp4"
   },
   {
     id: 6,
     handle: "@udreamms",
     title: "Mi nueva vida en USA.",
-    thumb: "/assets/hero-living-space.jpg",
+    thumb: "/assets/f.jpg",
     video: "/assets/chatbot_media/8.mp4"
   }
 ];

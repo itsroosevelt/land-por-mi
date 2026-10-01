@@ -47,6 +47,8 @@ export default function InlineYouTubeFeature({
         <img
           src={posterSrc}
           alt={posterAlt}
+          loading="lazy"
+          decoding="async"
           className="absolute inset-0 w-full h-full object-cover opacity-40"
         />
       ) : (

@@ -51,7 +51,7 @@ Si tienes cualquier duda o consulta, por favor no dudes en contactarme.
 Saludos,
 Karen Oyarce
 Departamento de Postulaciones
-Udreamms LLC`;
+Por mí LLC`;
 
 export type SchoolType = 'lumos' | 'mila' | 'uceda' | 'talk';
 
@@ -68,10 +68,10 @@ export const SCHOOLS_LIST: SchoolDefinition[] = [
   {
     id: 'lumos',
     name: 'Lumos Language School',
-    badge: 'Utah (UDREAMMS)',
+    badge: 'Utah (POR MÍ)',
     badgeColor: 'bg-blue-100 text-blue-800 border-blue-200',
     location: 'Salt Lake City & Orem, Utah',
-    actionSummary: 'Portal Web + Código UDREAMMS'
+    actionSummary: 'Portal Web + Código POR MÍ'
   },
   {
     id: 'mila',

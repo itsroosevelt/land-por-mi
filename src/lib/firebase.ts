@@ -6,24 +6,41 @@ import { getAuth } from 'firebase/auth';
 import { getStorage } from 'firebase/storage';
 import { getFunctions } from 'firebase/functions';
 
+const firebaseApiKey = process.env.NEXT_PUBLIC_FIREBASE_API_KEY ?? '';
+const firebaseProjectId = process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID ?? '';
+const firebaseAuthDomain = process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN ?? '';
+const firebaseStorageBucket = process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET ?? '';
+const firebaseMessagingSenderId = process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID ?? '';
+const firebaseAppId = process.env.NEXT_PUBLIC_FIREBASE_APP_ID ?? '';
+
 export const firebaseConfig: FirebaseOptions = {
-  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
-  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
-  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
-  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
-  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
+  apiKey: firebaseApiKey,
+  authDomain: firebaseAuthDomain,
+  projectId: firebaseProjectId,
+  storageBucket: firebaseStorageBucket,
+  messagingSenderId: firebaseMessagingSenderId,
+  appId: firebaseAppId,
   measurementId: process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID,
 };
 
-// Initialize Firebase App
-const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
+const hasValidFirebaseConfig = Boolean(
+  firebaseApiKey &&
+  firebaseApiKey.startsWith('AIza') &&
+  firebaseProjectId &&
+  firebaseAuthDomain &&
+  firebaseAppId
+);
 
-// Get Firebase services
-const db = getFirestore(app);
-const auth = getAuth(app);
-const storage = getStorage(app);
-const functions = getFunctions(app);
+const app = hasValidFirebaseConfig
+  ? (!getApps().length ? initializeApp(firebaseConfig) : getApp())
+  : null;
+
+const db = app ? getFirestore(app) : ({} as any);
+const auth = app ? getAuth(app) : (null as any);
+const storage = app ? getStorage(app) : (null as any);
+const functions = app ? getFunctions(app) : (null as any);
+
+export const isFirebaseConfigured = hasValidFirebaseConfig;
 
 // Export the services
 export { app, db, auth, storage, functions };

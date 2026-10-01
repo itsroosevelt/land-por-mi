@@ -83,7 +83,7 @@ export default function ServicesPage() {
             <span className="text-gray-500 italic">agencia de estudios.</span>
           </h1>
           <p className="text-xl text-gray-400 leading-relaxed font-light">
-            En Udreamms, nos encargamos de cada detalle de tu viaje a Estados Unidos. Desde el primer papel de tu visa hasta la llave de tu nuevo hogar, estamos contigo en cada paso.
+            En Por mí, nos encargamos de cada detalle de tu viaje a Estados Unidos. Desde el primer papel de tu visa hasta la llave de tu nuevo hogar, estamos contigo en cada paso.
           </p>
         </div>
 

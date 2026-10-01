@@ -13,7 +13,7 @@ export default function SolutionSection() {
             <div className="max-w-7xl mx-auto px-6 relative z-10">
                 <FadeIn className="text-center mb-16 -mt-24">
                     <h2 className="text-sm font-medium text-primary tracking-[0.2em] uppercase mb-4">
-                        UDREAMMS
+                        POR MÍ
                     </h2>
                     <h3 className="text-3xl md:text-5xl font-medium text-abyss font-playfair mb-6 leading-tight tracking-tight">
                         Descubre lo extraordinario con la <br className="hidden md:block" />
@@ -73,7 +73,7 @@ export default function SolutionSection() {
                         <FadeIn className="w-full lg:w-1/2">
                             <div className="relative group overflow-hidden rounded-[2.5rem] shadow-2xl border border-white">
                                 <img
-                                    src="/assets/generated/luxury_travel_service.png"
+                                    src="/assets/f.jpg"
                                     alt="Experiencia VIP en Las Vegas"
                                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                                 />

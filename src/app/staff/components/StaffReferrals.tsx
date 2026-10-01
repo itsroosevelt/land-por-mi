@@ -311,7 +311,7 @@ export const StaffReferrals: React.FC = () => {
                 {filteredReferrals.map((r) => {
                   const cleanPhone = (r.referralPhone || '').replace(/[^0-9]/g, '');
                   const waLink = `https://wa.me/${cleanPhone}?text=${encodeURIComponent(
-                    `Hola ${r.referralName}, te saludamos de Udreamms. ${r.referrerName ? `${r.referrerName} nos recomendó contactarte` : 'Recibimos tu solicitud'} para asesorarte con tu ${r.visaType === 'F-1' ? 'Visa de Estudiante F-1' : 'Visa de Turista B-2'}. ¿En qué podemos ayudarte?`
+                    `Hola ${r.referralName}, te saludamos de Por mí. ${r.referrerName ? `${r.referrerName} nos recomendó contactarte` : 'Recibimos tu solicitud'} para asesorarte con tu ${r.visaType === 'F-1' ? 'Visa de Estudiante F-1' : 'Visa de Turista B-2'}. ¿En qué podemos ayudarte?`
                   )}`;
 
                   return (

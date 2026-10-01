@@ -35,6 +35,11 @@ export default function OnboardingPage() {
     useEffect(() => {
         const fetchContact = async () => {
             if (!params.id) return;
+            if (!db) {
+                setAvailable(false);
+                setLoading(false);
+                return;
+            }
             try {
                 const docRef = doc(db, 'contacts', params.id as string);
                 const docSnap = await getDoc(docRef);
@@ -380,7 +385,7 @@ export default function OnboardingPage() {
                 </motion.form>
 
                 <p className="text-center text-neutral-600 text-xs mt-8 font-medium uppercase tracking-widest">
-                    Secured by Udreamms Platform · {new Date().getFullYear()}
+                    Secured by Por mí Platform · {new Date().getFullYear()}
                 </p>
             </div>
         </div>

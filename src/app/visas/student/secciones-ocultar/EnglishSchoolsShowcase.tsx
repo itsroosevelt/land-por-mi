@@ -183,7 +183,7 @@ export default function EnglishSchoolsShowcase() {
 
                         {/* Interactive Hint */}
                         <div className="mt-6 flex items-center justify-end gap-2 text-slate-300">
-                            <span className="text-[10px] font-bold uppercase tracking-[0.2em] italic">Intercambio real con Udreamms</span>
+                            <span className="text-[10px] font-bold uppercase tracking-[0.2em] italic">Intercambio real con Por mí</span>
                             <ChevronRight size={14} />
                         </div>
                     </div>

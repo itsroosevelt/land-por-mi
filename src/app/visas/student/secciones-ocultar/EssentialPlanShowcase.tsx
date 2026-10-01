@@ -12,7 +12,7 @@ const features = [
         description: "Gestión administrativa inicial y asesoría fundamental para tu proceso estudiantil.",
         icon: CheckCircle2,
         color: "bg-slate-50 text-black",
-        image: "/assets/generated/student_essential_showcase.png"
+        image: "/assets/f.jpg"
     },
     {
         id: "escuela",
@@ -20,7 +20,7 @@ const features = [
         description: "Te guiamos paso a paso en la obtención de tu formulario I-20, el documento llave para tu visa.",
         icon: School,
         color: "bg-slate-50 text-black",
-        image: "/assets/generated/student_essential_showcase.png"
+        image: "/assets/f.jpg"
     },
     {
         id: "consular",
@@ -28,7 +28,7 @@ const features = [
         description: "Manejo experto de formularios consulares y programación estratégica de tu cita en la embajada.",
         icon: FileText,
         color: "bg-slate-50 text-black",
-        image: "/assets/generated/student_essential_showcase.png"
+        image: "/assets/f.jpg"
     },
     {
         id: "entrevista",
@@ -36,7 +36,7 @@ const features = [
         description: "3 sesiones de preparación intensiva para que respondas con confianza y claridad ante el cónsul.",
         icon: MessageCircle,
         color: "bg-slate-50 text-black",
-        image: "/assets/generated/student_essential_showcase.png"
+        image: "/assets/f.jpg"
     },
 ];
 

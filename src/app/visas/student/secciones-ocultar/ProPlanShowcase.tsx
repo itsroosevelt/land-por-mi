@@ -42,7 +42,7 @@ const features = [
         id: "vuelos",
         title: "Vuelos y Seguro Médico",
         description: "Apoyo en logística aérea y seguro de viaje internacional.",
-        thumbnail: "/assets/vuelos.png"
+        thumbnail: "/assets/f.jpg"
     },
     {
         id: "pickup",
@@ -99,7 +99,7 @@ export default function ProPlanShowcase() {
                         >
                             <img
                                 src="https://images.unsplash.com/photo-1517048676732-d65bc937f952?q=80&w=1200&auto=format&fit=crop"
-                                alt="Udreamms Pro Experience"
+                                alt="Por mí Pro Experience"
                                 className="w-full h-full object-cover object-top"
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent" />

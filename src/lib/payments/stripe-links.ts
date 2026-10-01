@@ -1,4 +1,4 @@
-/** Stripe Payment Links — productos Udreamms */
+/** Stripe Payment Links — productos Por mí */
 export const STRIPE_PAYMENT_LINKS = {
   libroEstudiante: 'https://buy.stripe.com/bJeeVdckP87851w2HxenS0D',
   planEsencial: 'https://buy.stripe.com/6oU14n84zcnoalQci7enS0F',

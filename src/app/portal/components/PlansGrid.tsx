@@ -485,7 +485,7 @@ export default function PlansGrid({ variant = 'all' }: PlansGridProps) {
       {/* Page Header */}
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-slate-200 pb-6 w-full">
         <div>
-          <h2 className="text-2xl md:text-3xl font-semibold tracking-tight text-slate-900">Tienda Udreamms</h2>
+          <h2 className="text-2xl md:text-3xl font-semibold tracking-tight text-slate-900">Tienda Por mí</h2>
           <p className="text-xs md:text-sm text-slate-500 mt-1 font-normal">
             Explora nuestros planes integrales de asesoría, admisiones y artículos individuales para tu visa a EE.UU.
           </p>

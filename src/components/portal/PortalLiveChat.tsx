@@ -232,7 +232,7 @@ export default function PortalLiveChat({
                 <ShieldCheck className="w-4 h-4 text-blue-400" />
               </div>
               <p className="text-[11px] text-slate-300 font-medium">
-                Asesora consular Udreamms
+                Asesora consular Por mí
               </p>
             </div>
           </div>
@@ -361,7 +361,7 @@ export default function PortalLiveChat({
                   <h3 className="text-base font-bold text-white tracking-tight">Sarah Davis</h3>
                   <ShieldCheck className="w-4 h-4 text-blue-400" />
                 </div>
-                <p className="text-xs text-slate-300 font-medium">Asesora Consular Udreamms</p>
+                <p className="text-xs text-slate-300 font-medium">Asesora Consular Por mí</p>
                 
                 <div className="pt-1">
                   <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 text-[11px] font-semibold">

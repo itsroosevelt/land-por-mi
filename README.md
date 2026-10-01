@@ -1,4 +1,4 @@
-# uDreamms Platform
+# Por mí Platform
 
 Plataforma web para gestión de visas (turista y estudiante), pagos (Stripe + Solana) y operaciones con Firebase.
 

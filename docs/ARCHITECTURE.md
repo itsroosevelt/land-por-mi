@@ -1,4 +1,4 @@
-# Arquitectura del proyecto uDreamms
+# Arquitectura del proyecto Por mí
 
 ## Principio de organización
 

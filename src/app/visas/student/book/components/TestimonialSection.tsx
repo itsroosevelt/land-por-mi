@@ -31,7 +31,7 @@ export default function TestimonialSection() {
             <div className="relative font-sans">
               <span className="absolute -top-4 -left-3 text-[#3b82f6]/20 text-7xl font-serif leading-none select-none">“</span>
               <p className="italic text-base md:text-lg font-medium text-slate-700 leading-relaxed relative z-10 pl-2">
-                Antes de leer la guía no sabía por dónde empezar. Gracias a Udreamms entendí cada paso del proceso y llegué mucho más preparado a mi entrevista.
+                Antes de leer la guía no sabía por dónde empezar. Gracias a Por mí entendí cada paso del proceso y llegué mucho más preparado a mi entrevista.
               </p>
             </div>
             <div className="mt-4 font-sans pl-2">

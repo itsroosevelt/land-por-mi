@@ -9,56 +9,56 @@ const experiences = [
         date: "Llegada",
         category: "Finanzas",
         title: "Cuenta Bancaria: Tu dinero seguro desde el primer día",
-        image: "/assets/services/aeropuerto.png",
+        image: "/assets/f.jpg",
         hasVideo: false,
     },
     {
         date: "Movilidad",
         category: "Transporte",
         title: "Compra/Renta de Auto: Opciones flexibles para estudiantes",
-        image: "/assets/services/vivienda.png",
+        image: "/assets/f.jpg",
         hasVideo: true,
     },
     {
         date: "Ciudad",
         category: "Transporte",
         title: "Pase de Autobús: Muévete por la ciudad con 50% de descuento",
-        image: "/assets/services/ingles.png",
+        image: "/assets/f.jpg",
         hasVideo: false,
     },
     {
         date: "Aventura",
         category: "Diversión",
         title: "Scooter: La forma más rápida de llegar al campus",
-        image: "/assets/services/aeropuerto.png",
+        image: "/assets/f.jpg",
         hasVideo: true,
     },
     {
         date: "Conectividad",
         category: "Tecnología",
         title: "Plan de Celular: Datos ilimitados 5G sin contratos",
-        image: "/assets/services/ingles.png",
+        image: "/assets/f.jpg",
         hasVideo: false,
     },
     {
         date: "Legal",
         category: "Trámites",
         title: "Licencia de Conducir: Guía paso a paso para tu ID americana",
-        image: "/assets/services/migratorio.jpg",
+        image: "/assets/f.jpg",
         hasVideo: true,
     },
     {
         date: "Salud",
         category: "Seguridad",
         title: "Seguro Médico: Cobertura total para tu visa F-1",
-        image: "/assets/services/vivienda.png",
+        image: "/assets/f.jpg",
         hasVideo: false,
     },
     {
         date: "Viajes",
         category: "Vuelos",
         title: "Vuelos Económicos: Visita a tu familia con tarifas partner",
-        image: "/assets/services/migratorio.jpg",
+        image: "/assets/f.jpg",
         hasVideo: true,
     }
 ];
@@ -98,7 +98,7 @@ export default function ExperienceSection() {
                 {/* Header Title for Video & List */}
                 <div className="mb-12">
                     <h3 className="text-3xl md:text-5xl font-medium tracking-tighter mb-6 leading-none text-white max-w-5xl">
-                        Udreamms Reality: <br /> Construida para ti
+                        Por mí Reality: <br /> Construida para ti
                     </h3>
                     <div className="flex items-center gap-6 text-gray-400 text-sm">
                         <span className="text-white font-medium tracking-tight">FEBRERO 2026</span>

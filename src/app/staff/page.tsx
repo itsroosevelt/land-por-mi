@@ -268,12 +268,12 @@ export default function StaffPortalPage() {
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    if (passwordInput === '@Udreamms2026') {
+    if (passwordInput === '@Por mí2026') {
       setIsAuthenticated(true);
       if (typeof window !== 'undefined') {
         sessionStorage.setItem('udreamms_staff_auth', 'true');
       }
-      toast.success('¡Bienvenido al Panel de Staff Udreamms!');
+      toast.success('¡Bienvenido al Panel de Staff Por mí!');
     } else {
       toast.error('Contraseña incorrecta. Intenta nuevamente.');
     }

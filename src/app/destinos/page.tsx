@@ -38,7 +38,7 @@ const destinations = [
   },
   {
     name: "Salt Lake City, Utah",
-    image: "/assets/destino-saltlake.jpg",
+    image: "/assets/f.jpg",
     description: "Ciudad moderna rodeada de montañas, perfecta para deportes de invierno.",
     tag: "Naturaleza"
   },
@@ -56,25 +56,25 @@ const destinations = [
   },
   {
     name: "Fort Lauderdale, FL",
-    image: "/assets/destino-fortlauderdale.jpg",
+    image: "/assets/f.jpg",
     description: "Ciudad costera con canales navegables y un ambiente relajado.",
     tag: "Playa"
   },
   {
     name: "Aventura, Florida",
-    image: "/assets/destino-aventura.jpg",
+    image: "/assets/f.jpg",
     description: "Ciudad moderna con excelentes centros comerciales y ambiente multicultural.",
     tag: "Shopping"
   },
   {
     name: "Orem, Utah",
-    image: "/assets/destino-orem.jpg",
+    image: "/assets/f.jpg",
     description: "Ciudad universitaria con paisajes montañosos espectaculares.",
     tag: "Estudiantes"
   },
   {
     name: "Atlanta, Georgia",
-    image: "/assets/destino-atlanta.jpg",
+    image: "/assets/f.jpg",
     description: "Ciudad dinámica, capital del sur con gran cultura y oportunidades.",
     tag: "Negocios"
   }
@@ -102,7 +102,7 @@ export default function DestinosPage() {
               ideal en USA
             </h1>
             <p className="text-xl md:text-2xl text-slate-500 max-w-2xl mx-auto leading-relaxed font-medium">
-              Explora las ciudades donde puedes estudiar, crecer y vivir una experiencia inolvidable con el respaldo de Udreamms.
+              Explora las ciudades donde puedes estudiar, crecer y vivir una experiencia inolvidable con el respaldo de Por mí.
             </p>
           </motion.div>
         </div>

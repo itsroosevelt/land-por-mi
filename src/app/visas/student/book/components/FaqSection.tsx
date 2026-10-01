@@ -19,7 +19,7 @@ export default function FaqSection() {
 
   const faqs: FaqItem[] = [
     {
-      question: "¿Qué es el libro digital de Udreamms y para qué sirve?",
+      question: "¿Qué es el libro digital de Por mí y para qué sirve?",
       answer: "Es una guía completa que te enseña cómo obtener una visa de estudiante para Estados Unidos por tu cuenta, sin depender de una agencia. Pero no solo eso: también te muestra cómo moverte dentro del sistema como estudiante, desde acceder a recursos en EE. UU., entender costos de vida, hasta qué hacer si tu estatus cambia o está por vencer. Todo explicado de forma simple, con enlaces oficiales, pasos claros y orientación práctica para que sepas exactamente qué hacer en cada etapa."
     },
     {

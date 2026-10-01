@@ -336,7 +336,7 @@ function InstructionsContent() {
                   <div className="flex flex-col sm:flex-row gap-4 justify-center text-slate-400 text-sm font-normal">
                     <div className="flex items-center gap-2">
                       <Mail className={s.iconSm} strokeWidth={1.5} />
-                      Revisa tu correo para el comprobante oficial de Udreamms.
+                      Revisa tu correo para el comprobante oficial de Por mí.
                     </div>
                     <div className="flex items-center gap-2">
                       <MessageCircle className={s.iconSm} strokeWidth={1.5} />
@@ -413,9 +413,9 @@ function InstructionsContent() {
 
                         <InstructionGroup icon={CheckCircle2} title="2. Confirmación Inmediata">
                           <StepItem number="3" title="Procesamiento y Factura"
-                            description={<>Al completarse el pago recibirás la factura oficial de Stripe y tu comprobante oficial de Udreamms.</>} />
+                            description={<>Al completarse el pago recibirás la factura oficial de Stripe y tu comprobante oficial de Por mí.</>} />
                           <StepItem number="4" title="Contacto Asesor VIP"
-                            description={<>Un asesor de Udreamms se comunicará contigo vía WhatsApp o correo en menos de 24 horas para dar inicio a tu proceso de visa.</>} />
+                            description={<>Un asesor de Por mí se comunicará contigo vía WhatsApp o correo en menos de 24 horas para dar inicio a tu proceso de visa.</>} />
                         </InstructionGroup>
                       </div>
                     )}

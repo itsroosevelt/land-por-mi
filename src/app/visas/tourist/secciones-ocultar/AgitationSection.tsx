@@ -12,7 +12,7 @@ export default function AgitationSection() {
                     <FadeIn className="w-full lg:w-1/2 order-2 lg:order-1">
                         <div className="relative group overflow-hidden rounded-[2.5rem] shadow-2xl">
                             <img
-                                src="/assets/hero-newyork.jpg"
+                                src="/assets/f.jpg"
                                 alt="Experiencia Premium en New York"
                                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                             />

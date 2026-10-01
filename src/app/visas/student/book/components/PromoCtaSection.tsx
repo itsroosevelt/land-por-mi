@@ -13,7 +13,7 @@ export default function PromoCtaSection() {
           {/* Portada del libro en 3D */}
           <img
             src="https://firebasestorage.googleapis.com/v0/b/udreamms-platform-1.firebasestorage.app/o/Book%2FMuckup%20(1).png?alt=media&token=90d03452-cb19-47fc-9e75-1d84cf6ba50c"
-            alt="Libro Digital Udreamms - Paso a paso para tu visa"
+            alt="Libro Digital Por mí - Paso a paso para tu visa"
             className="w-full h-full object-contain z-0"
           />
 

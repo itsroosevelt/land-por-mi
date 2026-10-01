@@ -54,7 +54,7 @@ export const StaffSidebar: React.FC<StaffSidebarProps> = ({
       }`}
     >
       <div className="flex flex-col gap-2">
-        {/* Header with Udreamms Logo & Hamburger Toggle */}
+        {/* Header with Por mí Logo & Hamburger Toggle */}
         {isSidebarCollapsed ? (
           <div className="hidden md:flex flex-col items-center gap-3 mb-4 pb-3 border-b border-slate-100 px-1">
             <button
@@ -65,26 +65,26 @@ export const StaffSidebar: React.FC<StaffSidebarProps> = ({
             >
               <Menu className="w-4 h-4 shrink-0 text-black" />
             </button>
-            <div title="Udreamms" className="w-7 h-7 relative cursor-pointer group">
+            <div title="Por mí" className="w-7 h-7 relative cursor-pointer group overflow-hidden rounded-full bg-black/5">
               <img
                 src="/icons/new-icon-udreamms.png"
-                alt="Udreamms"
-                className="object-contain w-full h-full group-hover:scale-110 transition-transform"
+                alt="Por mí"
+                className="w-full h-full object-cover object-center group-hover:scale-110 transition-transform"
               />
             </div>
           </div>
         ) : (
           <div className="hidden md:flex items-center justify-between mb-4 pb-3 border-b border-slate-100 px-2">
             <div className="flex items-center gap-2.5 cursor-pointer group">
-              <div className="w-7 h-7 relative shrink-0">
+              <div className="w-7 h-7 relative shrink-0 overflow-hidden rounded-full bg-black/5">
                 <img
                   src="/icons/new-icon-udreamms.png"
-                  alt="Udreamms"
-                  className="object-contain w-full h-full group-hover:scale-105 transition-transform"
+                  alt="Por mí"
+                  className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform"
                 />
               </div>
               <span className="text-lg font-bold tracking-tight text-black">
-                Udreamms
+                Por mí
               </span>
             </div>
             <button

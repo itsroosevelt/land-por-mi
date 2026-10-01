@@ -20,7 +20,7 @@ const stages = [
     description: "Aún no cumples con los requisitos para aplicar a una escuela en Estados Unidos.",
     icon: FileCheck,
     image: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=800&auto=format&fit=crop",
-    supportText: "¿Cómo Udreamms te apoya en esta fase?",
+    supportText: "¿Cómo Por mí te apoya en esta fase?",
     bullets: [
       { text: "Clases de inglés online para avanzar tu nivel.", action: "Ver Clases" },
       { text: "Programa de referidos para generar ingresos ($50 por cada referido).", action: "Programa de referidos" }
@@ -34,7 +34,7 @@ const stages = [
     description: "Ya cuentas con los documentos necesarios para iniciar tu aplicación a una escuela.",
     icon: GraduationCap,
     image: "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?q=80&w=800&auto=format&fit=crop",
-    supportText: "¿Cómo Udreamms te apoya en esta fase?",
+    supportText: "¿Cómo Por mí te apoya en esta fase?",
     bullets: [
       { text: "Asesoría migratoria (Plan Esencial).", action: "Ver Plan" },
       { text: "Aplicación a escuelas en Estados Unidos." },
@@ -49,7 +49,7 @@ const stages = [
     description: "Ya fuiste aceptado y tienes tu visa de estudiante.",
     icon: Plane,
     image: "https://images.unsplash.com/photo-1436491865332-7a61a109c0f?q=80&w=800&auto=format&fit=crop",
-    supportText: "¿Cómo Udreamms te apoya en esta fase?",
+    supportText: "¿Cómo Por mí te apoya en esta fase?",
     bullets: [
       { text: "Planes de acompañamiento: PRO, ELITE, ALL INCLUSIVE", action: "Ver Planes" },
       { text: "Guía para licencia de conducir." },
@@ -71,9 +71,9 @@ const stages = [
     description: "Ya estás en Estados Unidos y empieza tu crecimiento.",
     icon: Smartphone,
     image: "https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?q=80&w=800&auto=format&fit=crop",
-    supportText: "¿Cómo Udreamms te apoya en esta fase?",
+    supportText: "¿Cómo Por mí te apoya en esta fase?",
     bullets: [
-      { text: "Acceso a Udreamms App con herramientas exclusivas." },
+      { text: "Acceso a Por mí App con herramientas exclusivas." },
       { text: "Recursos para adaptación y crecimiento." },
       { text: "Herramientas para tu vida académica y personal." },
       { text: "Acceso a oportunidades y guías prácticas." },

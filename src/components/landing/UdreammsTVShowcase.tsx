@@ -1,7 +1,10 @@
 "use client";
 
-import { motion, useAnimation } from "framer-motion";
+import { motion, useAnimation, useInView } from "framer-motion";
 import { useEffect, useRef } from "react";
+
+const TV_BACKGROUND_VIDEO =
+    "https://firebasestorage.googleapis.com/v0/b/landluxor.firebasestorage.app/o/por-mi%2Floading.mp4?alt=media&token=5f895d66-9dc0-4488-91cf-2e6fb7c36246";
 
 export default function UdreammsTVShowcase() {
     const controls = useAnimation();
@@ -9,6 +12,8 @@ export default function UdreammsTVShowcase() {
     const resizeTimer = useRef<number | null>(null);
     const sectionRef = useRef<HTMLElement | null>(null);
     const tvRef = useRef<any>(null);
+    // El video de fondo (~5 MB) solo se descarga cuando la sección está cerca de verse.
+    const isNearView = useInView(sectionRef, { once: true, margin: "300px 0px" });
 
     // Calcula límites basados en las dimensiones reales de la sección y el TV
     const startAirHockeyBounces = () => {
@@ -103,28 +108,18 @@ export default function UdreammsTVShowcase() {
                 }}
                 className="absolute inset-0 z-0 w-full h-full overflow-hidden"
             >
-                {/* Imagen de Fondo un poco más grande */}
-                <motion.img
-                    src="/udreamms-tv.png"
-                    alt="Udreamms TV Background"
-                    animate={{
-                        opacity: [0.9, 0.3, 0.95, 0.1, 0.9, 0.2, 0.85, 0.95, 0.3, 0.9],
-                        scale: [0.94, 0.942, 0.938, 0.941, 0.94]
-                    }}
-                    transition={{
-                        opacity: {
-                            repeat: Infinity,
-                            duration: 2.5,
-                            ease: "linear"
-                        },
-                        scale: {
-                            repeat: Infinity,
-                            duration: 0.8,
-                            ease: "easeInOut"
-                        }
-                    }}
-                    className="absolute inset-0 w-[94%] h-[94%] my-auto ml-auto -mr-12 md:-mr-24 lg:-mr-36 translate-x-4 md:translate-x-8 object-contain object-right z-0 mix-blend-screen"
-                />
+                {/* Video de fondo */}
+                {isNearView && (
+                    <video
+                        src={TV_BACKGROUND_VIDEO}
+                        autoPlay
+                        muted
+                        loop
+                        playsInline
+                        aria-hidden
+                        className="absolute inset-0 w-[55%] h-[55%] my-auto ml-auto mr-0 md:mr-6 lg:mr-12 object-contain object-right z-0 mix-blend-screen"
+                    />
+                )}
 
                 {/* DEGRADADO AÚN MÁS INTENSO Y EXTENSO EN EL LADO IZQUIERDO */}
                 <div className="absolute inset-y-0 left-0 w-full md:w-4/5 lg:w-3/4 bg-gradient-to-r from-black via-black via-55% to-transparent z-10 pointer-events-none" />
@@ -150,64 +145,22 @@ export default function UdreammsTVShowcase() {
                             }}
                             className="flex flex-col gap-1"
                         >
-                            {/* Título Principal con Capa Independiente para el Signo + */}
+                            {/* Título Principal */}
                             <div className="relative inline-block w-fit">
                                 <h2 className="text-4xl md:text-[5.5rem] lg:text-[6.5rem] font-bold text-white tracking-tighter leading-none select-none">
-                                    UDREAMMS
+                                    POR MÍ
                                 </h2>
-
-                                {/* Capa Independiente para el Signo + (No interfiere con el mensaje) */}
-                                <motion.div
-                                    initial={{ x: 600, y: -250, opacity: 0, scale: 0.2, rotate: 45 }}
-                                    whileInView={{
-                                        x: [600, 280, 0],
-                                        y: [-250, 180, 0],
-                                        opacity: [0, 1, 1],
-                                        scale: [0.3, 1.2, 1],
-                                        rotate: [45, -25, 0],
-                                        scaleY: [1, 0.7, 1],
-                                        scaleX: [1, 1.3, 1]
-                                    }}
-                                    viewport={{ once: true }}
-                                    transition={{
-                                        delay: 0.4,
-                                        duration: 1.6,
-                                        times: [0, 0.55, 1],
-                                        ease: ["easeIn", "easeOut"]
-                                    }}
-                                    className="absolute -right-24 md:-right-44 lg:-right-60 -top-12 md:-top-24 lg:-top-32 z-30 pointer-events-auto select-none"
-                                >
-                                    <motion.span
-                                        animate={{
-                                            y: [0, -42, 0, -16, 0],
-                                            scaleY: [1, 0.86, 1.14, 0.93, 1],
-                                            scaleX: [1, 1.14, 0.91, 1.06, 1],
-                                            rotate: [0, 6, -4, 2, 0],
-                                        }}
-                                        transition={{
-                                            repeat: Infinity,
-                                            duration: 3,
-                                            ease: "easeInOut",
-                                        }}
-                                        drag
-                                        dragConstraints={{ left: -300, right: 300, top: -250, bottom: 250 }}
-                                        whileDrag={{ scale: 1.3, cursor: "grabbing" }}
-                                        className="block font-thin text-white text-[9rem] md:text-[16rem] lg:text-[21rem] leading-none drop-shadow-[0_0_65px_rgba(255,255,255,1)] cursor-grab select-none pointer-events-auto"
-                                    >
-                                        +
-                                    </motion.span>
-                                </motion.div>
                             </div>
 
                             {/* Subtítulos y Copia Premium de Acompañamiento (Perfectamente pegados) */}
                             <div className="max-w-2xl mt-4 md:mt-6">
 
                                 <h3 className="text-xl md:text-3xl font-light text-slate-300 tracking-wide mb-6">
-                                    El canal de entretenimiento y educación definitiva para triunfar en USA
+                                    El canal de The New Technological Republic para los empresarios del futuro
                                 </h3>
 
                                 <p className="text-base text-slate-400 font-light leading-relaxed mb-8 max-w-xl">
-                                    Accede a series exclusivas, entrevistas con cónsules, testimonios de éxito sin editar y guías en vivo sobre la vida estudiantil y laboral en Estados Unidos. Todo el contenido audiovisual de Udreamms unificado en una sola plataforma.
+                                    Entrevistas con empresarios e inversionistas, historias reales de emprendedores de la nueva Gran Colombia, masterclasses para crear y hacer crecer tu empresa, y lo último en tecnología, inteligencia artificial y finanzas descentralizadas. Todo el contenido audiovisual de Por Mí unificado en una sola plataforma.
                                 </p>
                             </div>
                         </motion.div>
@@ -216,13 +169,13 @@ export default function UdreammsTVShowcase() {
                 </div>
 
                 {/* CTA Button Transparente Ubicado en el Contenedor Principal (Lado Derecho) */}
-                <div className="w-full flex justify-end mt-8">
+                <div className="w-full flex justify-end mt-16 md:mt-24">
                     <motion.button
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
-                        className="w-full sm:w-auto px-12 md:px-16 py-3.5 bg-transparent hover:bg-white/10 text-white border border-white/30 backdrop-blur-md rounded-full text-base md:text-lg font-medium tracking-wide transition-all shadow-xl flex items-center justify-center gap-3"
+                        className="w-full sm:w-auto sm:min-w-[400px] md:min-w-[480px] px-12 md:px-16 py-3.5 bg-transparent hover:bg-white/10 text-white border border-white/30 backdrop-blur-md rounded-full text-base md:text-lg font-medium tracking-wide transition-all shadow-xl flex items-center justify-center gap-3"
                     >
-                        Udreamms Streaming
+                        Por mí Streaming
                     </motion.button>
                 </div>
             </div>

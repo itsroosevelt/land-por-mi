@@ -1,47 +1,48 @@
 "use client";
 
-import { useRef } from "react";
-import Link from "next/link";
-import { sendMetaEvent } from "@/lib/meta-events";
-import { Button } from "@/components/ui/button";
-import InlineYouTubeFeature from "@/components/landing/InlineYouTubeFeature";
-
+/** Manifiesto · 03 Toda América somos Uno */
 export default function MentorshipShowcase() {
-    const containerRef = useRef(null);
-
     return (
         <section className="py-12 md:py-16 lg:py-20 bg-white text-black overflow-hidden font-sans">
-
-
-            <div className="container mx-auto px-6 max-w-[1500px]">
-                <div className="flex flex-col lg:flex-row-reverse gap-6 lg:gap-24 items-center lg:items-center">
-                    
-                    {/* Left Column: Text (Visually on Right on Desktop) */}
-                    <div className="w-full lg:w-[35%] flex flex-col pt-2 lg:pt-10 pl-0 lg:pl-8">
-                        <h2 className="font-normal tracking-tight text-black mb-6 leading-[1.1]">
-                            <span className="text-3xl md:text-3xl lg:text-4xl xl:text-5xl block mb-2 font-medium">Mentorías Premium</span>
-                            <span className="text-gray-500 text-xl md:text-2xl lg:text-3xl font-light">Acompañamiento por quienes ya lo lograron</span>
+            <div className="container mx-auto px-6 max-w-[1200px]">
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16">
+                    <div className="lg:col-span-5">
+                        <p className="text-xs font-medium uppercase tracking-[0.25em] text-gray-400 mb-4">03 · Toda América somos Uno</p>
+                        <h2 className="font-normal tracking-tight text-black leading-[1.1]">
+                            <span className="text-3xl md:text-3xl lg:text-4xl xl:text-5xl block mb-2 font-medium">Bienvenidos a</span>
+                            <span className="text-gray-500 text-xl md:text-2xl lg:text-3xl font-light">The New Technological Republic</span>
                         </h2>
-                        <p className="text-gray-600 text-base leading-[1.7] font-light mb-8">
-                            Acelera tu integración y triunfa en Estados Unidos con el acompañamiento personalizado de mentores experimentados. Aprende sobre planificación financiera, inserción en el mercado laboral estadounidense, cultura de negocios y desarrollo de carrera directo de profesionales que ya recorrieron el camino y alcanzaron el éxito.<br /><br />
-                            Diseñamos sesiones individuales y grupales 1 a 1 adaptadas a tus objetivos específicos para que evites errores comunes, ahorres miles de dólares y multipliques tus oportunidades desde el primer día.
+                    </div>
+
+                    <div className="lg:col-span-7">
+                        <p className="text-gray-600 text-base leading-[1.7] font-light">
+                            Te invitamos a olvidar las barreras entre países que nos han puesto los políticos, a poner la mano
+                            en el corazón y a pensar en la humanidad. Ayudaremos a quien sea, venga del país que venga: para
+                            nosotros toda América es Uno, y todos son bienvenidos, donde sea que se encuentren.
+                            <br />
+                            <br />
+                            The New Technological Republic opera como una red descentralizada de servicios, infraestructura y
+                            educación orientada a la creación masiva de capital y patrimonio:
                         </p>
-                        <Link href="/contact" onClick={() => sendMetaEvent('Lead', { source: 'MentorshipShowcase: Quiero saber más' })}>
-                           <Button className="mt-6 w-64 px-5 py-2.5 bg-gradient-to-r from-[#2d1b4e] to-[#9b4dca] border border-[#2d1b4e] text-white rounded-full hover:[transition-property:transform,box-shadow] transition-all flex justify-center items-center hover:scale-105 hover:shadow-lg text-sm">Quiero saber más</Button>
-                        </Link>
+                        <ul className="mt-6 space-y-4">
+                            <li className="text-gray-600 text-base leading-[1.7] font-light">
+                                <strong className="font-medium text-black">Servicios tecnológicos por debajo del mercado:</strong> plataformas operativas y recursos de escala global a un costo inferior al del mercado actual, para eliminar de raíz las barreras de entrada al comercio internacional.
+                            </li>
+                            <li className="text-gray-600 text-base leading-[1.7] font-light">
+                                <strong className="font-medium text-black">De trabajadores a empresarios de alto patrimonio:</strong> transformar talento en empresas altamente rentables y escalables, para que una nueva generación de fundadores y emprendedores alcance la independencia financiera y construya patrimonio multimillonario en los próximos años.
+                            </li>
+                            <li className="text-gray-600 text-base leading-[1.7] font-light">
+                                <strong className="font-medium text-black">Acceso universal:</strong> plataforma abierta para profesionales, inversionistas, estudiantes, programadores, técnicos y creadores que decidan regirse por el mérito, la disciplina y el trabajo productivo.
+                            </li>
+                        </ul>
+                        <p className="mt-8 text-gray-600 text-base leading-[1.7] font-light">
+                            Junto a ustedes haremos más grande a toda Latinoamérica. Imagina vivir en países organizados, con
+                            trabajo y sin tanta desigualdad.
+                        </p>
+                        <p className="mt-6 text-black text-lg md:text-xl font-medium tracking-tight leading-snug">
+                            Conectamos personas. Creamos oportunidades. Construimos prosperidad.
+                        </p>
                     </div>
-
-                    {/* Right Column: Video/Media (Visually on Left on Desktop) */}
-                    <div ref={containerRef} className="w-full lg:w-2/3 relative h-[280px] sm:h-[350px] lg:h-[650px] bg-[#0a0a0a] rounded-3xl overflow-hidden flex items-center justify-center shadow-2xl">
-                        
-                        <InlineYouTubeFeature
-                            videoId="eIehK9fENJs"
-                            startSeconds={17}
-                            posterAlt="Mentorías Premium"
-                            className="rounded-3xl"
-                        />
-                    </div>
-
                 </div>
             </div>
         </section>

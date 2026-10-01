@@ -9,56 +9,56 @@ const experiences = [
         date: "Llegada",
         category: "Finanzas",
         title: "Cuenta Bancaria: Tu dinero seguro desde el primer día",
-        image: "/assets/services/aeropuerto.png",
+        image: "/assets/f.jpg",
         hasVideo: false,
     },
     {
         date: "Movilidad",
         category: "Transporte",
         title: "Compra/Renta de Auto: Opciones flexibles para estudiantes",
-        image: "/assets/services/vivienda.png",
+        image: "/assets/f.jpg",
         hasVideo: true,
     },
     {
         date: "Ciudad",
         category: "Transporte",
         title: "Pase de Autobús: Muévete por la ciudad con 50% de descuento",
-        image: "/assets/services/ingles.png",
+        image: "/assets/f.jpg",
         hasVideo: false,
     },
     {
         date: "Aventura",
         category: "Diversión",
         title: "Scooter: La forma más rápida de llegar al campus",
-        image: "/assets/services/aeropuerto.png",
+        image: "/assets/f.jpg",
         hasVideo: true,
     },
     {
         date: "Conectividad",
         category: "Tecnología",
         title: "Plan de Celular: Datos ilimitados 5G sin contratos",
-        image: "/assets/services/ingles.png",
+        image: "/assets/f.jpg",
         hasVideo: false,
     },
     {
         date: "Legal",
         category: "Trámites",
         title: "Licencia de Conducir: Guía paso a paso para tu ID americana",
-        image: "/assets/services/migratorio.jpg",
+        image: "/assets/f.jpg",
         hasVideo: true,
     },
     {
         date: "Salud",
         category: "Seguridad",
         title: "Seguro Médico: Cobertura total para tu visa F-1",
-        image: "/assets/services/vivienda.png",
+        image: "/assets/f.jpg",
         hasVideo: false,
     },
     {
         date: "Viajes",
         category: "Vuelos",
         title: "Vuelos Económicos: Visita a tu familia con tarifas partner",
-        image: "/assets/services/migratorio.jpg",
+        image: "/assets/f.jpg",
         hasVideo: true,
     }
 ];
@@ -97,12 +97,12 @@ export default function ExperienceSection() {
                         <div className="w-16 h-16 md:w-24 md:h-24 rounded-2xl flex items-center justify-center shadow-2xl group-hover:scale-105 transition-transform duration-500 overflow-hidden shrink-0">
                             <img
                                 src="/icons/new-icon-udreamms.png"
-                                alt="Udreamms App Logo"
+                                alt="Por mí App Logo"
                                 className="w-full h-full object-cover"
                             />
                         </div>
                         <h2 className="text-4xl md:text-7xl font-medium tracking-tighter text-white leading-none">
-                            Udreamms
+                            Por mí
                         </h2>
                     </div>
 
@@ -117,7 +117,7 @@ export default function ExperienceSection() {
                     <div className="relative w-full md:w-auto">
                         <Button className="rounded-full bg-white text-black hover:bg-white/90 font-medium px-6 py-6 md:px-12 md:py-8 text-sm md:text-xl shadow-2xl transition-all border-none flex items-center justify-center gap-3 w-full md:w-auto">
                             <Smartphone className="w-5 h-5 md:w-6 md:h-6" />
-                            Descargar Udreamms App
+                            Descargar Por mí App
                         </Button>
                         <span className="absolute -top-3 -right-3 bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest shadow-lg border border-white/20 select-none animate-pulse">
                             Próximamente
@@ -138,7 +138,7 @@ export default function ExperienceSection() {
                 {/* Header Title for Video & List */}
                 <div className="mb-12">
                     <h3 className="text-4xl md:text-7xl font-medium tracking-tighter mb-6 leading-none text-white max-w-5xl">
-                        Udreamms Reality: <br /> Construida para ti
+                        Por mí Reality: <br /> Construida para ti
                     </h3>
                     <div className="flex items-center gap-6 text-gray-400 text-sm">
                         <span className="text-white font-medium tracking-tight">FEBRERO 2026</span>

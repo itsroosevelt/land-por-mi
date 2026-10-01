@@ -1,48 +1,44 @@
 "use client";
 
-import { useRef } from "react";
-import Link from "next/link";
-import { sendMetaEvent } from "@/lib/meta-events";
-import { Button } from '@/components/ui/button';
-import InlineYouTubeFeature from "@/components/landing/InlineYouTubeFeature";
-
+/** Manifiesto · 02 Modelo Republicano */
 export default function TouristShowcase() {
-    const ref = useRef(null);
-
     return (
         <section className="py-12 md:py-16 lg:py-20 bg-white text-black overflow-hidden font-sans">
-            <div className="container mx-auto px-6 max-w-[1500px]">
-                <div className="flex flex-col lg:flex-row gap-6 lg:gap-24 items-center lg:items-center">
-                    
-                    {/* Left Column: Text */}
-                    <div className="w-full lg:w-[35%] flex flex-col pt-2 lg:pt-10 pr-0 lg:pr-8">
-                        <h2 className="font-normal tracking-tight text-black mb-6 leading-[1.1]">
-                            <span className="text-3xl md:text-4xl lg:text-5xl block mb-2">Visa de Turismo</span>
-                            <span className="text-gray-500 text-xl md:text-2xl lg:text-3xl font-light">Tu puerta de entrada a USA</span>
+            <div className="container mx-auto px-6 max-w-[1200px]">
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16">
+                    <div className="lg:col-span-5">
+                        <p className="text-xs font-medium uppercase tracking-[0.25em] text-gray-400 mb-4">02 · Modelo Republicano</p>
+                        <h2 className="font-normal tracking-tight text-black leading-[1.1]">
+                            <span className="text-3xl md:text-4xl lg:text-5xl block mb-2">Una alianza</span>
+                            <span className="text-gray-500 text-xl md:text-2xl lg:text-3xl font-light">con los Estados Unidos</span>
                         </h2>
+                    </div>
+
+                    <div className="lg:col-span-7">
                         <p className="text-gray-600 text-base leading-[1.7] font-light">
-                            Gestionamos todo tu proceso migratorio para que obtengas tu visa de turista B1/B2: preparación profesional de documentos, seguimiento personalizado y simulaciones de entrevista consular.<br /><br /> Descubre los destinos más icónicos de Estados Unidos y recorre sus mejores ciudades. Te brindamos el respaldo necesario para que viajes con tranquilidad y vivas experiencias turísticas verdaderamente inolvidables.
+                            Así como los Estados Unidos, bajo la administración del presidente Donald J. Trump, ha vuelto su
+                            mirada hacia Colombia, Ecuador, Venezuela y Panamá para apoyarlos, y con ellos a todo el
+                            continente americano, nosotros declaramos que la Gran Colombia resurgirá como un aliado firme de
+                            los Estados Unidos en la defensa de Occidente: de la fe cristiana, de la libertad y de todo
+                            aquello en lo que creemos.
+                            <br />
+                            <br />
+                            Nuestra visión es republicana y capitalista. No estamos de acuerdo con el comunismo ni con el
+                            socialismo. Por eso nuestra estructura se alinea de forma explícita con el modelo republicano
+                            constitucional de los Estados Unidos:
                         </p>
-                        <div className="mt-6 flex flex-col sm:flex-row gap-4">
-                            <Button asChild className="w-full sm:w-64 px-5 py-2.5 bg-gradient-to-r from-[#2d1b4e] to-[#9b4dca] border border-[#2d1b4e] text-white rounded-full hover:[transition-property:transform,box-shadow] transition-all flex justify-center items-center hover:scale-105 hover:shadow-lg text-sm">
-                                <Link href="/visas/tourist" onClick={() => sendMetaEvent('Lead', { source: 'TouristShowcase: Quiero saber más' })}>Quiero saber más</Link>
-                            </Button>
-                            <Button asChild className="w-full sm:w-64 px-5 py-2.5 bg-transparent border border-black text-black rounded-full hover:bg-gradient-to-r hover:from-[#2d1b4e] hover:to-[#9b4dca] hover:text-white hover:border-[#2d1b4e] hover:[transition-property:transform,box-shadow] transition-all flex justify-center items-center hover:scale-105 hover:shadow-lg text-sm">
-                                <a href="https://calendar.app.google/wvmELP7dKEmZKtL37" target="_blank" rel="noopener noreferrer" onClick={() => sendMetaEvent('Lead', { source: 'TouristShowcase: Agendar reunión virtual' })}>Agendar reunión virtual</a>
-                            </Button>
-                        </div>
+                        <ul className="mt-6 space-y-4">
+                            <li className="text-gray-600 text-base leading-[1.7] font-light">
+                                <strong className="font-medium text-black">Principios innegociables:</strong> defensa de la libertad individual, primacía de la propiedad privada, libre mercado, supremacía de la ley y protección irrestricta de las libertades fundamentales.
+                            </li>
+                            <li className="text-gray-600 text-base leading-[1.7] font-light">
+                                <strong className="font-medium text-black">Defensa civilizatoria y moral:</strong> reconocemos la herencia cristiana y los valores occidentales como los cimientos éticos indispensables para la prosperidad, el orden social y la libertad.
+                            </li>
+                            <li className="text-gray-600 text-base leading-[1.7] font-light">
+                                <strong className="font-medium text-black">Frente estratégico común:</strong> los Estados Unidos lideran la preservación del mundo libre; nosotros asumimos el compromiso de convertir a nuestra región en un aliado productivo, tecnológico y moral de primer orden. Y a medida que apoyemos a los Estados Unidos, apoyaremos también a todos los demás países de Latinoamérica.
+                            </li>
+                        </ul>
                     </div>
-
-                    {/* Right Column: Video/Media */}
-                    <div ref={ref} className="w-full lg:w-2/3 relative h-[280px] sm:h-[350px] lg:h-[650px] rounded-3xl overflow-hidden shadow-2xl">
-                        <InlineYouTubeFeature
-                            videoId="ksaKUwErSGw"
-                            posterSrc="/assets/generated/tourist_showcase_disney.png"
-                            posterAlt="Visa Turismo"
-                            className="rounded-3xl"
-                        />
-                    </div>
-
                 </div>
             </div>
         </section>

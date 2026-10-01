@@ -362,7 +362,7 @@ export function PortalProvider({ children }: { children: ReactNode }) {
   const [unlockCodeInput, setUnlockCodeInput] = useState("");
   const [isBypassActive, setIsBypassActive] = useState(() => {
     if (typeof window !== 'undefined') {
-      return localStorage.getItem('udreamms_bypass') === '@Udreamms2026';
+      return localStorage.getItem('udreamms_bypass') === '@Por mí2026';
     }
     return false;
   });
@@ -480,8 +480,8 @@ export function PortalProvider({ children }: { children: ReactNode }) {
   };
 
   const handleApplyUnlockCode = () => {
-    if (unlockCodeInput === '@Udreamms2026') {
-      localStorage.setItem('udreamms_bypass', '@Udreamms2026');
+    if (unlockCodeInput === '@Por mí2026') {
+      localStorage.setItem('udreamms_bypass', '@Por mí2026');
       setIsBypassActive(true);
       toast.success("Código correcto. Todos los contenidos han sido desbloqueados para pruebas.");
       setUnlockCodeInput("");
@@ -527,7 +527,7 @@ export function PortalProvider({ children }: { children: ReactNode }) {
 
   const isUnlocked = (type: 'curso' | 'libro' | 'proceso' | 'recursos', visa: 'estudiante' | 'turista') => {
     if (isBypassActive) return true;
-    if (typeof window !== 'undefined' && localStorage.getItem('udreamms_bypass') === '@Udreamms2026') {
+    if (typeof window !== 'undefined' && localStorage.getItem('udreamms_bypass') === '@Por mí2026') {
       return true;
     }
 

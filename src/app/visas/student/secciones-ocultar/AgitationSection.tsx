@@ -13,7 +13,7 @@ export default function AgitationSection() {
                         <div className="relative group overflow-hidden rounded-[2.5rem] shadow-2xl border border-red-100">
                             {/* Placeholder img */}
                             <img
-                                src="/assets/generated/student_stress_rejection.png"
+                                src="/assets/f.jpg"
                                 alt="Estudiante rechazado"
                                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                                 onError={(e) => {

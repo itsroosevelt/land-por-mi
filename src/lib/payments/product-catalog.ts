@@ -277,7 +277,7 @@ export function buildLegacyCardCatalogUsd(): Record<string, number> {
 
 /**
  * Parámetros oficiales de comisión por procesamiento con tarjeta en Stripe (3.5% + $0.30 USD internacional).
- * Permite que al pagar con tarjeta, la pasarela añada la comisión de procesamiento y Udreamms reciba el valor neto real del servicio.
+ * Permite que al pagar con tarjeta, la pasarela añada la comisión de procesamiento y Por mí reciba el valor neto real del servicio.
  */
 export const STRIPE_FEE_PERCENT = 0.035; // 3.5%
 export const STRIPE_FEE_FIXED_USD = 0.30; // $0.30 USD

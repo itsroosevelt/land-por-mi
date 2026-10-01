@@ -51,7 +51,7 @@ export default function BienvenidoPage() {
       {/* Header */}
       <div className="space-y-1">
         <h1 className="text-2xl sm:text-3xl md:text-4xl font-semibold text-slate-900 tracking-tight">
-          ¡Bienvenido a Udreamms, {userName}!
+          ¡Bienvenido a Por mí, {userName}!
         </h1>
         <p className="text-slate-500 text-sm md:text-base font-normal">
           Empieza aquí: mira el video de bienvenida y descubre en qué fase de tu viaje te encuentras.
@@ -87,7 +87,7 @@ export default function BienvenidoPage() {
           {/* Bottom Title */}
           <div className="relative z-10 pt-20">
             <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold text-white tracking-tight">
-              ¿Qué es Udreamms y cómo te acompaña?
+              ¿Qué es Por mí y cómo te acompaña?
             </h2>
             <p className="text-slate-400 text-xs sm:text-sm mt-1 font-normal">
               Con Valentina · [duración]

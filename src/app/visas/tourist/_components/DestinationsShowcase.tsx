@@ -216,7 +216,7 @@ export default function DestinationsShowcase() {
                                 {/* Overlay Label */}
                                 <div className="absolute bottom-6 left-6 bg-black/80 backdrop-blur-md px-6 py-4 rounded-2xl border border-white/10 shadow-xl max-w-[80%] z-30">
                                     <h5 className="text-lg font-medium text-white mb-1">{activeDest.title}</h5>
-                                    <p className="text-xs text-slate-400 font-medium leading-tight">Vive la experiencia real con Udreamms.</p>
+                                    <p className="text-xs text-slate-400 font-medium leading-tight">Vive la experiencia real con Por mí.</p>
                                 </div>
 
                                 <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent pointer-events-none z-10" />

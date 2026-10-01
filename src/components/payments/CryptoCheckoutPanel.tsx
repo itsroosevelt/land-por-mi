@@ -55,7 +55,7 @@ export default function CryptoCheckoutPanel({
                 <Wallet className={`text-blue-400 ${compact ? 'w-4 h-4' : 'w-5 h-5'}`} />
               </div>
               <div>
-                <p className={`font-bold uppercase tracking-wider text-blue-400 ${compact ? 'text-[10px]' : 'text-xs'}`}>Udreamms Visa</p>
+                <p className={`font-bold uppercase tracking-wider text-blue-400 ${compact ? 'text-[10px]' : 'text-xs'}`}>Por mí Visa</p>
                 <p className={`font-medium text-white ${compact ? 'text-sm' : 'text-lg'}`}>{planTitle}</p>
               </div>
             </div>

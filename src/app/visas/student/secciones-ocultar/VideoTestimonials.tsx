@@ -96,7 +96,7 @@ export default function VideoTestimonials() {
                                 />
                             ) : (
                                 <div className="w-full h-full bg-slate-900 flex items-center justify-center relative">
-                                    <div className="absolute inset-0 bg-cover bg-center opacity-40 filter blur-[1px]" style={{ backgroundImage: `url('/assets/hero-campus.jpg')` }} />
+                                    <div className="absolute inset-0 bg-cover bg-center opacity-40 filter blur-[1px]" style={{ backgroundImage: `url('/assets/f.jpg')` }} />
                                     {/* Gradient overlay */}
                                     <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-transparent to-transparent pointer-events-none" />
                                 </div>

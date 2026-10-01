@@ -206,7 +206,7 @@ export default function CoursesPage() {
         <section className="py-32 bg-white">
           <div className="container mx-auto px-6 md:px-12 max-w-5xl">
             <div className="text-center mb-20">
-              <h2 className="text-4xl md:text-6xl font-medium text-[#1d1d1f] tracking-tight">¿Por qué Udreamms?</h2>
+              <h2 className="text-4xl md:text-6xl font-medium text-[#1d1d1f] tracking-tight">¿Por qué Por mí?</h2>
               <p className="text-xl text-[#86868b] mt-4 font-medium">La diferencia entre un curso y un plan estratégico.</p>
             </div>
 
