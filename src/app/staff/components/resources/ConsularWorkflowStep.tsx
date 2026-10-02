@@ -29,7 +29,7 @@ export const ConsularWorkflowStep: React.FC = () => {
     { num: 3, title: 'I-20 Recibido', desc: 'Descargar I-20 oficial emitido por la escuela y subirlo al expediente.' },
     { num: 4, title: 'Preparación de Documentos', desc: 'Reunir antecedentes, solvencia económica y certificados laborales.' },
     { num: 5, title: 'Tasa SEVIS (I-901)', desc: 'Pagar $350 USD en fmjfee.com con SEVIS ID y código de escuela.' },
-    { num: 6, title: 'Formulario DS-160 & Cita', desc: 'Llenar CEAC, crear cuenta en AIS con @Por mí2026 y agendar CAS/Embajada.' },
+    { num: 6, title: 'Formulario DS-160 & Cita', desc: 'Llenar CEAC, crear cuenta en AIS con @Udreamms2026 y agendar CAS/Embajada.' },
     { num: 7, title: 'Simulacro de Entrevista', desc: 'Coaching 1 a 1 con el postulante resolviendo preguntas consulares clave.' },
     { num: 8, title: 'Cita en Embajada', desc: 'El estudiante acude con Carpeta 1 (mano) y Carpeta 2 (soporte).' },
     { num: 9, title: 'Aprobados', desc: 'Festejar visa aprobada, coordinar retiro de pasaporte y viaje a EE.UU.' },

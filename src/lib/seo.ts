@@ -9,7 +9,7 @@ export const SITE_LOGO_URL = `${SITE_URL}${SITE_LOGO_PATH}`;
 export const SITE_FAVICON_URL = "/icons/favicon-por-mi.png";
 
 export const DEFAULT_DESCRIPTION =
-  "Asesoría experta para visas, estudios y nueva vida en Estados Unidos. Tecnología y soporte humano en un solo lugar.";
+  "Comunidad que brinda productos y servicios accesibles a emprendedores y empresarios de toda Latinoamérica, respaldados por inteligencia artificial, tecnología y finanzas descentralizadas creadas en los Estados Unidos.";
 
 export const NOINDEX_ROBOTS: Metadata["robots"] = {
   index: false,
@@ -46,7 +46,7 @@ const PAGE_SEO: Record<
   { title: string; description: string }
 > = {
   "/": {
-    title: "Por mí | Tu Sueño en USA",
+    title: "Por Mí | The New Technological Republic",
     description: DEFAULT_DESCRIPTION,
   },
   "/about": {
@@ -167,7 +167,7 @@ export function noindexMetadata(title: string): Metadata {
 export const rootMetadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "Por mí | Tu Sueño en USA",
+    default: "Por Mí | The New Technological Republic",
     template: "%s",
   },
   description: DEFAULT_DESCRIPTION,
@@ -180,7 +180,7 @@ export const rootMetadata: Metadata = {
     locale: "es_US",
     url: SITE_URL,
     siteName: SITE_NAME,
-    title: "Por mí | Tu Sueño en USA",
+    title: "Por Mí | The New Technological Republic",
     description: DEFAULT_DESCRIPTION,
     images: [
       {
@@ -193,7 +193,7 @@ export const rootMetadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Por mí | Tu Sueño en USA",
+    title: "Por Mí | The New Technological Republic",
     description: DEFAULT_DESCRIPTION,
   },
   robots: {

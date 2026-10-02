@@ -14,6 +14,8 @@ import {
   onAuthStateChanged,
 } from 'firebase/auth';
 import { auth, db, isFirebaseConfigured } from '@/lib/firebase';
+import { DEV_AUTH_BYPASS } from '@/lib/dev-auth';
+import { getPostLoginPath } from '@/lib/pending-cart';
 import { doc, getDoc, setDoc, updateDoc, serverTimestamp } from 'firebase/firestore';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
@@ -130,7 +132,7 @@ function LoginContent() {
 
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
-        router.push('/portal');
+        router.push(getPostLoginPath());
       }
     });
     return () => unsubscribe();
@@ -194,7 +196,7 @@ function LoginContent() {
       if (userCredential?.user) {
         await syncUserInFirestore(userCredential.user);
       }
-      router.push('/portal');
+      router.push(getPostLoginPath());
     } catch (error: any) {
       toast.error('Error en autenticación: ' + error.message);
     } finally {
@@ -203,6 +205,13 @@ function LoginContent() {
   };
 
   const handleSocialLogin = async (provider: any, providerName: string) => {
+    // Modo de prueba (solo `npm run dev`): entra directo al portal sin Firebase.
+    if (DEV_AUTH_BYPASS) {
+      toast.success(`Modo de prueba: entrando como usuario de prueba (${providerName})`);
+      router.push(getPostLoginPath());
+      return;
+    }
+
     if (!isFirebaseConfigured || !auth || !db) {
       toast.error('Firebase no está configurado. Revisa las variables del proyecto.');
       return;
@@ -215,7 +224,7 @@ function LoginContent() {
         await syncUserInFirestore(result.user);
       }
       toast.success(`Iniciaste sesión con ${providerName}`);
-      router.push('/portal');
+      router.push(getPostLoginPath());
     } catch (error: any) {
       toast.error(`Error con ${providerName}: ` + error.message);
     } finally {
@@ -273,14 +282,14 @@ function LoginContent() {
               <Button
                 variant="outline"
                 onClick={() => { setShowForm(true); setIsRegistering(true); }}
-                className="w-full max-w-sm h-14 rounded-full bg-transparent border border-white/40 text-white hover:bg-gradient-to-r hover:from-[#2d1b4e] hover:to-[#9b4dca] hover:text-white hover:border-[#2d1b4e] hover:[transition-property:transform,box-shadow] hover:scale-105 active:scale-95 font-light text-xs md:text-sm tracking-widest transition-all duration-300 shadow-lg"
+                className="w-full max-w-sm h-14 rounded-full bg-transparent border border-white/40 text-white hover:bg-gradient-to-r hover:from-blue-700 hover:to-blue-500 hover:text-white hover:border-blue-600 hover:[transition-property:transform,box-shadow] hover:scale-105 active:scale-95 font-light text-xs md:text-sm tracking-widest transition-all duration-300 shadow-lg"
               >
                 COMENZAR EN POR MÍ
               </Button>
 
               <Button
                 variant="outline"
-                className="w-full max-w-sm h-14 rounded-full bg-transparent border border-white/40 text-white hover:bg-gradient-to-r hover:from-[#2d1b4e] hover:to-[#9b4dca] hover:text-white hover:border-[#2d1b4e] hover:[transition-property:transform,box-shadow] hover:scale-105 active:scale-95 font-light text-xs md:text-sm tracking-widest transition-all duration-300 shadow-lg"
+                className="w-full max-w-sm h-14 rounded-full bg-transparent border border-white/40 text-white hover:bg-gradient-to-r hover:from-blue-700 hover:to-blue-500 hover:text-white hover:border-blue-600 hover:[transition-property:transform,box-shadow] hover:scale-105 active:scale-95 font-light text-xs md:text-sm tracking-widest transition-all duration-300 shadow-lg"
                 onClick={() => { setShowForm(true); setIsRegistering(false); }}
               >
                 YA TENGO MI CUENTA EN POR MÍ

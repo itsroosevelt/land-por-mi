@@ -1,7 +1,7 @@
 'use client';
 
-import PlansGrid from '../components/PlansGrid';
+import ServicesGrid from '../components/ServicesGrid';
 
 export default function TiendaPage() {
-  return <PlansGrid variant="all" />;
+  return <ServicesGrid />;
 }

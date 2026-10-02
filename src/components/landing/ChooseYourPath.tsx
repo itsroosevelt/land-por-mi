@@ -4,7 +4,7 @@ import { useState } from "react";
 import { ArrowLeft } from "lucide-react";
 import { sendMetaEvent } from "@/lib/meta-events";
 import { LATAM_COUNTRIES, type LatamCountry } from "@/lib/latam-countries";
-import { getCountrySocialLinks } from "@/lib/country-socials";
+import { getCountryQuestionsLink, getCountrySocialLinks } from "@/lib/country-socials";
 
 export default function ChooseYourPath() {
   const [selectedCountry, setSelectedCountry] = useState<LatamCountry | null>(null);
@@ -65,7 +65,7 @@ export default function ChooseYourPath() {
             </div>
 
             <a
-              href={`https://wa.me/13858882799?text=${encodeURIComponent(`Hola, soy de ${selectedCountry.name} y tengo preguntas antes de empezar`)}`}
+              href={getCountryQuestionsLink(selectedCountry.code)}
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => sendMetaEvent('Contact', { source: 'Planes Country WhatsApp Button', country: selectedCountry.name })}

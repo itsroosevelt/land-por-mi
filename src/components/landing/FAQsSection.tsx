@@ -7,88 +7,86 @@ import WhatsappIcon from "@/components/icons/WhatsappIcon";
 
 const categories = [
   {
-    id: "udreamms",
-    title: "Por mí",
+    id: "republica",
+    title: "The New Technological Republic",
     faqs: [
       {
-        question: "¿Qué es Por mí?",
-        answer: "Por mí es un ecosistema creado para ayudar a las personas a cumplir su sueño de vivir y estudiar en Estados Unidos, acompañándolas en todo el proceso de la preparación antes del viaje hasta su adaptación en el país. Brinda guías, recursos y herramientas prácticas para reducir el miedo, facilitar la integración y empoderar a cada estudiante para que logre sus metas y se desarrolle plenamente en el extranjero."
+        question: "¿Qué es Por Mí | The New Technological Republic?",
+        answer: "Es una comunidad occidental que brinda productos y servicios tecnológicos accesibles a emprendedores y empresarios de toda Latinoamérica, respaldados por inteligencia artificial, tecnología y finanzas descentralizadas creadas en los Estados Unidos. Nuestro objetivo es unir con tecnología lo que las barreras políticas no lograron unir por años."
       },
       {
-        question: "¿Por dónde empiezo?",
-        answer: "Empiezas identificando en qué etapa te encuentras dentro del roadmap de cuatro fases de Por mí. Este mapa te guía paso a paso desde cero hasta tu llegada y adaptación en Estados Unidos, para que sepas exactamente qué hacer en cada momento y avances de forma clara hacia tu objetivo de estudiar y vivir en USA."
+        question: "¿Por qué hablan de la Gran Colombia?",
+        answer: "Porque Ecuador, Colombia, Venezuela y Panamá fueron alguna vez una sola nación. Las decisiones de personajes irresponsables en la historia nos dividieron. Hoy, con el apoyo de los Estados Unidos, creemos que esa gran nación puede resurgir, esta vez unida por la tecnología, el comercio libre y el talento de su gente."
       },
       {
-        question: "¿Quién es la persona ideal para vivir esta experiencia?",
-        answer: "La persona correcta para Por mí es quien tiene el sueño de estudiar y vivir en Estados Unidos, pero necesita guía clara para saber por dónde empezar y cómo avanzar en el proceso. Es ideal para quienes quieren hacerlo de forma organizada, con acompañamiento en cada etapa, desde la preparación inicial hasta su adaptación en el país."
+        question: "¿Cuál es su visión?",
+        answer: "Nuestra visión es republicana y capitalista. Defendemos la libertad individual, la propiedad privada, el libre mercado, la supremacía de la ley y los valores occidentales y cristianos como base de la prosperidad. No estamos de acuerdo con el comunismo ni con el socialismo."
       },
       {
-        question: "¿Qué es Luxor y cómo me beneficia?",
-        answer: "Luxor es una moneda digital creada para los estudiantes de Por mí, diseñada para que puedan acceder y prepararse antes de su viaje a Estados Unidos sin verse afectados por los cambios del dólar. Al iniciar el proceso, cada estudiante recibe 100 monedas como bienvenida, las cuales pueden utilizarse dentro del ecosistema para acceder a diferentes servicios y herramientas de apoyo."
+        question: "¿Por qué se alinean con los Estados Unidos?",
+        answer: "Porque los Estados Unidos lideran la defensa del mundo libre y han vuelto su mirada hacia nuestra región. Queremos que la nueva Gran Colombia sea un aliado productivo, tecnológico y moral de primer orden, y que a medida que apoyemos a los Estados Unidos apoyemos también a toda Latinoamérica."
       }
     ]
   },
   {
-    id: "visa",
-    title: "Proceso de Visa",
+    id: "comunidad",
+    title: "Comunidad",
     faqs: [
       {
-        question: "¿Qué tipo de visa necesito para estudiar en USA?",
-        answer: "Necesitas una visa F-1 para estudios académicos. Te ayudamos con todo el proceso de solicitud y preparación para la entrevista."
+        question: "¿Quién puede unirse?",
+        answer: "Cualquier persona que decida regirse por el mérito, la disciplina y el trabajo productivo: profesionales, emprendedores, empresarios, inversionistas, estudiantes, programadores, técnicos y creadores."
       },
       {
-        question: "¿Cuánto tiempo toma obtener la visa?",
-        answer: "El proceso generalmente toma de 4 a 8 semanas desde la solicitud hasta la entrevista. Te recomendamos aplicar al menos 3 meses antes."
+        question: "¿Tengo que ser de Ecuador, Colombia, Venezuela o Panamá?",
+        answer: "No. Empezamos apoyando a nuestra gente en esos cuatro países, pero para nosotros toda América es Uno. Ayudamos a quien sea, venga del país que venga, donde sea que se encuentre."
       },
       {
-        question: "¿Qué documentos necesito para la visa?",
-        answer: "Necesitas: formulario I-20, pasaporte válido, comprobante de pago SEVIS, fotos, y comprobante de fondos financieros."
+        question: "¿Cómo me uno a la red de mi país?",
+        answer: "En la sección de banderas haz clic en la bandera de tu país. Verás nuestras redes sociales para unirte y un botón para escribirnos por WhatsApp si tienes preguntas antes de empezar."
       },
       {
-        question: "¿Puedo trabajar con visa de estudiante?",
-        answer: "Sí, puedes trabajar hasta 20 horas semanales en el campus durante el semestre y tiempo completo en vacaciones."
+        question: "¿Esto tiene que ver con política o con cambiar fronteras?",
+        answer: "No. Construimos una integración de facto a través de la tecnología, el comercio y el talento, respetando plenamente las fronteras, las identidades soberanas y los marcos legales de cada nación."
       }
     ]
   },
   {
-    id: "programs",
-    title: "Programas",
+    id: "servicios",
+    title: "Servicios",
     faqs: [
       {
-        question: "¿Cuánto dura el programa de inglés?",
-        answer: "Los programas varían de 12 a 52 semanas dependiendo de tus objetivos. Ofrecemos desde cursos cortos hasta programas académicos."
+        question: "¿Qué servicios ofrecen?",
+        answer: "Todo lo necesario para crear y hacer crecer tu empresa: creación de la empresa, redes sociales organizadas, campañas publicitarias, tu propio sitio web, diseño de logos, manual de marca, marca personal y logística."
       },
       {
-        question: "¿Qué nivel de inglés necesito para empezar?",
-        answer: "Nuestros programas aceptan desde nivel principiante hasta avanzado. Realizamos una prueba de nivelación al inicio."
+        question: "¿Tengo que hacerlo todo yo mismo?",
+        answer: "Tú decides. Creamos cursos y guías paso a paso para que puedas hacerlo por ti mismo, pero si se te hace difícil o prefieres no hacerlo, nuestro equipo lo hace por ti."
+      },
+      {
+        question: "¿Cuánto cuestan los servicios?",
+        answer: "Nuestro objetivo es ofrecer servicios tecnológicos a un costo inferior al del mercado actual, para eliminar las barreras de entrada a los negocios. Puedes ver los planes disponibles en la Tienda."
+      },
+      {
+        question: "¿Qué es Por Mí Streaming?",
+        answer: "Es el canal de The New Technological Republic: entrevistas con empresarios e inversionistas, historias reales de emprendedores, masterclasses para crear y hacer crecer tu empresa, y contenido sobre tecnología, inteligencia artificial y finanzas descentralizadas."
       }
     ]
   },
   {
-    id: "destinations",
-    title: "Destinos",
+    id: "plataforma",
+    title: "Plataforma y Pagos",
     faqs: [
       {
-        question: "¿En qué ciudades tienen programas?",
-        answer: "Tenemos programas en New York, Los Angeles, Miami, Orlando, Boston, San Francisco, y más de 20 ciudades."
+        question: "¿Cómo accedo a la plataforma Por Mí?",
+        answer: "Si ya tienes cuenta, haz clic en \"Ingresar\" en la barra superior. Si aún no la tienes, haz clic en \"Ingresa a la plataforma Por Mí\" y regístrate. Desde ahí podrás acceder a las guías, los cursos y los servicios."
       },
       {
-        question: "¿Cómo elijo la mejor ciudad para mí?",
-        answer: "Te ayudamos a elegir basándonos en tus intereses, presupuesto, clima preferido y oportunidades profesionales."
-      }
-    ]
-  },
-  {
-    id: "housing",
-    title: "Vivienda",
-    faqs: [
-      {
-        question: "¿Ayudan con el alojamiento?",
-        answer: "Sí, te ayudamos a encontrar opciones de homestay, residencias estudiantiles o apartamentos compartidos cerca de tu escuela."
+        question: "¿Qué métodos de pago aceptan?",
+        answer: "Puedes pagar con tarjeta (Visa, Mastercard o AMEX) de forma segura a través de Stripe, o con stablecoins y criptomonedas (USDC, USDT, SOL o LXR) en la red Solana."
       },
       {
-        question: "¿El alojamiento incluye comidas?",
-        answer: "Generalmente no, a menos que sea un homestay con plan de alimentación específico."
+        question: "¿Qué es Luxor (LXR)?",
+        answer: "Luxor es la moneda digital del ecosistema Por Mí. Puedes usarla como método de pago dentro de la plataforma, junto con USDC, USDT y SOL."
       }
     ]
   }
@@ -120,7 +118,7 @@ export default function FAQsSection() {
             <span className="text-gray-400">de forma directa</span>
           </h2>
           <p className="text-lg text-gray-400 font-normal leading-relaxed max-w-2xl mx-auto">
-            Encuentra claridad sobre visas, alojamiento y procesos académicos. Transparencia total desde el primer momento.
+            Todo sobre The New Technological Republic, la comunidad, nuestros servicios y la plataforma Por Mí. Transparencia total desde el primer momento.
           </p>
         </div>
 
@@ -208,13 +206,13 @@ export default function FAQsSection() {
           </p>
           
           <a
-            href="https://wa.me/13858882799?text=Hola%2C%20quiero%20m%C3%A1s%20informaci%C3%B3n"
+            href="https://chat.whatsapp.com/CAeBvhShHLC7VyBy8yZzVk"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center justify-center w-auto px-5 py-3 rounded-full bg-white/5 border border-white/10 text-white font-medium text-xs md:text-sm hover:bg-gradient-to-r hover:from-[#2d1b4e] hover:to-[#9b4dca] hover:border-[#2d1b4e] hover:[transition-property:transform,box-shadow] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 transition-all duration-300"
+            className="inline-flex items-center justify-center w-full sm:w-auto sm:min-w-[340px] px-8 py-4 rounded-full bg-white/5 border border-white/10 text-white font-medium text-sm md:text-base hover:bg-gradient-to-r hover:from-blue-700 hover:to-blue-500 hover:border-blue-600 hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 transition-all duration-300"
           >
-            <WhatsappIcon className="w-4 h-4" />
-            <span className="ml-2">Chatear por WhatsApp</span>
+            <WhatsappIcon className="w-5 h-5" />
+            <span className="ml-2.5">Chatear por WhatsApp</span>
           </a>
         </div>
         

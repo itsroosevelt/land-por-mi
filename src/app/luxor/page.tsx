@@ -221,7 +221,7 @@ export default function LuxorPage() {
               ¿Te trabaste en algún paso? Escríbenos directamente y te guiaremos personalmente para que accedas a tu servicio con descuento 
             </p>
             <a
-              href="https://wa.me/13854162224?text=Hola,%20necesito%20ayuda%20para%20realizar%20mi%20pago%20con%20LUXOR"
+              href="https://wa.me/13858653535?text=Hola,%20necesito%20ayuda%20para%20realizar%20mi%20pago%20con%20LUXOR"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center px-8 py-3 text-sm md:text-base font-medium text-white rounded-full bg-blue-600 hover:bg-blue-500 transition-all duration-300 shadow-[0_0_20px_rgba(59,130,246,0.3)] hover:-translate-y-1"

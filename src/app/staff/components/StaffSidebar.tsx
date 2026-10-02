@@ -67,7 +67,7 @@ export const StaffSidebar: React.FC<StaffSidebarProps> = ({
             </button>
             <div title="Por mí" className="w-7 h-7 relative cursor-pointer group overflow-hidden rounded-full bg-black/5">
               <img
-                src="/icons/new-icon-udreamms.png"
+                src="/icons/logo-por-mi.webp"
                 alt="Por mí"
                 className="w-full h-full object-cover object-center group-hover:scale-110 transition-transform"
               />
@@ -78,14 +78,12 @@ export const StaffSidebar: React.FC<StaffSidebarProps> = ({
             <div className="flex items-center gap-2.5 cursor-pointer group">
               <div className="w-7 h-7 relative shrink-0 overflow-hidden rounded-full bg-black/5">
                 <img
-                  src="/icons/new-icon-udreamms.png"
+                  src="/icons/logo-por-mi.webp"
                   alt="Por mí"
                   className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform"
                 />
               </div>
-              <span className="text-lg font-bold tracking-tight text-black">
-                Por mí
-              </span>
+              <span className="text-sm font-bold tracking-tight text-black leading-tight">Por Mí | The New Technological Republic</span>
             </div>
             <button
               type="button"

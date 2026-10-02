@@ -1,30 +1,17 @@
 'use client';
 
-import React from 'react';
-import {
-  Inbox,
-  School,
-  FileCheck,
-  FileText,
-  CreditCard,
-  Ticket,
-  MessageSquare,
-  Calendar,
-  CheckCircle2,
-  Check
-} from 'lucide-react';
+import React, { useEffect, useRef } from 'react';
+import { Check } from 'lucide-react';
+import { PIPELINE_STAGES } from '@/app/staff/types';
 
-export const TIMELINE_STAGES = [
-  { id: 'nuevos', stepNumber: 1, title: 'Usuarios Registrados', shortDesc: 'Revisión inicial de expediente', icon: Inbox },
-  { id: 'aplicacion_escuela', stepNumber: 2, title: 'Solicitud de Admisión', shortDesc: 'Envío y gestión con la escuela', icon: School },
-  { id: 'i20_entregado', stepNumber: 3, title: 'I-20 Recibido', shortDesc: 'Formulario oficial emitido', icon: FileCheck },
-  { id: 'ds160', stepNumber: 4, title: 'Preparación de Documentos', shortDesc: 'Llenado y revisión consular DS-160', icon: FileText },
-  { id: 'sevis', stepNumber: 5, title: 'Tasa SEVIS (I-901)', shortDesc: 'Gestión y pago oficial SEVIS', icon: CreditCard },
-  { id: 'comprar_cita', stepNumber: 6, title: 'Comprar Cita Embajada', shortDesc: 'Arancel MRV y fecha consular', icon: Ticket },
-  { id: 'simulacro_entrevista', stepNumber: 7, title: 'Simulacro Entrevista', shortDesc: 'Preparación intensiva previa', icon: MessageSquare },
-  { id: 'entrevista', stepNumber: 8, title: 'Cita en Embajada', shortDesc: 'Presentación consular presencial', icon: Calendar },
-  { id: 'aprobados', stepNumber: 9, title: 'Aprobados', shortDesc: 'Trámite finalizado con éxito', icon: CheckCircle2 },
-];
+// Mismas etapas que el panel de staff: registro y luego los servicios de la tienda en orden.
+export const TIMELINE_STAGES = PIPELINE_STAGES.map((stage, index) => ({
+  id: stage.id,
+  stepNumber: index + 1,
+  title: stage.label,
+  shortDesc: stage.desc,
+  icon: stage.icon,
+}));
 
 export const getStageIndex = (status?: string): number => {
   if (!status) return 0;
@@ -40,6 +27,18 @@ interface ProcesoTimelineProps {
 export default function ProcesoTimeline({ currentStageId = 'nuevos', applicantName }: ProcesoTimelineProps) {
   const currentStageIndex = getStageIndex(currentStageId);
   const progressPercentage = Math.round(((currentStageIndex + 1) / TIMELINE_STAGES.length) * 100);
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  // Con muchas etapas la fila se desliza: centra la etapa actual al cargar o al cambiar.
+  useEffect(() => {
+    const container = scrollRef.current;
+    const current = container?.querySelector<HTMLElement>('[data-current-stage="true"]');
+    if (!container || !current) return;
+    container.scrollTo({
+      left: current.offsetLeft - container.clientWidth / 2 + current.clientWidth / 2,
+      behavior: 'smooth',
+    });
+  }, [currentStageIndex]);
 
   return (
     <div className="bg-white border border-slate-200/90 rounded-3xl p-5 md:p-7 space-y-6 shadow-sm">
@@ -72,9 +71,9 @@ export default function ProcesoTimeline({ currentStageId = 'nuevos', applicantNa
         />
       </div>
 
-      {/* Steps Grid / Scroll Container without native scrollbars */}
-      <div className="overflow-x-auto no-scrollbar pb-2 pt-1 -mx-2 px-2">
-        <div className="grid grid-flow-col auto-cols-[minmax(140px,1fr)] md:grid-cols-9 gap-2 md:gap-3 min-w-[1080px] md:min-w-0">
+      {/* Fila deslizable de etapas */}
+      <div ref={scrollRef} className="relative overflow-x-auto pb-3 pt-1 -mx-2 px-2">
+        <div className="grid grid-flow-col auto-cols-[150px] gap-2 md:gap-3">
           {TIMELINE_STAGES.map((stage, idx) => {
             const isCompleted = idx < currentStageIndex;
             const isCurrent = idx === currentStageIndex;
@@ -84,6 +83,7 @@ export default function ProcesoTimeline({ currentStageId = 'nuevos', applicantNa
             return (
               <div
                 key={stage.id}
+                data-current-stage={isCurrent ? 'true' : undefined}
                 className={`flex flex-col items-center text-center p-3 rounded-2xl transition-all duration-200 relative ${
                   isCurrent
                     ? 'bg-blue-50/70 border-2 border-blue-600 shadow-sm'

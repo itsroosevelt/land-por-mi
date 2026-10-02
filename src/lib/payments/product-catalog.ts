@@ -133,6 +133,32 @@ export const UTAH_SCHOOLS_CATALOG: SchoolProductInfo[] = [
 ];
 
 export const PRODUCT_CATALOG: Record<string, ProductCatalogEntry> = {
+  // ── Servicios para empresas (Tienda pública /tienda) ──
+  'servicio-diseno-web': { name: 'Diseño Web', cardPriceUsd: 500, cryptoPriceUsd: 500, stripePaymentLink: null },
+  'servicio-meta-business': { name: 'Configuración de Meta Business Suite', cardPriceUsd: 100, cryptoPriceUsd: 100, stripePaymentLink: null },
+  'servicio-taxes-empresa': { name: 'Taxes de Empresa', cardPriceUsd: 500, cryptoPriceUsd: 500, stripePaymentLink: null },
+  'servicio-identidad-visual': { name: 'Identidad Visual', cardPriceUsd: 500, cryptoPriceUsd: 500, stripePaymentLink: null },
+  'servicio-redes-sociales': { name: 'Redes Sociales: Viralización y Sistema de Ventas (1 mes)', cardPriceUsd: 800, cryptoPriceUsd: 800, stripePaymentLink: null },
+  'servicio-campana-publicitaria': { name: 'Campaña Publicitaria (1 mes)', cardPriceUsd: 500, cryptoPriceUsd: 500, stripePaymentLink: null },
+  'servicio-crear-empresa-usa': { name: 'Creación de Empresa en Estados Unidos + EIN + DUNS', cardPriceUsd: 150, cryptoPriceUsd: 150, stripePaymentLink: null },
+  'servicio-impuestos-personales': { name: 'Impuestos Personales', cardPriceUsd: 70, cryptoPriceUsd: 70, stripePaymentLink: null },
+  'servicio-nomina': { name: 'Servicio de Pago de Nómina (1 mes, base)', cardPriceUsd: 250, cryptoPriceUsd: 250, stripePaymentLink: null },
+  'servicio-cuenta-bancaria': { name: "Cuenta Bancaria Empresarial en EE. UU.", cardPriceUsd: 199, cryptoPriceUsd: 199, stripePaymentLink: null },
+  'servicio-agente-registrado': { name: "Agente Registrado y Dirección Comercial", cardPriceUsd: 149, cryptoPriceUsd: 149, stripePaymentLink: null },
+  'servicio-telefono-whatsapp': { name: "Teléfono Comercial de EE. UU. + WhatsApp Business", cardPriceUsd: 49, cryptoPriceUsd: 49, stripePaymentLink: null },
+  'servicio-contabilidad': { name: "Contabilidad / Bookkeeping", cardPriceUsd: 150, cryptoPriceUsd: 150, stripePaymentLink: null },
+  'servicio-registro-marca': { name: "Registro de Marca (Trademark)", cardPriceUsd: 399, cryptoPriceUsd: 399, stripePaymentLink: null },
+  'servicio-tienda-online': { name: "Tienda en Línea (E-commerce)", cardPriceUsd: 900, cryptoPriceUsd: 900, stripePaymentLink: null },
+  'servicio-pasarela-pagos': { name: "Pasarela de Pagos", cardPriceUsd: 149, cryptoPriceUsd: 149, stripePaymentLink: null },
+  'servicio-seo-local': { name: "Google Business Profile + SEO Local", cardPriceUsd: 249, cryptoPriceUsd: 249, stripePaymentLink: null },
+  'servicio-produccion-contenido': { name: "Producción de Contenido", cardPriceUsd: 499, cryptoPriceUsd: 499, stripePaymentLink: null },
+  'servicio-email-marketing': { name: "Email Marketing y Automatización", cardPriceUsd: 249, cryptoPriceUsd: 249, stripePaymentLink: null },
+  'servicio-chatbot-ia': { name: "Chatbot / Asistente con IA", cardPriceUsd: 49.99, cryptoPriceUsd: 49.99, stripePaymentLink: null },
+  'servicio-crm': { name: "CRM y Automatización de Ventas", cardPriceUsd: 399, cryptoPriceUsd: 399, stripePaymentLink: null },
+  'servicio-plan-negocios': { name: "Plan de Negocios + Pitch Deck", cardPriceUsd: 699, cryptoPriceUsd: 699, stripePaymentLink: null },
+  'servicio-tokenizacion': { name: "Tokenización / Token Propio", cardPriceUsd: 3500, cryptoPriceUsd: 3500, stripePaymentLink: null },
+  'servicio-mentoria': { name: "Mentoría Empresarial 1 a 1", cardPriceUsd: 2000, cryptoPriceUsd: 2000, stripePaymentLink: null },
+  'servicio-mentoria-completa': { name: "Mentoría 1 a 1 + Paquete Empresarial", cardPriceUsd: 5000, cryptoPriceUsd: 5000, stripePaymentLink: null },
   'aplicacion-escuela': {
     name: 'Aplicación a la Escuela (I-20)',
     cardPriceUsd: 100,

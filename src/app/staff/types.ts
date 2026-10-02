@@ -1,32 +1,65 @@
 import React from 'react';
-import {
-  Inbox,
-  School,
-  FileCheck,
-  FileText,
-  CreditCard,
-  Ticket,
-  MessageSquare,
-  Calendar,
-  CheckCircle2,
-  XCircle,
-  BookOpen,
-  Gift,
-} from 'lucide-react';
+import { Inbox, BookOpen, Gift } from 'lucide-react';
+import { PORTAL_SERVICE_SECTIONS } from '@/lib/business-services';
 
-export type StaffTabType =
-  | 'nuevos'
-  | 'aplicacion_escuela'
-  | 'i20_entregado'
-  | 'ds160'
-  | 'sevis'
-  | 'comprar_cita'
-  | 'simulacro_entrevista'
-  | 'entrevista'
-  | 'aprobados'
-  | 'negados'
-  | 'referidos'
-  | 'recursos';
+/**
+ * Etapas del expediente: el cliente se registra y luego avanza por los servicios de la tienda,
+ * en el mismo orden en que aparecen en la tienda del portal (sección por sección, del más barato al más caro).
+ * Fuente única para el panel de staff y para "Mi proceso" del portal.
+ *
+ * Los `id` de etapa quedan guardados en Firebase: no los cambies una vez en uso.
+ * Para agregar un servicio a la tienda del portal, agrégalo también aquí con su etapa.
+ */
+const STAGE_BY_SERVICE: Record<string, { id: string; desc: string }> = {
+  'servicio-crear-empresa-usa': { id: 'registro_empresa', desc: "Estamos registrando tu empresa en Estados Unidos y gestionando su EIN y su número DUNS." },
+  'servicio-agente-registrado': { id: 'agente_registrado', desc: "Configuramos tu agente registrado y tu dirección comercial en EE. UU." },
+  'servicio-cuenta-bancaria': { id: 'cuenta_bancaria', desc: "Te acompañamos en la apertura de la cuenta bancaria de tu empresa." },
+  'servicio-telefono-whatsapp': { id: 'telefono_whatsapp', desc: "Configuramos tu número comercial de EE. UU. y WhatsApp Business." },
+  'servicio-identidad-visual': { id: 'identidad_visual', desc: "Diseñamos el logo, los colores y el manual de tu marca." },
+  'servicio-registro-marca': { id: 'registro_marca', desc: "Estamos protegiendo tu marca ante la USPTO." },
+  'servicio-meta-business': { id: 'meta_business', desc: "Configuramos tu Meta Business Suite para Facebook e Instagram." },
+  'servicio-diseno-web': { id: 'diseno_web', desc: "Estamos creando el sitio web de tu negocio." },
+  'servicio-tienda-online': { id: 'tienda_online', desc: "Estamos construyendo tu tienda en línea." },
+  'servicio-pasarela-pagos': { id: 'pasarela_pagos', desc: "Configuramos tus cobros con Stripe, PayPal y stablecoins." },
+  'servicio-seo-local': { id: 'seo_local', desc: "Tu negocio está ganando visibilidad en Google y Google Maps." },
+  'servicio-campana-publicitaria': { id: 'campana_publicitaria', desc: "Lanzamos y optimizamos tu campaña publicitaria." },
+  'servicio-redes-sociales': { id: 'redes_sociales', desc: "Gestionamos tus redes con estrategia de viralización y ventas." },
+  'servicio-produccion-contenido': { id: 'produccion_contenido', desc: "Producimos fotos, videos y reels para tus redes." },
+  'servicio-email-marketing': { id: 'email_marketing', desc: "Lanzamos tus campañas de correo y automatizaciones." },
+  'servicio-chatbot-ia': { id: 'chatbot_ia', desc: "Estamos entrenando tu asistente con inteligencia artificial." },
+  'servicio-crm': { id: 'crm', desc: "Organizamos tus clientes y automatizamos tus ventas." },
+  'servicio-contabilidad': { id: 'contabilidad', desc: "Llevamos la contabilidad mensual de tu empresa." },
+  'servicio-plan-negocios': { id: 'plan_negocios', desc: "Preparamos tu plan de negocios y tu presentación para inversionistas." },
+  'servicio-tokenizacion': { id: 'tokenizacion', desc: "Estamos creando el token de tu proyecto." },
+  'servicio-mentoria': { id: 'mentoria', desc: "Sesiones de mentoría 1 a 1 para hacer crecer tu empresa." },
+  'servicio-mentoria-completa': { id: 'mentoria_completa', desc: "Mentoría 1 a 1 y los servicios esenciales para lanzar tu empresa." },
+  'servicio-impuestos-personales': { id: 'impuestos_personales', desc: "Estamos preparando tu declaración de impuestos personal." },
+  'servicio-taxes-empresa': { id: 'taxes_empresa', desc: "Estamos preparando la declaración de impuestos de tu empresa." },
+  'servicio-nomina': { id: 'nomina', desc: "Gestionamos el pago de nómina de tu empresa." },
+};
+
+type PipelineStage = { id: string; label: string; desc: string; icon: React.ElementType; color: string };
+
+export const PIPELINE_STAGES: PipelineStage[] = [
+  { id: 'nuevos', label: 'Usuarios Registrados', desc: "Tu cuenta está creada. Pronto empezamos con tu empresa.", icon: Inbox, color: 'text-blue-600' },
+  ...PORTAL_SERVICE_SECTIONS.flatMap((section) => section.services)
+    .filter((service) => STAGE_BY_SERVICE[service.id])
+    .map((service) => ({
+      id: STAGE_BY_SERVICE[service.id].id,
+      label: service.name,
+      desc: STAGE_BY_SERVICE[service.id].desc,
+      icon: service.icon,
+      color: 'text-blue-600',
+    })),
+];
+
+export type PipelineStageId = string;
+
+/** Expedientes guardados con etapas antiguas (proceso de visa) se muestran en "Usuarios Registrados". */
+export const normalizeStage = (status?: string): PipelineStageId =>
+  PIPELINE_STAGES.some((stage) => stage.id === status) ? (status as string) : 'nuevos';
+
+export type StaffTabType = PipelineStageId | 'referidos' | 'recursos';
 
 export interface StudentCase {
   id: string;
@@ -68,47 +101,18 @@ export interface TabDefinition {
 }
 
 export const getStatusLabel = (status: StaffTabType): string => {
-  switch (status) {
-    case 'nuevos':
-      return 'Usuarios Registrados';
-    case 'aplicacion_escuela':
-      return 'Solicitud de Admisión';
-    case 'i20_entregado':
-      return 'I-20 Recibido';
-    case 'ds160':
-      return 'Preparación de Documentos';
-    case 'sevis':
-      return 'Tasa SEVIS (I-901)';
-    case 'comprar_cita':
-      return 'Listo para Comprar Cita en Embajada';
-    case 'simulacro_entrevista':
-      return 'Simulacro de Entrevista';
-    case 'entrevista':
-      return 'Cita en Embajada';
-    case 'aprobados':
-      return 'Aprobados / Completados';
-    case 'negados':
-      return 'Negados';
-    case 'referidos':
-      return 'Programa de Referidos';
-    case 'recursos':
-      return 'Recursos & Guías para el Staff';
-    default:
-      return status;
-  }
+  if (status === 'referidos') return 'Programa de Referidos';
+  if (status === 'recursos') return 'Recursos & Guías para el Staff';
+  return PIPELINE_STAGES.find((stage) => stage.id === status)?.label ?? status;
 };
 
 export const STAFF_TABS_LIST: TabDefinition[] = [
-  { id: 'nuevos', label: '1. Usuarios Registrados', icon: Inbox, color: 'text-blue-600' },
-  { id: 'aplicacion_escuela', label: '2. Solicitud de Admisión', icon: School, color: 'text-sky-600' },
-  { id: 'i20_entregado', label: '3. I-20 Recibido', icon: FileCheck, color: 'text-teal-600' },
-  { id: 'ds160', label: '4. Preparación de Documentos', icon: FileText, color: 'text-amber-600' },
-  { id: 'sevis', label: '5. Tasa SEVIS (I-901)', icon: CreditCard, color: 'text-indigo-600' },
-  { id: 'comprar_cita', label: '6. Comprar Cita Embajada', icon: Ticket, color: 'text-orange-600' },
-  { id: 'simulacro_entrevista', label: '7. Simulacro Entrevista', icon: MessageSquare, color: 'text-violet-600' },
-  { id: 'entrevista', label: '8. Cita en Embajada', icon: Calendar, color: 'text-purple-600' },
-  { id: 'aprobados', label: '9. Aprobados', icon: CheckCircle2, color: 'text-emerald-600' },
-  { id: 'negados', label: '10. Negados', icon: XCircle, color: 'text-red-600' },
+  ...PIPELINE_STAGES.map((stage, index) => ({
+    id: stage.id,
+    label: `${index + 1}. ${stage.label}`,
+    icon: stage.icon,
+    color: stage.color,
+  })),
   { id: 'referidos', label: 'Programa de Referidos', icon: Gift, color: 'text-emerald-600' },
   { id: 'recursos', label: 'Recursos & Guías Staff', icon: BookOpen, color: 'text-amber-600' },
 ];

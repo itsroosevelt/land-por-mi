@@ -14,6 +14,7 @@ import { usePortal } from "../PortalContext";
 import LockOverlay from "../components/LockOverlay";
 import FormularioConsular from "./components/FormularioConsular";
 import ProcesoTimeline from "./components/ProcesoTimeline";
+import { PIPELINE_STAGES, normalizeStage } from "@/app/staff/types";
 import ProcesoInstructions from "./components/ProcesoInstructions";
 import ProcesoDocsGrid from "./components/ProcesoDocsGrid";
 import ProcesoCardsGrid from "./components/ProcesoCardsGrid";
@@ -97,97 +98,18 @@ export default function ProcesoPage() {
   // Real-time Cloud Stage from Staff Portal (nuevos, aplicacion_escuela, i20_entregado, etc.)
   const [cloudStages, setCloudStages] = useState<{ f1?: string; b2?: string }>({});
 
+  // Etapas compartidas con el panel de staff (registro y luego servicios de la tienda en orden).
   const getStageInfo = (status?: string) => {
-    switch (status) {
-      case 'nuevos':
-        return {
-          number: '1',
-          label: '1. Procesos Nuevos / En Revisión Inicial',
-          color: 'bg-blue-50 text-blue-900 border-blue-200',
-          dot: 'bg-blue-600',
-          desc: 'El equipo consular está validando tu documentación inicial.'
-        };
-      case 'aplicacion_escuela':
-        return {
-          number: '2',
-          label: '2. Solicitud de Admisión',
-          color: 'bg-sky-50 text-sky-900 border-sky-200',
-          dot: 'bg-sky-600',
-          desc: 'Tu solicitud ha sido enviada a la institución educativa en USA.'
-        };
-      case 'i20_entregado':
-        return {
-          number: '3',
-          label: '3. Formulario I-20 Recibido',
-          color: 'bg-teal-50 text-teal-900 border-teal-200',
-          dot: 'bg-teal-600',
-          desc: '¡Tu I-20 oficial ha sido emitido con éxito por la institución!'
-        };
-      case 'ds160':
-        return {
-          number: '4',
-          label: '4. Preparación de Documentos',
-          color: 'bg-amber-50 text-amber-900 border-amber-200',
-          dot: 'bg-amber-600',
-          desc: 'El Staff está completando y revisando tu documentación oficial y DS-160 ante el Departamento de Estado.'
-        };
-      case 'sevis':
-        return {
-          number: '5',
-          label: '5. Pago de Tasa SEVIS (I-901)',
-          color: 'bg-indigo-50 text-indigo-900 border-indigo-200',
-          dot: 'bg-indigo-600',
-          desc: 'Procesando el pago y comprobante de la tasa SEVIS obligatoria.'
-        };
-      case 'comprar_cita':
-        return {
-          number: '6',
-          label: '6. Listo para Comprar Cita Embajada',
-          color: 'bg-orange-50 text-orange-900 border-orange-200',
-          dot: 'bg-orange-600',
-          desc: 'Expediente listo para programar y agendar tu cita consular.'
-        };
-      case 'simulacro_entrevista':
-        return {
-          number: '7',
-          label: '7. Simulacro de Entrevista Consular',
-          color: 'bg-violet-50 text-violet-900 border-violet-200',
-          dot: 'bg-violet-600',
-          desc: 'Sesión de preparación intensiva para tu entrevista con el oficial consular.'
-        };
-      case 'entrevista':
-        return {
-          number: '8',
-          label: '8. Cita Presencial en Embajada',
-          color: 'bg-purple-50 text-purple-900 border-purple-200',
-          dot: 'bg-purple-600',
-          desc: 'Asistencia y presentación ante la Embajada de Estados Unidos.'
-        };
-      case 'aprobados':
-        return {
-          number: '9',
-          label: '9. ¡Visa Aprobada y Trámite Exitoso!',
-          color: 'bg-emerald-50 text-emerald-900 border-emerald-200',
-          dot: 'bg-emerald-600',
-          desc: '¡Felicidades! Tu visa ha sido aprobada por el Consulado.'
-        };
-      case 'negados':
-        return {
-          number: '10',
-          label: '10. Trámite Denegado',
-          color: 'bg-red-50 text-red-900 border-red-200',
-          dot: 'bg-red-600',
-          desc: 'Consulta con el Staff de Por mí para conocer opciones de apelación o re-postulación.'
-        };
-      default:
-        return {
-          number: '1',
-          label: '1. Procesos Nuevos / En Registro',
-          color: 'bg-blue-50 text-blue-900 border-blue-200',
-          dot: 'bg-blue-600',
-          desc: 'Tu proceso está activo. Completa tus datos y documentos.'
-        };
-    }
+    const stageId = normalizeStage(status);
+    const index = PIPELINE_STAGES.findIndex((stage) => stage.id === stageId);
+    const stage = PIPELINE_STAGES[index];
+    return {
+      number: String(index + 1),
+      label: `${index + 1}. ${stage.label}`,
+      color: 'bg-blue-50 text-blue-900 border-blue-200',
+      dot: 'bg-blue-600',
+      desc: stage.desc,
+    };
   };
 
   const unlockedStudent = isUnlocked('proceso', 'estudiante');

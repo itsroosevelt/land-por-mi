@@ -10,6 +10,7 @@ import {
   StaffTabType,
   StudentCase,
   getStatusLabel,
+  normalizeStage,
 } from './types';
 import { StaffLogin } from './components/StaffLogin';
 import { StaffSidebar } from './components/StaffSidebar';
@@ -58,11 +59,15 @@ export default function StaffPortalPage() {
       const res = await fetch('/api/staff/cases');
       if (res.ok) {
         const data = await res.json();
-        if (data.cases && Array.isArray(data.cases)) {
-          setStudentCases(data.cases);
+        // Etapas antiguas (proceso de visa) se muestran en "Usuarios Registrados".
+        const cases: StudentCase[] = Array.isArray(data.cases)
+          ? data.cases.map((c: StudentCase) => ({ ...c, status: normalizeStage(c.status) }))
+          : [];
+        if (Array.isArray(data.cases)) {
+          setStudentCases(cases);
         }
         setDbConnectionError(data.error || null);
-        return data.cases && Array.isArray(data.cases) ? data.cases : [];
+        return cases;
       }
       return [];
     } catch (error) {
@@ -268,7 +273,7 @@ export default function StaffPortalPage() {
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    if (passwordInput === '@Por mí2026') {
+    if (passwordInput === '@Udreamms2026') {
       setIsAuthenticated(true);
       if (typeof window !== 'undefined') {
         sessionStorage.setItem('udreamms_staff_auth', 'true');

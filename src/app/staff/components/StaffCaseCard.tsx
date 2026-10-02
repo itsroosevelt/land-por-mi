@@ -17,7 +17,7 @@ import {
   FileText,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { StudentCase, StaffTabType, isUsableDoc } from '../types';
+import { StudentCase, StaffTabType, isUsableDoc, PIPELINE_STAGES } from '../types';
 
 interface StaffCaseCardProps {
   student: StudentCase;
@@ -264,16 +264,9 @@ export const StaffCaseCard: React.FC<StaffCaseCardProps> = ({
             className="h-9 px-3 rounded-xl border border-slate-300 bg-slate-50 hover:bg-white text-slate-900 text-xs font-semibold transition-all cursor-pointer focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 shadow-2xs w-full sm:w-auto"
             title="Cambiar estado del trámite"
           >
-            <option value="nuevos">📥 1. Usuarios Registrados</option>
-            <option value="aplicacion_escuela">🏫 2. Solicitud de Admisión</option>
-            <option value="i20_entregado">📄 3. I-20 Recibido</option>
-            <option value="ds160">📝 4. Preparación de Documentos</option>
-            <option value="sevis">💳 5. Tasa SEVIS (I-901)</option>
-            <option value="comprar_cita">🎟️ 6. Comprar Cita Embajada</option>
-            <option value="simulacro_entrevista">🎙️ 7. Simulacro Entrevista</option>
-            <option value="entrevista">📅 8. Cita en Embajada</option>
-            <option value="aprobados">✅ 9. Aprobados</option>
-            <option value="negados">❌ 10. Negados</option>
+            {PIPELINE_STAGES.map((stage, index) => (
+              <option key={stage.id} value={stage.id}>{index + 1}. {stage.label}</option>
+            ))}
           </select>
         </div>
 

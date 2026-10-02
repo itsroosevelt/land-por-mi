@@ -41,3 +41,17 @@ export function getCountrySocialLinks(countryCode: string, countryName: string):
     return link;
   });
 }
+
+/** Grupo de WhatsApp de la cápsula "Tengo preguntas antes de empezar". */
+export const DEFAULT_QUESTIONS_LINK = "https://chat.whatsapp.com/CAeBvhShHLC7VyBy8yZzVk";
+
+/** Grupo propio de cada país (código ISO en minúsculas); los demás usan DEFAULT_QUESTIONS_LINK. */
+export const COUNTRY_QUESTIONS_LINKS: Record<string, string> = {
+  ec: "https://chat.whatsapp.com/IlBVqL8K5XW76JXS23pGgt",
+  ve: "https://chat.whatsapp.com/GHn4fWAjhs7Dcd21ajhD3O",
+  co: "https://chat.whatsapp.com/DBqxD9iAT0S2xPZAMixrmk",
+};
+
+export function getCountryQuestionsLink(countryCode: string): string {
+  return COUNTRY_QUESTIONS_LINKS[countryCode] ?? DEFAULT_QUESTIONS_LINK;
+}

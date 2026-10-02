@@ -3,6 +3,8 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { onAuthStateChanged, updateProfile, signOut } from "firebase/auth";
+import { DEV_AUTH_BYPASS, DEV_USER } from "@/lib/dev-auth";
+import { readPendingCart, clearPendingCart } from "@/lib/pending-cart";
 import { auth, db } from "@/lib/firebase";
 import { doc, onSnapshot, updateDoc } from "firebase/firestore";
 import { toast } from "sonner";
@@ -336,17 +338,18 @@ export function PortalProvider({ children }: { children: ReactNode }) {
   // Deduce activeSection from pathname
   const activeSection = pathname.split('/').pop() || 'proceso';
 
-  const [user, setUser] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
+  // En modo de prueba el estado inicial ya trae al usuario, igual en servidor y navegador (evita errores de hidratación).
+  const [user, setUser] = useState<any>(DEV_AUTH_BYPASS ? DEV_USER : null);
+  const [loading, setLoading] = useState(!DEV_AUTH_BYPASS);
   const [activeTopSection, setActiveTopSection] = useState<'visa-estudiante' | 'visa-turista' | 'experto'>('visa-estudiante');
   const [activeStudentStep, setActiveStudentStep] = useState(0);
   const [activeTouristStep, setActiveTouristStep] = useState(0);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
-  const [newDisplayName, setNewDisplayName] = useState("");
+  const [newDisplayName, setNewDisplayName] = useState(DEV_AUTH_BYPASS ? DEV_USER.displayName : "");
   const [savingProfile, setSavingProfile] = useState(false);
 
-  const [dbUser, setDbUser] = useState<any>(null);
+  const [dbUser, setDbUser] = useState<any>(DEV_AUTH_BYPASS ? {} : null);
   const [cart, setCart] = useState<string[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
 
@@ -362,7 +365,7 @@ export function PortalProvider({ children }: { children: ReactNode }) {
   const [unlockCodeInput, setUnlockCodeInput] = useState("");
   const [isBypassActive, setIsBypassActive] = useState(() => {
     if (typeof window !== 'undefined') {
-      return localStorage.getItem('udreamms_bypass') === '@Por mí2026';
+      return localStorage.getItem('udreamms_bypass') === '@Udreamms2026';
     }
     return false;
   });
@@ -480,8 +483,8 @@ export function PortalProvider({ children }: { children: ReactNode }) {
   };
 
   const handleApplyUnlockCode = () => {
-    if (unlockCodeInput === '@Por mí2026') {
-      localStorage.setItem('udreamms_bypass', '@Por mí2026');
+    if (unlockCodeInput === '@Udreamms2026') {
+      localStorage.setItem('udreamms_bypass', '@Udreamms2026');
       setIsBypassActive(true);
       toast.success("Código correcto. Todos los contenidos han sido desbloqueados para pruebas.");
       setUnlockCodeInput("");
@@ -527,7 +530,7 @@ export function PortalProvider({ children }: { children: ReactNode }) {
 
   const isUnlocked = (type: 'curso' | 'libro' | 'proceso' | 'recursos', visa: 'estudiante' | 'turista') => {
     if (isBypassActive) return true;
-    if (typeof window !== 'undefined' && localStorage.getItem('udreamms_bypass') === '@Por mí2026') {
+    if (typeof window !== 'undefined' && localStorage.getItem('udreamms_bypass') === '@Udreamms2026') {
       return true;
     }
 
@@ -595,6 +598,10 @@ export function PortalProvider({ children }: { children: ReactNode }) {
   };
 
   const handleSignOut = async () => {
+    if (DEV_AUTH_BYPASS) {
+      router.push('/login');
+      return;
+    }
     try {
       await signOut(auth);
       toast.success("Sesión cerrada correctamente");
@@ -621,6 +628,9 @@ export function PortalProvider({ children }: { children: ReactNode }) {
 
   // Watch Auth State and listen to Firestore user document
   useEffect(() => {
+    // Modo de prueba (solo `npm run dev`): usuario falso, sin Firebase.
+    if (DEV_AUTH_BYPASS) return;
+
     let unsubDoc: (() => void) | undefined;
 
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -706,6 +716,16 @@ export function PortalProvider({ children }: { children: ReactNode }) {
     } catch {
       // ignore corrupt cart data
     }
+
+    // Carrito armado en la tienda pública antes de registrarse/iniciar sesión: se suma al del portal.
+    const pending = readPendingCart().filter((id) => id in PRODUCT_CATALOG);
+    if (pending.length > 0) {
+      setCart((prev) => [...prev, ...pending.filter((id) => !prev.includes(id))]);
+      clearPendingCart();
+      setIsCartOpen(true);
+      toast.success('Tu carrito de la tienda está listo para pagar');
+    }
+
     setCartHydrated(true);
   }, [user?.uid]);
 

@@ -11,7 +11,7 @@ import {
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { sendMetaEvent } from "@/lib/meta-events";
-import { LATAM_COUNTRIES, type LatamCountry } from "@/lib/latam-countries";
+import { type LatamCountry } from "@/lib/latam-countries";
 
 // --- TIPOS DE DATOS ---
 type SubItem = {
@@ -44,26 +44,6 @@ type MenuItemData = {
 
 // --- DATA DEL MENÚ ---
 const menuData: MenuItemData[] = [
-  {
-    label: "COMUNIDAD",
-    megaMenu: {
-      title: "Nuestra Comunidad",
-      description: "Únete a la red Por mí y aprovecha beneficios exclusivos.",
-      actionText: "Unirme ahora",
-      actionHref: "/contact",
-      items: [],
-      countries: LATAM_COUNTRIES,
-      socials: [
-        { label: "Facebook", href: "https://www.facebook.com/udreamms/", imgSrc: "/assets/f.jpg" },
-        { label: "Instagram", href: "https://www.instagram.com/udreamms/", imgSrc: "/assets/i.jpg" },
-        { label: "WhatsApp", href: "https://wa.me/13858882799?text=Hola%2C%20quiero%20m%C3%A1s%20informaci%C3%B3n", imgSrc: "/assets/w.jpg" },
-        { label: "X", href: "https://x.com/udreamms", imgSrc: "/assets/x.jpg" },
-        { label: "YouTube", href: "https://www.youtube.com/@udreamms", imgSrc: "/assets/y.jpg" },
-        { label: "TikTok", href: "https://www.tiktok.com/@udreamms", imgSrc: "/assets/t.jpg" },
-      ]
-    }
-  },
-  { label: "FAQS", href: "/#faqs" },
   { label: "LUXOR", href: "/luxor" },
   // TODO: definir los enlaces de Excelsior y STABLECOIN
   { label: "EXCELSIOR", href: "#" },
@@ -172,7 +152,7 @@ export default function Header() {
 
             <Link href="/login">
               <Button className="bg-white text-black hover:bg-white/90 rounded-full h-9 w-32 px-0 font-semibold text-xs transition-all duration-300 hover:scale-105 shadow-md">
-                Comenzar
+                Ingresar
               </Button>
             </Link>
           </div>
@@ -187,7 +167,7 @@ export default function Header() {
               </Link>
               <Link href="/login" className="shrink-0">
                 <Button className="bg-white text-black hover:bg-white/90 rounded-full h-8 w-24 px-0 font-semibold text-xs transition-all duration-300 active:scale-95 shadow-md">
-                  Comenzar
+                  Ingresar
                 </Button>
               </Link>
               <button
@@ -420,7 +400,7 @@ export default function Header() {
                 <div className="pt-4 space-y-3">
                   <Link href="/login?register=true" onClick={() => setIsMobileMenuOpen(false)} className="w-full block">
                     <Button className="w-full bg-white text-black hover:bg-white/90 h-12 text-sm font-semibold rounded-2xl shadow-lg active:scale-[0.98] transition-transform">
-                      Comenzar / Registrarse
+                      Registrarse
                     </Button>
                   </Link>
                   <Link href="/login?mode=login" onClick={() => setIsMobileMenuOpen(false)} className="w-full block">

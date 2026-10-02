@@ -3,6 +3,27 @@
 import Link from "next/link";
 import { sendMetaEvent } from "@/lib/meta-events";
 
+// La Gran Colombia: dos a cada lado del título
+const leftCircles = [
+    { src: "/assets/gran-colombia/panama.webp", alt: "Panamá" },
+    { src: "/assets/gran-colombia/ecuador.webp", alt: "Ecuador" },
+];
+const rightCircles = [
+    { src: "/assets/gran-colombia/colombia.webp", alt: "Colombia" },
+    { src: "/assets/gran-colombia/venezuela.webp", alt: "Venezuela" },
+];
+
+function CountryCircle({ src, alt, className = "" }: { src: string; alt: string; className?: string }) {
+    return (
+        <img
+            src={src}
+            alt={alt}
+            loading="lazy"
+            className={`rounded-full object-cover shadow-xl ${className}`}
+        />
+    );
+}
+
 const services = [
     "Creación de tu empresa",
     "Redes sociales organizadas",
@@ -16,8 +37,16 @@ const services = [
 
 export default function FreeTrainingShowcase() {
     return (
-        <section className="pt-12 md:pt-16 lg:pt-20 pb-16 md:pb-20 lg:pb-24 bg-white text-black overflow-hidden font-sans">
-            <div className="container mx-auto px-6 max-w-4xl">
+        <section id="servicios" className="relative pt-12 md:pt-16 lg:pt-20 pb-16 md:pb-20 lg:pb-24 bg-white text-black overflow-hidden font-sans">
+            {/* Pantallas grandes: dos círculos por lado, simétricos, repartidos a lo alto de la sección */}
+            <div className="hidden xl:block pointer-events-none" aria-hidden>
+                <CountryCircle {...leftCircles[0]} className="absolute left-[6%] top-[18%] w-36 h-36" />
+                <CountryCircle {...leftCircles[1]} className="absolute left-[6%] top-[58%] w-36 h-36" />
+                <CountryCircle {...rightCircles[0]} className="absolute right-[6%] top-[18%] w-36 h-36" />
+                <CountryCircle {...rightCircles[1]} className="absolute right-[6%] top-[58%] w-36 h-36" />
+            </div>
+
+            <div className="container relative mx-auto px-6 max-w-4xl">
                 <div className="flex flex-col items-center text-center">
 
                     <h2 className="font-normal tracking-tight text-black mb-6 leading-[1.1]">
@@ -33,8 +62,15 @@ export default function FreeTrainingShowcase() {
                         llegar a ser uno de los empresarios que lo construyan.
                     </p>
 
+                    {/* Celular, tablet y laptop: los cuatro en fila debajo del texto */}
+                    <div className="xl:hidden mt-8 flex justify-center gap-3 sm:gap-5">
+                        {[...leftCircles, ...rightCircles].map((c) => (
+                            <CountryCircle key={c.alt} {...c} className="w-16 h-16 sm:w-24 sm:h-24" />
+                        ))}
+                    </div>
+
                     {/* Lo que vamos a ofrecer */}
-                    <div className="mt-10 grid grid-cols-2 md:grid-cols-4 gap-3 w-full">
+                    <div className="mt-10 grid grid-cols-2 md:grid-cols-4 gap-3 w-full max-w-4xl">
                         {services.map((service) => (
                             <div
                                 key={service}
@@ -46,7 +82,7 @@ export default function FreeTrainingShowcase() {
                     </div>
 
                     {/* Dos caminos */}
-                    <div className="mt-10 grid grid-cols-1 md:grid-cols-2 gap-4 w-full text-left">
+                    <div className="mt-10 grid grid-cols-1 md:grid-cols-2 gap-4 w-full max-w-4xl text-left">
                         <div className="p-6 rounded-3xl border border-black/10">
                             <p className="text-xs font-medium uppercase tracking-[0.25em] text-gray-400 mb-2">Hazlo tú mismo</p>
                             <p className="text-gray-600 text-base leading-[1.7] font-light">

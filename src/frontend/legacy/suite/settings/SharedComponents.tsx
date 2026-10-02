@@ -45,6 +45,11 @@ export const FileUploader = ({ onUploadSuccess, initialUrl = null, initialFilena
         const file = acceptedFiles[0];
         if (!file) return;
 
+        if (!app) {
+            setError('Firebase no está configurado.');
+            return;
+        }
+
         setUploading(true);
         setError(null);
         const storage = getStorage(app);

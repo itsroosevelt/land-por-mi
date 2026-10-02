@@ -5,8 +5,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
   GraduationCap,
   BookOpen,
-  Video,
-  Download,
   Home,
   ShoppingBag,
   Menu,
@@ -20,7 +18,6 @@ import {
   Calendar,
   Gift,
   Sparkles,
-  School,
   Radio,
 } from 'lucide-react';
 import React, { useState, useEffect } from 'react';
@@ -124,9 +121,9 @@ export default function PortalSidebar({
           <div className="flex md:hidden items-center justify-between mb-3 pb-3 border-b border-slate-100 px-2">
             <Link href="/" className="flex items-center gap-2 cursor-pointer" onClick={onCloseMobile}>
               <div className="w-7 h-7 relative shrink-0 overflow-hidden rounded-full bg-black/5">
-                <img src="/icons/new-icon-udreamms.png" alt="Por mí" className="w-full h-full object-cover object-center" />
+                <img src="/icons/logo-por-mi.webp" alt="Por mí" className="w-full h-full object-cover object-center" />
               </div>
-              <span className="text-lg font-bold tracking-tight text-black">Por mí</span>
+              <span className="text-sm font-bold tracking-tight text-black leading-tight">Por Mí | The New Technological Republic</span>
             </Link>
             <button
               onClick={onCloseMobile}
@@ -149,7 +146,7 @@ export default function PortalSidebar({
               </button>
               <Link href="/" title="Por mí" className="w-7 h-7 relative cursor-pointer group overflow-hidden rounded-full bg-black/5">
                 <img
-                  src="/icons/new-icon-udreamms.png"
+                  src="/icons/logo-por-mi.webp"
                   alt="Por mí"
                   className="w-full h-full object-cover object-center group-hover:scale-110 transition-transform"
                 />
@@ -160,14 +157,12 @@ export default function PortalSidebar({
               <Link href="/" className="flex items-center gap-2 cursor-pointer group">
                 <div className="w-7 h-7 relative shrink-0 overflow-hidden rounded-full bg-black/5">
                   <img
-                    src="/icons/new-icon-udreamms.png"
+                    src="/icons/logo-por-mi.webp"
                     alt="Por mí"
                     className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform"
                   />
                 </div>
-                <span className="text-lg font-bold tracking-tight text-black">
-                  Por mí
-                </span>
+                <span className="text-sm font-bold tracking-tight text-black leading-tight">Por Mí | The New Technological Republic</span>
               </Link>
               <button
                 onClick={onToggleSidebar}
@@ -198,15 +193,6 @@ export default function PortalSidebar({
         </Link>
 
         <Link
-          href="/portal/curso"
-          title={isSidebarCollapsed ? 'Hazlo por ti mismo' : undefined}
-          className={linkClass(activeSection === 'curso')}
-        >
-          <Video className={`w-4 h-4 shrink-0 ${activeSection === 'curso' ? 'text-white' : 'text-black'}`} />
-          {!isSidebarCollapsed && <span>Hazlo por ti mismo</span>}
-        </Link>
-
-        <Link
           href="/portal/tienda"
           title={isSidebarCollapsed ? 'Tienda' : undefined}
           className={linkClass(
@@ -221,30 +207,12 @@ export default function PortalSidebar({
         </Link>
 
         <Link
-          href="/portal/instituciones"
-          title={isSidebarCollapsed ? 'Instituciones aliadas' : undefined}
-          className={linkClass(activeSection === 'instituciones')}
-        >
-          <School className={`w-4 h-4 shrink-0 ${activeSection === 'instituciones' ? 'text-white' : 'text-black'}`} />
-          {!isSidebarCollapsed && <span>Instituciones aliadas</span>}
-        </Link>
-
-        <Link
           href="/portal/streaming"
           title={isSidebarCollapsed ? 'Adaptación streaming' : undefined}
           className={linkClass(activeSection === 'streaming')}
         >
           <Radio className={`w-4 h-4 shrink-0 ${activeSection === 'streaming' ? 'text-white' : 'text-black'}`} />
           {!isSidebarCollapsed && <span>Adaptación streaming</span>}
-        </Link>
-
-        <Link
-          href="/portal/recursos"
-          title={isSidebarCollapsed ? 'Recursos adicionales' : undefined}
-          className={linkClass(activeSection === 'recursos')}
-        >
-          <Download className={`w-4 h-4 shrink-0 ${activeSection === 'recursos' ? 'text-white' : 'text-black'}`} />
-          {!isSidebarCollapsed && <span>Recursos adicionales</span>}
         </Link>
 
         <Link
@@ -257,7 +225,7 @@ export default function PortalSidebar({
         </Link>
 
         <a
-          href="https://wa.me/13854162224?text=Hola%2C%20necesito%20soporte%20con%20mi%20portal%20Por mí"
+          href="https://wa.me/13858653535?text=Hola%2C%20necesito%20soporte%20con%20mi%20portal%20Por%20m%C3%AD"
           target="_blank"
           rel="noopener noreferrer"
           title={isSidebarCollapsed ? 'Soporte por WhatsApp' : undefined}
@@ -268,7 +236,7 @@ export default function PortalSidebar({
         </a>
 
         <a
-          href="https://calendar.app.google/uAhHFp3YC2T1PbGU6"
+          href="https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ321D-GJiTUMLFdOCK2aQ8dcpy46biUUL2fx_KKD-jFpgq9_SdZY0-Dwd2pNqGMHWPRTfnIyGYu"
           target="_blank"
           rel="noopener noreferrer"
           title={isSidebarCollapsed ? 'Agendar Videollamada' : undefined}
@@ -279,7 +247,7 @@ export default function PortalSidebar({
         </a>
 
         <a
-          href="https://www.udreamms.com"
+          href="https://itspormi.com"
           target="_blank"
           rel="noopener noreferrer"
           title={isSidebarCollapsed ? 'Sitio web' : undefined}

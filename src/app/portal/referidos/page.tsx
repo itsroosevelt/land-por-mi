@@ -82,7 +82,7 @@ export default function ReferidosPage() {
       `Hola equipo de Por mí, soy ${user?.displayName || 'cliente registrado'} (${user?.email || 'N/A'}).\n` +
       `Quiero notificar que recomendé a una persona para su trámite de visa.`
     );
-    window.open(`https://wa.me/13854162224?text=${text}`, '_blank');
+    window.open(`https://wa.me/13858653535?text=${text}`, '_blank');
   };
 
   const handleSubmitReferral = async (e: React.FormEvent) => {
@@ -128,7 +128,7 @@ export default function ReferidosPage() {
       );
 
       // Open WhatsApp notification
-      window.open(`https://wa.me/13854162224?text=${message}`, '_blank');
+      window.open(`https://wa.me/13858653535?text=${message}`, '_blank');
 
       toast.success('¡Gracias por tu referido! Ha sido registrado correctamente en el sistema.');
       

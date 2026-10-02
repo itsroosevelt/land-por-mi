@@ -24,7 +24,7 @@ export default function SoportePage() {
           </div>
 
           <a 
-            href="https://wa.me/13854162224?text=Hola%2C%20necesito%20soporte%20con%20mi%20portal%20Por mí" 
+            href="https://wa.me/13858653535?text=Hola%2C%20necesito%20soporte%20con%20mi%20portal%20Por%20m%C3%AD" 
             target="_blank" 
             rel="noopener noreferrer"
             className="w-full inline-flex h-12 rounded-full bg-blue-600 hover:bg-blue-700 text-white hover:scale-105 active:scale-95 transition-all duration-300 shadow-lg shadow-blue-500/20 text-xs font-semibold tracking-widest uppercase items-center justify-center gap-2"
@@ -45,7 +45,7 @@ export default function SoportePage() {
           </div>
 
           <a 
-            href="https://calendar.app.google/uAhHFp3YC2T1PbGU6"
+            href="https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ321D-GJiTUMLFdOCK2aQ8dcpy46biUUL2fx_KKD-jFpgq9_SdZY0-Dwd2pNqGMHWPRTfnIyGYu"
             target="_blank"
             rel="noopener noreferrer"
             className="w-full inline-flex h-12 rounded-full bg-blue-600 hover:bg-blue-700 text-white hover:scale-105 active:scale-95 transition-all duration-300 shadow-lg shadow-blue-500/20 text-xs font-semibold tracking-widest uppercase items-center justify-center gap-2"

@@ -18,7 +18,7 @@ import {
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ALL_COUNTRY_CODES } from '@/lib/countryCodes';
-import { StudentCase, getStatusLabel, StaffTabType } from '../../types';
+import { StudentCase, getStatusLabel, StaffTabType, PIPELINE_STAGES } from '../../types';
 
 interface DossierHeaderProps {
   selectedCaseModal: StudentCase;
@@ -342,16 +342,9 @@ export const DossierHeader: React.FC<DossierHeaderProps> = ({
                   className="bg-transparent text-slate-800 text-xs font-medium cursor-pointer focus:outline-none pr-1"
                   title="Cambiar estado del trámite"
                 >
-                  <option value="nuevos">📥 1. Usuarios Registrados</option>
-                  <option value="aplicacion_escuela">🏫 2. Solicitud de Admisión</option>
-                  <option value="i20_entregado">📄 3. I-20 Recibido</option>
-                  <option value="ds160">📝 4. Preparación de Documentos</option>
-                  <option value="sevis">💳 5. Tasa SEVIS (I-901)</option>
-                  <option value="comprar_cita">🎟️ 6. Comprar Cita Embajada</option>
-                  <option value="simulacro_entrevista">🎙️ 7. Simulacro Entrevista</option>
-                  <option value="entrevista">📅 8. Cita en Embajada</option>
-                  <option value="aprobados">✅ 9. Aprobados</option>
-                  <option value="negados">❌ 10. Negados</option>
+                  {PIPELINE_STAGES.map((stage, index) => (
+                    <option key={stage.id} value={stage.id}>{index + 1}. {stage.label}</option>
+                  ))}
                 </select>
               </div>
 

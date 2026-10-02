@@ -78,7 +78,7 @@ export default function AdaptacionStreamingPage() {
         </div>
 
         <a
-          href="https://wa.me/13854162224?text=Hola%2C%20quisiera%20agendar%20o%20hacer%20una%20pregunta%20para%20la%20sesion%20de%20Adaptacion%20Streaming"
+          href="https://wa.me/13858653535?text=Hola%2C%20quisiera%20agendar%20o%20hacer%20una%20pregunta%20para%20la%20sesion%20de%20Adaptacion%20Streaming"
           target="_blank"
           rel="noopener noreferrer"
         >

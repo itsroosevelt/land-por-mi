@@ -158,7 +158,7 @@ export default function PortalLiveChat({
         >
           <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
           <span className="text-xs font-bold text-slate-700 group-hover:text-blue-600 transition-colors">
-            ¿Dudas sobre tu visa? Chatea con Sarah
+            Hola, ¿cómo estás? Soy Sarah. Si tienes alguna duda, estoy aquí para ti
           </span>
           <div className="w-5 h-5 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center">
             <MessageCircle className="w-3 h-3" />
@@ -232,7 +232,7 @@ export default function PortalLiveChat({
                 <ShieldCheck className="w-4 h-4 text-blue-400" />
               </div>
               <p className="text-[11px] text-slate-300 font-medium">
-                Asesora consular Por mí
+                Asesora de Por Mí
               </p>
             </div>
           </div>
@@ -252,10 +252,10 @@ export default function PortalLiveChat({
           <div className="p-3.5 rounded-2xl bg-blue-50/80 border border-blue-100 text-xs text-blue-950 space-y-1 shadow-2xs">
             <div className="flex items-center gap-1.5 font-bold text-blue-800">
               <Sparkles className="w-3.5 h-3.5 text-blue-600" />
-              <span>Canal Directo con Sarah Davis</span>
+              <span>Hola, soy Sarah Davis</span>
             </div>
             <p className="text-slate-600 text-[11px] leading-relaxed">
-              Escribe tus preguntas sobre tu formulario consular, documentos o citas. Sarah te responderá directamente aquí.
+              Escríbeme tus preguntas sobre la plataforma, nuestros servicios para tu empresa, la tienda o tus pagos. Yo te responderé directamente aquí.
             </p>
           </div>
 
@@ -361,7 +361,7 @@ export default function PortalLiveChat({
                   <h3 className="text-base font-bold text-white tracking-tight">Sarah Davis</h3>
                   <ShieldCheck className="w-4 h-4 text-blue-400" />
                 </div>
-                <p className="text-xs text-slate-300 font-medium">Asesora Consular Por mí</p>
+                <p className="text-xs text-slate-300 font-medium">Asesora de Por Mí</p>
                 
                 <div className="pt-1">
                   <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 text-[11px] font-semibold">

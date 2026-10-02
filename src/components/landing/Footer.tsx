@@ -3,132 +3,136 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { sendMetaEvent } from "@/lib/meta-events";
+import { DEFAULT_QUESTIONS_LINK, getCountryQuestionsLink } from "@/lib/country-socials";
+
+// Por ahora todas las redes llevan al grupo general de WhatsApp de la comunidad.
+const COMMUNITY_LINK = DEFAULT_QUESTIONS_LINK;
+
+const socials = [
+  { label: "Facebook", imgSrc: "/assets/f.jpg" },
+  { label: "Instagram", imgSrc: "/assets/i.jpg" },
+  { label: "WhatsApp", imgSrc: "/assets/w.jpg" },
+  { label: "X", imgSrc: "/assets/x.jpg" },
+  { label: "YouTube", imgSrc: "/assets/y.jpg" },
+  { label: "TikTok", imgSrc: "/assets/t.jpg" },
+];
+
+const granColombia = [
+  { name: "Ecuador", code: "ec" },
+  { name: "Colombia", code: "co" },
+  { name: "Venezuela", code: "ve" },
+  { name: "Panamá", code: "pa" },
+];
+
+const linkClass = "hover:text-white transition-colors";
 
 const Footer = () => {
   return (
     <footer className="bg-black text-white pt-24 pb-8">
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-5 gap-12">
-          {/* Left Section */}
+          {/* Marca */}
           <div className="md:col-span-1">
-            <p className="text-white text-2xl font-medium tracking-tight">Haciendo que Por mí sea útil para todos</p>
+            <p className="text-white text-2xl font-medium tracking-tight">
+              Conectamos personas. Creamos oportunidades. Construimos prosperidad.
+            </p>
             <div className="mt-8">
               <div className="w-16 h-16 overflow-hidden rounded-full bg-black mb-4">
-                <img src="/icons/logo-por-mi.webp" loading="lazy" alt="Por mí Logo" className="w-full h-full object-cover object-center" />
+                <img src="/icons/logo-por-mi.webp" loading="lazy" alt="Por Mí | The New Technological Republic" className="w-full h-full object-cover object-center" />
               </div>
               <p className="text-gray-500 text-sm">
-                Tu puente seguro a los Estados Unidos.
+                Por Mí | The New Technological Republic.
                 <br />
-                Visa, Estudios, Vida.
+                Una nueva generación. Un modelo republicano.
+                <br />
+                Una alianza para la prosperidad de Occidente.
               </p>
             </div>
           </div>
 
-          {/* Programas Educativos / Visas */}
+          {/* La República + Legal */}
           <div className="mb-24">
-            <h4 className="font-medium mb-3 text-sm text-slate-200">Visas y Programas</h4>
+            <h4 className="font-medium mb-3 text-sm text-slate-200">The New Technological Republic</h4>
             <ul className="text-gray-400 space-y-2 text-sm mb-4">
-              <li>
-                <Link href="/visas/student" className="hover:text-white transition-colors">Visa de Estudiante (F-1)</Link>
-              </li>
-              <li>
-                <Link href="/visas/tourist" className="hover:text-white transition-colors">Visa de Turismo (B1/B2)</Link>
-              </li>
-              <li>
-                <Link href="/courses" className="hover:text-white transition-colors">Cursos de Inglés</Link>
-              </li>
+              <li><Link href="/#vision" className={linkClass}>La Gran Colombia resurgirá</Link></li>
+              <li><Link href="/#modelo" className={linkClass}>Modelo Republicano</Link></li>
+              <li><Link href="/#america" className={linkClass}>Toda América somos Uno</Link></li>
+              <li><Link href="/#faqs" className={linkClass}>Preguntas Frecuentes</Link></li>
             </ul>
 
-            <h4 className="font-medium mt-16 mb-3 text-sm text-slate-200">Confianza y Legal</h4>
+            <h4 className="font-medium mt-16 mb-3 text-sm text-slate-200">Legal</h4>
             <ul className="text-gray-400 space-y-2 text-sm">
-              <li>
-                <Link href="/about" className="hover:text-white transition-colors">Transparencia en Visas</Link>
-              </li>
-              <li>
-                <Link href="/privacidad" className="hover:text-white transition-colors">Política de Privacidad</Link>
-              </li>
-              <li>
-                <Link href="/terminos" className="hover:text-white transition-colors">Términos y Condiciones</Link>
-              </li>
-              <li>
-                <Link href="/#faqs" className="hover:text-white transition-colors">Soporte al Estudiante</Link>
-              </li>
+              <li><Link href="/privacidad" className={linkClass}>Política de Privacidad</Link></li>
+              <li><Link href="/terminos" className={linkClass}>Términos y Condiciones</Link></li>
             </ul>
           </div>
 
-          {/* Tu Vida en USA - CONECTADO A SERVICIOS */}
+          {/* Servicios + Contacto */}
           <div className="mb-24">
-            <h4 className="font-medium mb-3 text-sm text-slate-200">Ecosistema de Llegada</h4>
+            <h4 className="font-medium mb-3 text-sm text-slate-200">Servicios para tu Empresa</h4>
             <ul className="text-gray-400 space-y-2 text-sm">
-              <li>
-                <Link href="/services" className="hover:text-white transition-colors">Vivienda Segura</Link>
-              </li>
-              <li>
-                <Link href="/services" className="hover:text-white transition-colors">Apertura de Cuenta Bancaria</Link>
-              </li>
-              <li>
-                <Link href="/services" className="hover:text-white transition-colors">Sim Card y Móvil</Link>
-              </li>
-              <li>
-                <Link href="/services" className="hover:text-white transition-colors">Transporte y Aeropuerto</Link>
-              </li>
+              <li><Link href="/#servicios" className={linkClass}>Creación de tu empresa</Link></li>
+              <li><Link href="/#servicios" className={linkClass}>Redes sociales y publicidad</Link></li>
+              <li><Link href="/#servicios" className={linkClass}>Sitio web, logo y marca</Link></li>
+              <li><Link href="/#servicios" className={linkClass}>Logística</Link></li>
+              <li><Link href="/tienda" className={linkClass}>Tienda</Link></li>
             </ul>
 
-            {/* Sobre Por mí */}
-            <h4 className="font-medium mt-16 mb-3 text-sm text-slate-200">Sobre Por mí</h4>
+            <h4 className="font-medium mt-16 mb-3 text-sm text-slate-200">Contacto</h4>
             <ul className="text-gray-400 space-y-2 text-sm mt-auto">
-              <li>
-                <Link href="/about" className="hover:text-white transition-colors">Nuestra Historia</Link>
-              </li>
-              <li>
-                <Link href="/referrals" className="hover:text-white transition-colors">Programa de Afiliados</Link>
-              </li>
-              <li>
-                <Link href="/contact" className="hover:text-white transition-colors">¡Estoy listo para empezar!</Link>
-              </li>
-              <li className="pt-4 flex flex-col gap-1.5 text-xs">
-                <span className="text-gray-400 block">
-                  📞 Fijo empresa:{' '}
-                  <a href="https://wa.me/16507845209" target="_blank" rel="noopener noreferrer" onClick={() => sendMetaEvent('Lead', { source: 'Footer Fijo' })} className="text-blue-400 hover:underline">
-                    +1 650 784 5209
+              <li className="flex flex-col gap-1.5 text-xs">
+                <span className="block">
+                  ✉️{' '}
+                  <a
+                    href="mailto:roosevelt@luxorintelligence.com"
+                    onClick={() => sendMetaEvent('Contact', { source: 'Footer Email' })}
+                    className="text-blue-400 hover:underline break-all"
+                  >
+                    roosevelt@luxorintelligence.com
                   </a>
                 </span>
-                <span className="text-gray-400 block">
-                  📞 Asesor humano:{' '}
-                  <a href="https://wa.me/13854162224" target="_blank" rel="noopener noreferrer" onClick={() => sendMetaEvent('Lead', { source: 'Footer Asesor' })} className="text-blue-400 hover:underline">
-                    +1 385 416 2224
+                <span className="block">
+                  📞{' '}
+                  <a
+                    href="https://wa.me/13859779375"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={() => sendMetaEvent('Contact', { source: 'Footer WhatsApp' })}
+                    className="text-blue-400 hover:underline"
+                  >
+                    +1 385 977 9375
                   </a>
-                </span>
-                <span className="text-gray-400 block">
-                  🤖 Bot información:{' '}
-                  <a href="https://wa.me/13858882799" target="_blank" rel="noopener noreferrer" onClick={() => sendMetaEvent('Lead', { source: 'Footer Bot' })} className="text-blue-400 hover:underline">
-                    +1 385 888 2799
-                  </a>
-                </span>
-                <span className="text-gray-400 block mt-2">
-                  ✉️ <a href="https://mail.google.com/mail/?view=cm&fs=1&to=services@udreamms.com" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:underline">services@udreamms.com</a>
                 </span>
                 <span className="text-gray-400 block">📍 Salt Lake City, Utah</span>
               </li>
             </ul>
           </div>
 
-          {/* Oportunidades y Destinos */}
+          {/* La Nueva Gran Colombia + Plataforma */}
           <div>
-            <h4 className="font-medium mb-3 text-sm text-slate-200">Comunidad</h4>
+            <h4 className="font-medium mb-3 text-sm text-slate-200">La Nueva Gran Colombia</h4>
             <ul className="text-gray-400 space-y-2 text-sm">
-              <li>
-                <Link href="/destinos" className="hover:text-white transition-colors">Destinos Top en USA</Link>
-              </li>
-              <li>
-                <Link href="/partnerships" className="hover:text-white transition-colors">Universidades Aliadas</Link>
-              </li>
-              <li>
-                <Link href="/#reviews" className="hover:text-white transition-colors">Testimonios Reales</Link>
-              </li>
-              <li>
-                <Link href="/portal" className="hover:text-white transition-colors font-medium text-white">Portal de Cliente</Link>
-              </li>
+              {granColombia.map((country) => (
+                <li key={country.code}>
+                  <a
+                    href={getCountryQuestionsLink(country.code)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={() => sendMetaEvent('Lead', { source: 'Footer Country Group', country: country.name })}
+                    className={`${linkClass} inline-flex items-center gap-2`}
+                  >
+                    <img src={`/flags/${country.code}.svg`} alt="" loading="lazy" className="w-5 h-[13px] object-cover" />
+                    Comunidad {country.name}
+                  </a>
+                </li>
+              ))}
+              <li><Link href="/#planes" className={linkClass}>Todos los países</Link></li>
+            </ul>
+
+            <h4 className="font-medium mt-16 mb-3 text-sm text-slate-200">Plataforma Por Mí</h4>
+            <ul className="text-gray-400 space-y-2 text-sm">
+              <li><Link href="/login?register=true" className={`${linkClass} font-medium text-white`}>Ingresa a la plataforma</Link></li>
+              <li><Link href="/portal/streaming" className={linkClass}>Por Mí Streaming</Link></li>
             </ul>
           </div>
 
@@ -136,28 +140,33 @@ const Footer = () => {
           <div>
             <h4 className="font-medium mb-3 text-sm text-slate-200">Síguenos</h4>
             <div className="flex flex-wrap gap-4">
-              <a href="https://www.facebook.com/udreamms/" target="_blank" rel="noopener noreferrer" className="hover:opacity-80 transition-opacity"><Image src="/assets/f.jpg" alt="Facebook" width={32} height={32} style={{ height: 'auto' }} className="rounded-md" /></a>
-              <a href="https://www.instagram.com/_udreamms/" target="_blank" rel="noopener noreferrer" className="hover:opacity-80 transition-opacity"><Image src="/assets/i.jpg" alt="Instagram" width={32} height={32} style={{ height: 'auto' }} className="rounded-md" /></a>
-              <a href="https://wa.me/13858882799?text=Hola%2C%20quiero%20m%C3%A1s%20informaci%C3%B3n" target="_blank" rel="noopener noreferrer" onClick={() => sendMetaEvent('Lead', { source: 'Footer Social Icon' })} className="hover:opacity-80 transition-opacity"><Image src="/assets/w.jpg" alt="Whatsapp" width={32} height={32} style={{ height: 'auto' }} className="rounded-md" /></a>
-              <a href="https://x.com/udreamms" target="_blank" rel="noopener noreferrer" className="hover:opacity-80 transition-opacity"><Image src="/assets/x.jpg" alt="X" width={32} height={32} style={{ height: 'auto' }} className="rounded-md" /></a>
-              <a href="https://www.youtube.com/@udreamms" target="_blank" rel="noopener noreferrer" className="hover:opacity-80 transition-opacity"><Image src="/assets/y.jpg" alt="YouTube" width={32} height={32} style={{ height: 'auto' }} className="rounded-md" /></a>
-              <a href="https://www.tiktok.com/@udreamms" target="_blank" rel="noopener noreferrer" className="hover:opacity-80 transition-opacity"><Image src="/assets/t.jpg" alt="TikTok" width={32} height={32} style={{ height: 'auto' }} className="rounded-md" /></a>
+              {socials.map((social) => (
+                <a
+                  key={social.label}
+                  href={COMMUNITY_LINK}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => sendMetaEvent('Lead', { source: 'Footer Social Icon', network: social.label })}
+                  className="hover:opacity-80 transition-opacity"
+                >
+                  <Image src={social.imgSrc} alt={social.label} width={32} height={32} style={{ height: 'auto' }} className="rounded-md" />
+                </a>
+              ))}
             </div>
           </div>
         </div>
 
         {/* Footer Bottom */}
         <div className="items-center flex mt-20 flex-col md:flex-row gap-4">
-          <Link href="/" className="text-white text-lg font-medium hover:text-white transition-colors tracking-tight">Por mí</Link>
+          <Link href="/" className="text-white text-lg font-semibold hover:text-white transition-colors tracking-tighter shrink-0">POR MÍ</Link>
           <div className="flex justify-center space-x-6 w-full flex-wrap">
-            <Link href="/about" className="text-gray-400 hover:text-white transition-colors text-xs">Acerca de Por mí</Link>
-            <Link href="/visas/student" className="text-gray-400 hover:text-white transition-colors text-xs">Visa Estudiante</Link>
-            <Link href="/visas/tourist" className="text-gray-400 hover:text-white transition-colors text-xs">Visa Turismo</Link>
+            <Link href="/#vision" className="text-gray-400 hover:text-white transition-colors text-xs">The New Technological Republic</Link>
+            <Link href="/tienda" className="text-gray-400 hover:text-white transition-colors text-xs">Tienda</Link>
             <Link href="/privacidad" className="text-gray-400 hover:text-white transition-colors text-xs">Privacidad</Link>
             <Link href="/terminos" className="text-gray-400 hover:text-white transition-colors text-xs">Términos</Link>
           </div>
           <div className="text-gray-600 text-[10px] w-full text-center md:text-right">
-            © {new Date().getFullYear()} Por mí LLC. All rights reserved.
+            © {new Date().getFullYear()} Luxor Intelligence LLC. All rights reserved.
           </div>
         </div>
       </div>

@@ -1,560 +1,228 @@
 "use client";
 
-import { useCallback, useMemo, useState, useEffect, Suspense } from "react";
-import { useSearchParams } from "next/navigation";
+import { Suspense, useEffect, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import {
+  Check, ChevronDown, ChevronUp, ShoppingCart, X, ArrowRight, ShieldCheck, CheckCircle2,
+} from "lucide-react";
 import Header from "@/components/landing/Header";
 import Footer from "@/components/landing/Footer";
-import {
-  normalizeStudentPlanParam,
-  normalizeTouristPlanParam,
-  type StudentVisaPlanId,
-  type TouristVisaPlanId,
-} from "@/components/payments/visa-plan-types";
-import {
-  CheckCircle2, CreditCard, Wallet, Plane, Star, Trophy,
-  ArrowRight, ShieldCheck, MessageCircle, Mail,
-  Smartphone, Monitor, Lock, Zap, GraduationCap
-} from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
-import {
-  instructionsPageClass as s,
-  StepHeader,
-  InstructionGroup,
-  StepItem,
-  LimitedTimeTag,
-} from "@/components/payments/instructions-payment-ui";
+import { sendMetaEvent } from "@/lib/meta-events";
+import { calculateStripeProcessingFee } from "@/lib/payments/product-catalog";
+import { PORTAL_SERVICES, PORTAL_SERVICE_SECTIONS, type BusinessService } from "@/lib/business-services";
+import { readPendingCart, savePendingCart } from "@/lib/pending-cart";
 
-// Tienda: une los planes de /instructions-payment-student y /instructions-payment-tourist.
-type PlanId = StudentVisaPlanId | TouristVisaPlanId;
-type PaymentMethod = 'crypto' | 'card' | null;
+const formatUsd = (n: number) => `$${n.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 
-const PLANS_WITH_CRYPTO: PlanId[] = ['esencial', 'pro', 'basico'];
-
-const planDetails: Record<PlanId, {
-  card: string; crypto: string | null;
-  title: string; subtitle: string;
-  icon: typeof Plane; stripeLink: string;
-}> = {
-  esencial: {
-    card: "$380", crypto: "$299.99",
-    title: "Plan Esencial", subtitle: "Visa estudiantil básica",
-    icon: Plane,
-    stripeLink: "https://buy.stripe.com/6oU14n84zcnoalQci7enS0F"
-  },
-  pro: {
-    card: "$550", crypto: "$449.99",
-    title: "Plan Pro", subtitle: "Visa con acompañamiento",
-    icon: Star,
-    stripeLink: "https://buy.stripe.com/fZuaEX1GbcnoeC64PFenS0G"
-  },
-  elite: {
-    card: "$3,250", crypto: null,
-    title: "Plan Elite", subtitle: "Gestión completa premium",
-    icon: Trophy,
-    stripeLink: "https://buy.stripe.com/9B67sL3OjafgalQ2HxenS0H"
-  },
-  allinclusive: {
-    card: "$13,000", crypto: null,
-    title: "Plan All-Inclusive", subtitle: "Experiencia total garantizada",
-    icon: GraduationCap,
-    stripeLink: "https://buy.stripe.com/bJeeVddoTafgeC695VenS0I"
-  },
-  basico: {
-    card: "$380", crypto: "$299.99",
-    title: "Plan Básico", subtitle: "Turismo esencial",
-    icon: Plane,
-    stripeLink: "https://buy.stripe.com/6oU14n84zcnoalQci7enS0F"
-  },
-  premium: {
-    card: "$3,250", crypto: null,
-    title: "Plan Premium", subtitle: "Turismo completo",
-    icon: Star,
-    stripeLink: "https://buy.stripe.com/9B67sL3OjafgalQ2HxenS0H"
-  },
-  vip: {
-    card: "$13,000", crypto: null,
-    title: "Experiencia VIP", subtitle: "Turismo de lujo",
-    icon: Trophy,
-    stripeLink: "https://buy.stripe.com/bJeeVddoTafgeC695VenS0I"
-  }
-};
-
-const planGroups: { label: string; plans: PlanId[]; gridClass: string }[] = [
-  { label: "Visa de Estudiante", plans: ['esencial', 'pro', 'elite', 'allinclusive'], gridClass: "md:grid-cols-2 lg:grid-cols-4" },
-  { label: "Visa de Turismo", plans: ['basico', 'premium', 'vip'], gridClass: "md:grid-cols-3" },
-];
-
-function createCheckoutSessionId() {
-  if (typeof crypto !== 'undefined' && crypto.randomUUID) {
-    return crypto.randomUUID();
-  }
-  return `session_${Date.now()}_${Math.random().toString(36).slice(2)}`;
-}
-
-const fadeInUp: any = {
-  hidden: { opacity: 0, y: 24 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
-};
-
-const stagger = {
-  visible: { transition: { staggerChildren: 0.08 } }
-};
-
-function InstructionsContent() {
+function TiendaContent() {
   const searchParams = useSearchParams();
-  const [selectedPlan, setSelectedPlan] = useState<PlanId | null>(null);
-  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>(null);
-  const [checkoutSessionId, setCheckoutSessionId] = useState<string | null>(null);
-  const [paymentApproved, setPaymentApproved] = useState(false);
-  const [approvedOrder, setApprovedOrder] = useState<{ requestId: string; email: string } | null>(null);
+  const router = useRouter();
+  const stripeStatus = searchParams.get("stripe");
+  const [cart, setCart] = useState<string[]>([]);
+  const [openDetails, setOpenDetails] = useState<Record<string, boolean>>({});
+  const [checkoutLoading, setCheckoutLoading] = useState(false);
 
-  const planParam = searchParams.get("plan") || "";
+  const toggleCart = (service: BusinessService) => {
+    setCart((current) => {
+      if (current.includes(service.id)) return current.filter((id) => id !== service.id);
+      sendMetaEvent("AddToCart", { source: "Tienda", item_id: service.id, value: service.price, currency: "USD" });
+      return [...current, service.id];
+    });
+  };
 
+  const cartServices = PORTAL_SERVICES.filter((s) => cart.includes(s.id));
+  const subtotal = cartServices.reduce((sum, s) => sum + s.price, 0);
+  const processingFee = calculateStripeProcessingFee(subtotal);
+
+  // El carrito se guarda en el navegador: si la persona se va y vuelve, sigue ahí,
+  // y al registrarse o iniciar sesión el portal lo pasa a su carrito.
+  const [cartLoaded, setCartLoaded] = useState(false);
   useEffect(() => {
-    const planVal = normalizeStudentPlanParam(planParam) ?? normalizeTouristPlanParam(planParam);
-    if (planVal) {
-      setSelectedPlan(planVal);
-      setPaymentMethod(null);
-    }
-  }, [planParam]);
-
-  const ensureCheckoutSession = useCallback(() => {
-    setCheckoutSessionId((current) => current ?? createCheckoutSessionId());
+    const valid = new Set(PORTAL_SERVICES.map((s) => s.id));
+    setCart(readPendingCart().filter((id) => valid.has(id)));
+    setCartLoaded(true);
   }, []);
+  useEffect(() => {
+    if (cartLoaded) savePendingCart(cart);
+  }, [cart, cartLoaded]);
 
-  const handlePlanSelect = (plan: PlanId) => {
-    setSelectedPlan(plan);
-    setPaymentMethod(null);
-    setCheckoutSessionId(null);
-    setPaymentApproved(false);
-    setApprovedOrder(null);
+  // Para pagar siempre hay que registrarse o iniciar sesión (objetivo principal: capturar el registro).
+  const handleCheckout = () => {
+    if (cart.length === 0) return;
+    setCheckoutLoading(true);
+    savePendingCart(cart);
+    sendMetaEvent("InitiateCheckout", { source: "Tienda", item_ids: cart.join(","), value: subtotal, currency: "USD" });
+    router.push("/login?register=true");
   };
-
-  const handleCryptoPaymentSuccess = useCallback((details: { requestId: string; email: string }) => {
-    setPaymentApproved(true);
-    setApprovedOrder(details);
-  }, []);
-
-  const [stripeLoading, setStripeLoading] = useState(false);
-
-  const handleStartStripeCheckout = async () => {
-    if (!selectedPlan) return;
-    setStripeLoading(true);
-    const planIdToItemId: Record<PlanId, string> = {
-      esencial: 'plan-esencial',
-      pro: 'plan-pro',
-      elite: 'plan-elite',
-      allinclusive: 'plan-allinclusive',
-      basico: 'plan-turista-basico',
-      premium: 'plan-turista-premium',
-      vip: 'plan-turista-vip',
-    };
-    const itemId = planIdToItemId[selectedPlan];
-    try {
-      const origin = window.location.origin;
-      const successUrl = `${origin}/portal?stripe=success&session_id={CHECKOUT_SESSION_ID}`;
-      const cancelUrl = `${origin}/tienda?plan=${selectedPlan}&stripe=cancelled`;
-      const response = await fetch('/api/payments/stripe/create-session', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          itemIds: [itemId],
-          email: '',
-          successUrl,
-          cancelUrl,
-        }),
-      });
-      const data = await response.json();
-      if (data.url) {
-        window.location.href = data.url;
-      } else {
-        setStripeLoading(false);
-      }
-    } catch {
-      setStripeLoading(false);
-    }
-  };
-
-  const checkoutPlanId = useMemo(() => selectedPlan, [selectedPlan]);
-  const supportsCrypto = selectedPlan ? PLANS_WITH_CRYPTO.includes(selectedPlan) : false;
-  const activePlan = selectedPlan ? planDetails[selectedPlan] : null;
 
   return (
-    <div className={s.root}>
+    <div className="min-h-screen bg-black font-sans">
       <Header />
 
-      <main className={s.main}>
-        <div className={s.container}>
+      {/* Encabezado */}
+      <section className="bg-black text-white pt-32 pb-8 md:pt-40 md:pb-10 px-6 text-center">
+        <p className="text-xs font-medium uppercase tracking-[0.25em] text-gray-400 mb-4">Tienda · Por Mí</p>
+        <h1 className="text-4xl md:text-5xl font-medium tracking-tighter leading-[1.05]">
+          Servicios para tu{" "}
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-indigo-300 to-blue-600">empresa</span>
+        </h1>
+        <p className="mt-5 text-gray-400 text-sm md:text-base max-w-2xl mx-auto leading-relaxed">
+          Todo lo que necesitas para crear y hacer crecer tu negocio, a un costo inferior al del mercado.
+          Añade los servicios que necesitas al carrito y paga de forma segura.
+        </p>
+      </section>
 
-          <motion.div
-            initial="hidden" animate="visible" variants={fadeInUp}
-            className="text-center mb-16 md:mb-20"
-          >
-            <p className={s.eyebrow}>Tienda · Por Mí</p>
-            <h1 className={s.h1}>
-              Elige tu{" "}
-              <span className={s.h1Accent}>Plan</span>
-            </h1>
-            <p className={s.lead}>
-              Planes de visa de estudiante y de turismo en un solo lugar. Selecciona tu plan y sigue las instrucciones para completar tu pago.
+      <main className="max-w-[1500px] mx-auto px-4 sm:px-6 py-12 md:py-16 pb-40">
+        {stripeStatus === "success" && (
+          <div className="mb-8 flex items-start gap-3 rounded-2xl border border-emerald-500/30 bg-emerald-500/10 p-4 text-emerald-300">
+            <CheckCircle2 className="w-5 h-5 shrink-0 mt-0.5" />
+            <p className="text-sm">
+              <strong className="font-semibold">¡Pago recibido!</strong> Gracias por tu compra. Nuestro equipo te
+              contactará en menos de 24 horas para empezar.
             </p>
-          </motion.div>
-
-        </div>
-
-        {/* ── Step 1: Select Plan ── */}
-        <motion.div initial="hidden" animate="visible" variants={fadeInUp} className="mb-24 md:mb-32 w-full px-4 sm:px-6 lg:px-10">
-          <div className="max-w-[1550px] mx-auto w-full">
-            <StepHeader number="1" label="Confirma tu Plan" />
-
-            <div className="space-y-14">
-            {planGroups.map((group) => (
-            <div key={group.label}>
-            <h2 className="text-sm md:text-base font-medium uppercase tracking-[0.2em] text-slate-400 text-center mb-8">{group.label}</h2>
-            <motion.div
-              variants={stagger}
-              initial="hidden"
-              animate="visible"
-              className={`grid grid-cols-1 ${group.gridClass} gap-8 lg:gap-10 w-full`}
-            >
-              {group.plans.map((id) => {
-                const plan = planDetails[id];
-                const isSelected = selectedPlan === id;
-                const Icon = plan.icon;
-                const cardClass = `${s.planCardCentered} h-[250px] px-6 py-8 ${isSelected ? s.planCardSelected : s.planCardDefault}`;
-
-                return (
-                  <motion.button
-                    key={id}
-                    variants={fadeInUp}
-                    whileHover={{ y: -2 }}
-                    whileTap={{ scale: 0.98 }}
-                    onClick={() => handlePlanSelect(id)}
-                    className={cardClass}
-                  >
-                    <div className="flex flex-col items-center justify-between h-full w-full py-1 text-center">
-                      <Icon className="w-8 h-8 text-white shrink-0" strokeWidth={1.5} />
-                      <div>
-                        <h3 className="text-lg font-medium text-white leading-tight">{plan.title}</h3>
-                        <p className="text-xs text-slate-400 font-normal mt-1">{plan.subtitle}</p>
-                      </div>
-
-                      <div className="text-center">
-                        <span className="text-[10px] text-slate-500 uppercase tracking-wider font-normal block mb-0.5">Desde</span>
-                        <span className="text-3xl md:text-4xl font-normal text-white tracking-tight">{plan.card}</span>
-                      </div>
-                    </div>
-                  </motion.button>
-                );
-              })}
-            </motion.div>
-            </div>
-            ))}
-            </div>
           </div>
-        </motion.div>
+        )}
+        {stripeStatus === "cancelled" && (
+          <div className="mb-8 rounded-2xl border border-white/10 bg-white/5 p-4 text-gray-300 text-sm">
+            El pago fue cancelado. Tus servicios no se cobraron; puedes volver a intentarlo cuando quieras.
+          </div>
+        )}
 
-        {/* ── Step 2: Payment Method ── */}
-        <AnimatePresence mode="wait">
-          {selectedPlan && activePlan && (
-            <motion.div
-              key="payment-method-step"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -16 }}
-              transition={{ duration: 0.3, ease: "easeOut" }}
-              className="mb-24 md:mb-32 w-full px-4 sm:px-6 lg:px-10"
-            >
-              <div className="max-w-[1550px] mx-auto w-full">
-                <StepHeader number="2" label="Elige tu Método de Pago" />
-
-                {supportsCrypto ? (
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10 w-full">
-                    <motion.button
-                      whileHover={{ y: -2 }}
-                      whileTap={{ scale: 0.98 }}
-                      onClick={() => {
-                        setPaymentMethod('crypto');
-                        setPaymentApproved(false);
-                        setApprovedOrder(null);
-                        ensureCheckoutSession();
-                      }}
-                      className={`${s.paymentCardCentered} h-[250px] px-6 py-8 overflow-hidden ${paymentMethod === 'crypto' ? s.paymentCardSelected : s.paymentCardDefault}`}
-                    >
-                      <LimitedTimeTag />
-                      <div className="flex flex-col items-center justify-between h-full w-full py-1 text-center">
-                        <Wallet className="w-8 h-8 text-white shrink-0" strokeWidth={1.5} />
-                        <div>
-                          <h3 className="text-lg font-medium text-white leading-tight">Pagar con Stablecoin</h3>
-                          <p className="text-xs text-slate-400 mt-1">USDC · USDT · SOL · LXR</p>
-                        </div>
-
-                        <div className="text-center flex items-baseline justify-center gap-2">
-                          <span className="text-3xl md:text-4xl font-normal text-white tracking-tight">{activePlan.crypto}</span>
-                          <span className="text-xs text-slate-500 line-through font-normal">{activePlan.card}</span>
-                        </div>
-                      </div>
-                    </motion.button>
-
-                    <motion.button
-                      whileHover={{ y: -2 }}
-                      whileTap={{ scale: 0.98 }}
-                      onClick={() => { setPaymentMethod('card'); setPaymentApproved(false); setApprovedOrder(null); }}
-                      className={`${s.paymentCardCentered} h-[250px] px-6 py-8 ${paymentMethod === 'card' ? s.paymentCardSelected : s.paymentCardDefault}`}
-                    >
-                      <div className="flex flex-col items-center justify-between h-full w-full py-1 text-center">
-                        <CreditCard className="w-8 h-8 text-white shrink-0" strokeWidth={1.5} />
-                        <div>
-                          <h3 className="text-lg font-medium text-white leading-tight">Pagar con Tarjeta</h3>
-                          <p className="text-xs text-slate-400 mt-1">Visa · Mastercard · AMEX</p>
-                        </div>
-
-                        <div className="text-center">
-                          <span className="text-3xl md:text-4xl font-normal text-white tracking-tight">{activePlan.card}</span>
-                        </div>
-                      </div>
-                    </motion.button>
+        {/* Mismos servicios y secciones que la tienda del portal */}
+        <div className="space-y-14">
+        {PORTAL_SERVICE_SECTIONS.map((section) => (
+        <section key={section.title} className="space-y-5">
+          <div>
+            <h2 className="text-xl md:text-2xl font-medium tracking-tight text-white">{section.title}</h2>
+            <p className="text-sm text-gray-400 mt-1">{section.subtitle}</p>
+          </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-5 items-stretch">
+          {section.services.map((service) => {
+            const Icon = service.icon;
+            const inCart = cart.includes(service.id);
+            const detailsOpen = !!openDetails[service.id];
+            return (
+              <div
+                key={service.id}
+                className="bg-white border border-slate-200 hover:border-slate-300 rounded-[1.5rem] p-5 flex flex-col h-full shadow-sm hover:shadow-md transition-all duration-300"
+              >
+                <div className="flex flex-col flex-1">
+                  <div className="flex items-center justify-between gap-2 mb-3">
+                    <div className={`p-2 rounded-xl ${service.iconColor}`}>
+                      <Icon className="w-5 h-5" />
+                    </div>
+                    <span className={`px-2 py-0.5 rounded-md text-[10px] font-medium tracking-wide border ${service.badgeColor}`}>
+                      {service.badge}
+                    </span>
                   </div>
-                ) : (
-                  <div className="w-full">
-                    <motion.div
-                      initial={{ opacity: 0, y: 16 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      className={`${s.paymentCardCentered} h-[250px] px-6 py-8 ${s.paymentCardSelected}`}
-                    >
-                      <div className="flex flex-col items-center justify-between h-full w-full py-1 text-center">
-                        <CreditCard className="w-8 h-8 text-white shrink-0" strokeWidth={1.5} />
-                        <div>
-                          <h3 className="text-base font-medium text-white leading-tight">Pagar con Tarjeta</h3>
-                          <p className="text-xs text-slate-400 mt-1">Visa · Mastercard · AMEX</p>
-                        </div>
 
-                        <div className="text-center">
-                          <span className="text-3xl md:text-4xl font-normal text-white tracking-tight">{activePlan.card}</span>
-                        </div>
-                      </div>
-                    </motion.div>
+                  <h3 className="text-sm font-semibold text-slate-900 leading-snug mb-1 min-h-[2.5rem]">{service.name}</h3>
+                  <p className="text-[11px] text-slate-500 leading-relaxed mb-3 flex-1">{service.description}</p>
+
+                  <p className="text-[11px] text-slate-400 line-through leading-none" title="Precio promedio en el mercado">
+                    {formatUsd(service.marketPrice)}{service.priceNote?.startsWith("/") ? ` ${service.priceNote}` : ""}
+                  </p>
+                  <div className="flex items-baseline gap-1.5 mb-2.5">
+                    {service.priceNote === "Desde" && (
+                      <span className="text-[10px] text-slate-400 uppercase">Desde</span>
+                    )}
+                    <span className="text-xl font-semibold text-slate-900 tracking-tight">{formatUsd(service.price)}</span>
+                    <span className="text-[10px] text-slate-400 uppercase">
+                      USD{service.priceNote?.startsWith("/") ? ` ${service.priceNote}` : ""}
+                    </span>
                   </div>
+
+                  <div className="border-t border-slate-100 pt-2 mb-3">
+                    <button
+                      type="button"
+                      onClick={() => setOpenDetails((d) => ({ ...d, [service.id]: !d[service.id] }))}
+                      className="w-full py-1.5 px-2 rounded-xl bg-slate-50 hover:bg-slate-100 border border-slate-200/70 text-slate-600 hover:text-slate-900 transition-all flex items-center justify-between gap-1 text-[10px] font-medium"
+                    >
+                      <span>{detailsOpen ? "Ocultar detalles" : "Ver detalles"}</span>
+                      <span className="w-4 h-4 rounded-md bg-white border border-slate-200 flex items-center justify-center text-slate-500 shrink-0">
+                        {detailsOpen ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
+                      </span>
+                    </button>
+                    {detailsOpen && (
+                      <ul className="space-y-1.5 pt-2">
+                        {service.features.map((feature) => (
+                          <li key={feature} className="flex items-center gap-1.5 text-[11px] text-slate-600">
+                            <Check className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                            <span>{feature}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => toggleCart(service)}
+                  className={`w-full h-10 rounded-full text-[11px] font-bold tracking-wider uppercase flex items-center justify-center gap-1.5 transition-all active:scale-95 ${
+                    inCart
+                      ? "bg-blue-50 text-blue-700 border border-blue-200 hover:bg-blue-100"
+                      : "bg-blue-600 text-white hover:bg-blue-700 shadow-sm shadow-blue-500/20"
+                  }`}
+                >
+                  {inCart ? (<><Check className="w-3.5 h-3.5" /> En el carrito · Quitar</>) : "Añadir al carrito"}
+                </button>
+              </div>
+            );
+          })}
+        </div>
+        </section>
+        ))}
+        </div>
+      </main>
+
+      {/* Carrito flotante */}
+      {cart.length > 0 && (
+        <div className="fixed bottom-0 inset-x-0 z-40 p-3 sm:p-4">
+          <div className="max-w-3xl mx-auto bg-white border border-slate-200 rounded-3xl shadow-2xl p-4 sm:p-5">
+            <div className="flex items-start justify-between gap-4">
+              <div className="min-w-0">
+                <p className="flex items-center gap-2 text-sm font-semibold text-slate-900">
+                  <ShoppingCart className="w-4 h-4 text-blue-600" />
+                  {cart.length} {cart.length === 1 ? "servicio" : "servicios"} en tu carrito
+                </p>
+                <div className="mt-2 flex flex-wrap gap-1.5">
+                  {cartServices.map((s) => (
+                    <span key={s.id} className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-slate-100 text-[11px] text-slate-700">
+                      {s.name}
+                      <button type="button" onClick={() => toggleCart(s)} aria-label={`Quitar ${s.name}`} className="text-slate-400 hover:text-slate-700">
+                        <X className="w-3 h-3" />
+                      </button>
+                    </span>
+                  ))}
+                </div>
+              </div>
+              <div className="text-right shrink-0">
+                <p className="text-[10px] uppercase tracking-widest text-slate-400">Subtotal</p>
+                <p className="text-xl font-semibold text-slate-900 tracking-tight">{formatUsd(subtotal)}</p>
+                {processingFee > 0 && (
+                  <p className="text-[10px] text-slate-400">+ {formatUsd(processingFee)} procesamiento</p>
                 )}
               </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+            </div>
 
-        <div className={s.container}>
 
-          {/* ── Payment Approved ── */}
-          <AnimatePresence mode="wait">
-            {paymentApproved && selectedPlan && approvedOrder && (
-              <motion.div
-                key="payment-success"
-                initial={{ opacity: 0, scale: 0.95, y: 20 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, y: 20 }}
-                transition={{ duration: 0.5 }}
-                className="mb-20"
-              >
-                <div className="ring-1 ring-white/10 rounded-[2rem] bg-black p-8 md:p-12 text-center">
-                  <CheckCircle2 className="w-10 h-10 text-slate-300 mx-auto mb-4" strokeWidth={1.5} />
-                  <h2 className="text-2xl md:text-3xl font-medium text-white mb-3 tracking-tight">
-                    ¡Pago aprobado!
-                  </h2>
-                  <p className="text-sm text-slate-400 max-w-xl mx-auto mb-6 font-normal">
-                    Tu transacción en Solana fue confirmada. Hemos registrado tu solicitud para el {planDetails[selectedPlan].title}.
-                  </p>
-                  <div className="text-left max-w-md mx-auto mb-6 border-t border-white/5 pt-6">
-                    <p className="text-[10px] uppercase tracking-widest text-slate-500 mb-2">Número de orden</p>
-                    <p className="text-sm font-mono text-slate-300 break-all">{approvedOrder.requestId}</p>
-                    {approvedOrder.email && (
-                      <p className="text-sm text-slate-500 mt-2">Comprobante enviado a: <span className="text-slate-300">{approvedOrder.email}</span></p>
-                    )}
-                  </div>
-                  <div className="flex flex-col sm:flex-row gap-4 justify-center text-slate-400 text-sm font-normal">
-                    <div className="flex items-center gap-2">
-                      <Mail className={s.iconSm} strokeWidth={1.5} />
-                      Revisa tu correo para el comprobante oficial de Por mí.
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <MessageCircle className={s.iconSm} strokeWidth={1.5} />
-                      Un asesor VIP te contactará en menos de 24 horas.
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
-
-        {/* ── Step 3: Instructions & Summary ── */}
-        <AnimatePresence mode="wait">
-          {paymentMethod && selectedPlan && activePlan && !paymentApproved && (
-            <motion.div
-              key="instructions-step"
-              initial={{ opacity: 0, y: 24 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 20 }}
-              transition={{ duration: 0.5, ease: "easeOut", delay: 0.15 }}
-              className="mb-16 w-full px-4 sm:px-6 lg:px-10"
+            <button
+              type="button"
+              onClick={handleCheckout}
+              disabled={checkoutLoading}
+              className="mt-4 w-full h-11 rounded-full bg-blue-600 hover:bg-blue-700 disabled:opacity-60 text-white text-sm font-semibold flex items-center justify-center gap-2 transition-all"
             >
-              <div className="max-w-[1550px] mx-auto w-full">
-                <StepHeader number="3" label="Sigue Estas Instrucciones y Completa tu Pago" />
+              {checkoutLoading ? "Llevándote al registro..." : "Regístrate o ingresa para pagar"}
+              {!checkoutLoading && <ArrowRight className="w-4 h-4" />}
+            </button>
+            <p className="mt-2 text-[11px] text-slate-400 text-center flex items-center justify-center gap-1">
+              <ShieldCheck className="w-3.5 h-3.5 text-emerald-500" /> Tu carrito se guarda: lo pagas de forma segura dentro de la plataforma Por Mí
+            </p>
+          </div>
+        </div>
+      )}
 
-                <div className="flex flex-col items-center justify-center text-center gap-2 mb-8 pb-2">
-                  {paymentMethod === 'crypto'
-                    ? <Wallet className={s.icon} strokeWidth={1.5} />
-                    : <CreditCard className={s.icon} strokeWidth={1.5} />}
-                  <div>
-                    <h3 className="text-lg md:text-xl font-medium text-white tracking-tight">
-                      Pago vía {paymentMethod === 'crypto' ? 'Criptomonedas' : 'Tarjeta (Stripe)'}
-                    </h3>
-                    <p className="text-slate-400 text-xs md:text-sm font-normal mt-0.5">Sigue estos pasos para completar tu solicitud de forma exitosa.</p>
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start">
-                  {/* Left Column: Instructions */}
-                  <div className="space-y-6">
-                    {paymentMethod === 'crypto' ? (
-                      <div className="space-y-6">
-                        <InstructionGroup icon={Smartphone} title="1. En tu Celular">
-                          <StepItem number="1" title="Descarga Phantom Wallet"
-                            description={<>Abre App Store o Google Play y descarga <strong className="text-white">Phantom</strong>. Crea una nueva billetera.</>} />
-                          <StepItem number="2" title="Recarga tu Cuenta"
-                            description={<>Fondea tu cuenta con <strong className="text-white">USDC, USDT, SOL o LXR</strong>.<br /><span className="text-xs text-slate-500 mt-1 block">Contrato LXR: <code className="bg-white/5 border border-white/10 px-2 py-0.5 rounded text-xs text-slate-300 font-mono">7Qm6qUCXGZfGBYYFzq2kTbwTDah5r3d9DcPJHRT8Wdth</code></span></>} />
-                        </InstructionGroup>
-
-                        <InstructionGroup icon={Monitor} title="2. En la Tarjeta a la Derecha">
-                          <StepItem number="3" title="Completa los Datos"
-                            description={<>Ingresa tu nombre y correo en el panel resumen. Se generará tu código QR automático para escanear.</>} />
-                        </InstructionGroup>
-
-                        <InstructionGroup icon={Smartphone} title="3. Escanea y Paga">
-                          <StepItem number="4" title="Confirmación rápida"
-                            description={<>En tu billetera selecciona <strong className="text-white">"Enviar"</strong>, escanea el QR y confirma el pago. Espera unos segundos para ver la pantalla verde de aprobación.</>} />
-                        </InstructionGroup>
-
-                        <InstructionGroup icon={CheckCircle2} title="4. Siguientes Pasos">
-                          <StepItem number="5" title="Comprobante Inmediato"
-                            description="Recibirás tu número de orden y comprobante oficial. Un asesor VIP te contactará en menos de 24h." />
-                        </InstructionGroup>
-                      </div>
-                    ) : (
-                      <div className="space-y-6">
-                        <InstructionGroup icon={Monitor} title="1. Pasarela de Pago">
-                          <StepItem number="1" title="Haz clic en Pagar Plan"
-                            description={<>Haz clic en el botón <strong className="text-white">"Pagar {activePlan.title} ({activePlan.card})"</strong> situado en la tarjeta de resumen a la derecha.</>} />
-                          <StepItem number="2" title="Ingresa tus Datos en Stripe"
-                            description={<>Serás redirigido a Stripe para ingresar los datos de tu tarjeta de débito o crédito de manera 100% encriptada y segura.</>} />
-                        </InstructionGroup>
-
-                        <InstructionGroup icon={CheckCircle2} title="2. Confirmación Inmediata">
-                          <StepItem number="3" title="Procesamiento y Factura"
-                            description={<>Al completarse el pago recibirás la factura oficial de Stripe y tu comprobante oficial de Por mí.</>} />
-                          <StepItem number="4" title="Contacto Asesor VIP"
-                            description={<>Un asesor de Por mí se comunicará contigo vía WhatsApp o correo en menos de 24 horas para dar inicio a tu proceso de visa.</>} />
-                        </InstructionGroup>
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Right Column: Payment Box Summary */}
-                  <div className="lg:sticky lg:top-28">
-                    <div className="bg-transparent border border-white/10 rounded-3xl p-5 sm:p-8 md:p-12 py-8 sm:py-12 md:py-16 shadow-2xl backdrop-blur-md space-y-6 sm:space-y-8 md:space-y-12 flex flex-col justify-between">
-                      <div className="flex items-center justify-between pb-4">
-                        <div>
-                          <p className="text-[10px] uppercase tracking-widest text-slate-400 font-medium mb-1">Resumen de Pedido</p>
-                          <h4 className="text-lg md:text-xl font-medium text-white">{activePlan.title}</h4>
-                          <p className="text-xs text-slate-400 font-normal">{activePlan.subtitle}</p>
-                        </div>
-                        <div className="text-right">
-                          <p className="text-xs text-slate-500 uppercase tracking-widest mb-1">Total</p>
-                          <p className="text-2xl md:text-3xl font-medium text-white tracking-tight">
-                            {paymentMethod === 'crypto' ? activePlan.crypto : activePlan.card}
-                          </p>
-                          {paymentMethod === 'crypto' && (
-                            <p className="text-xs text-slate-500 line-through">{activePlan.card}</p>
-                          )}
-                        </div>
-                      </div>
-
-                      <div className="space-y-3">
-                        <div className="flex items-center justify-between text-xs text-slate-400">
-                          <span>Método de pago:</span>
-                          <span className="text-slate-200 font-medium flex items-center gap-1.5">
-                            {paymentMethod === 'crypto' ? (
-                              <><Wallet className="w-3.5 h-3.5 text-white" /> Criptomonedas</>
-                            ) : (
-                              <><CreditCard className="w-3.5 h-3.5 text-white" /> Tarjeta (Stripe)</>
-                            )}
-                          </span>
-                        </div>
-                        <div className="flex items-center justify-between text-xs text-slate-400">
-                          <span>Soporte e inicio:</span>
-                          <span className="text-slate-200 font-medium">Asesor VIP en &lt; 24h</span>
-                        </div>
-                      </div>
-
-                      {paymentMethod === 'card' ? (
-                        <div className="space-y-3 pt-2">
-                          <button
-                            type="button"
-                            onClick={handleStartStripeCheckout}
-                            disabled={stripeLoading}
-                            className={`${s.ctaPrimary} cursor-pointer disabled:opacity-60 justify-center w-full`}
-                          >
-                            <span>{stripeLoading ? 'Redirigiendo a Stripe...' : `Pagar ${activePlan.title} (${activePlan.card})`}</span>
-                            <ArrowRight className="w-4 h-4 ml-1" />
-                          </button>
-                          <p className="text-[11px] text-slate-400 text-center flex items-center justify-center gap-1 pt-1">
-                            <ShieldCheck className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
-                            Procesado de forma 100% segura por Stripe
-                          </p>
-                        </div>
-                      ) : (
-                        <div className="space-y-3 pt-2">
-                          <a
-                            href={`/crypto-pay?plan=${selectedPlan}`}
-                            className={s.ctaPrimary}
-                          >
-                            <span>Pagar {activePlan.title} ({activePlan.crypto})</span>
-                            <ArrowRight className="w-4 h-4 ml-1" />
-                          </a>
-                          <p className="text-[11px] text-slate-400 text-center flex items-center justify-center gap-1 pt-1">
-                            <ShieldCheck className="w-3.5 h-3.5 text-white shrink-0" />
-                            Procesado de forma 100% segura en la red Solana
-                          </p>
-                        </div>
-                      )}
-
-                      <div className="pt-4 text-center">
-                        <p className="text-xs text-slate-400 mb-3 font-normal">¿Tienes dudas antes de pagar?</p>
-                        <div className="flex justify-center gap-2">
-                          <a
-                            href="https://wa.me/13858882799?text=Hola%2C%20tengo%20dudas%20con%20mi%20pago"
-                            target="_blank"
-                            rel="noreferrer"
-                            className="px-3.5 py-2 rounded-xl bg-white/5 border border-white/10 text-xs text-slate-300 hover:text-white hover:bg-white/10 transition-colors flex items-center gap-1.5"
-                          >
-                            <MessageCircle className="w-3.5 h-3.5" /> WhatsApp
-                          </a>
-                          <a
-                            href="https://mail.google.com/mail/?view=cm&fs=1&to=payments@udreamms.com"
-                            target="_blank"
-                            rel="noreferrer"
-                            className="px-3.5 py-2 rounded-xl bg-white/5 border border-white/10 text-xs text-slate-300 hover:text-white hover:bg-white/10 transition-colors flex items-center gap-1.5"
-                          >
-                            <Mail className="w-3.5 h-3.5" /> Correo
-                          </a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </main>
       <Footer />
     </div>
   );
@@ -563,7 +231,7 @@ function InstructionsContent() {
 export default function TiendaPage() {
   return (
     <Suspense fallback={<div className="min-h-screen bg-black" />}>
-      <InstructionsContent />
+      <TiendaContent />
     </Suspense>
   );
 }

@@ -3,7 +3,7 @@
 /** Manifiesto · 03 Toda América somos Uno */
 export default function MentorshipShowcase() {
     return (
-        <section className="py-12 md:py-16 lg:py-20 bg-white text-black overflow-hidden font-sans">
+        <section id="america" className="py-12 md:py-16 lg:py-20 bg-white text-black overflow-hidden font-sans">
             <div className="container mx-auto px-6 max-w-[1200px]">
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16">
                     <div className="lg:col-span-5">
