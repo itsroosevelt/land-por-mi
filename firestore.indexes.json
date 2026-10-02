@@ -15,16 +15,6 @@
       ]
     },
     {
-      "collectionGroup": "visaCryptoComprobantes",
-      "queryScope": "COLLECTION",
-      "fields": [
-        {
-          "fieldPath": "paidAt",
-          "order": "DESCENDING"
-        }
-      ]
-    },
-    {
       "collectionGroup": "chatbots",
       "queryScope": "COLLECTION",
       "fields": [

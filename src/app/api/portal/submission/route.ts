@@ -1,3 +1,4 @@
+import { requirePortalAccess } from '@/backend/auth/portal-user';
 import { NextRequest, NextResponse } from 'next/server';
 import { admin, db } from '@/backend/firebase/admin';
 
@@ -44,6 +45,11 @@ export async function POST(req: NextRequest) {
     if (!visaType || !formData) {
       return NextResponse.json({ error: 'Faltan datos obligatorios (visaType, formData)' }, { status: 400 });
     }
+    if (!userEmail) {
+      return NextResponse.json({ error: 'Email requerido' }, { status: 400 });
+    }
+    const deniedPost = await requirePortalAccess(req, userEmail);
+    if (deniedPost) return deniedPost;
 
     const email = userEmail || formData.email_contacto || 'anonimo';
     const emailKey = email.toLowerCase().replace(/[^a-zA-Z0-9]/g, '_');
@@ -159,6 +165,11 @@ export async function GET(req: NextRequest) {
     const email = searchParams.get('email');
     const visaType = searchParams.get('visaType') || 'F-1';
     const applicantId = searchParams.get('applicantId') || '1';
+    if (!email) {
+      return NextResponse.json({ error: 'Email requerido' }, { status: 400 });
+    }
+    const denied = await requirePortalAccess(req, email);
+    if (denied) return denied;
 
     if (!email) {
       return NextResponse.json({ error: 'Email requerido' }, { status: 400 });
@@ -196,6 +207,11 @@ export async function DELETE(req: NextRequest) {
     const email = searchParams.get('email');
     const visaType = searchParams.get('visaType') || 'F-1';
     const applicantId = searchParams.get('applicantId') || '1';
+    if (!email) {
+      return NextResponse.json({ error: 'Email requerido' }, { status: 400 });
+    }
+    const denied = await requirePortalAccess(req, email);
+    if (denied) return denied;
 
     if (!email) {
       return NextResponse.json({ error: 'Email requerido' }, { status: 400 });

@@ -1,7 +1,10 @@
+import { isStaffRequest, staffUnauthorized } from '@/backend/auth/staff-session';
 import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@/backend/firebase/admin';
 
-export async function GET() {
+export async function GET(req: NextRequest) {
+  if (!isStaffRequest(req)) return staffUnauthorized();
+
   try {
     if (!db) {
       return NextResponse.json({ referrals: [], error: 'Firebase Admin no configurado' });
@@ -23,6 +26,8 @@ export async function GET() {
 }
 
 export async function PATCH(req: NextRequest) {
+  if (!isStaffRequest(req)) return staffUnauthorized();
+
   try {
     if (!db) {
       return NextResponse.json({ error: 'Firebase Admin no configurado' }, { status: 500 });
@@ -59,6 +64,8 @@ export async function PATCH(req: NextRequest) {
 }
 
 export async function DELETE(req: NextRequest) {
+  if (!isStaffRequest(req)) return staffUnauthorized();
+
   try {
     if (!db) {
       return NextResponse.json({ error: 'Firebase Admin no configurado' }, { status: 500 });

@@ -1,7 +1,7 @@
 {
   "projects": {
-    "default": "udreamms-platform-1",
-    "production": "udreamms-platform-1"
+    "default": "the-new-republic-1",
+    "production": "the-new-republic-1"
   },
   "targets": {},
   "etags": {}

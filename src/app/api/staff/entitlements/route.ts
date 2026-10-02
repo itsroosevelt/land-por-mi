@@ -1,3 +1,4 @@
+import { isStaffRequest, staffUnauthorized } from '@/backend/auth/staff-session';
 import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@/backend/firebase/admin';
 import { PENDING_PURCHASES_COLLECTION, pendingPurchaseDocId } from '@/backend/payments/unlock-purchase';
@@ -24,6 +25,8 @@ export const PRODUCT_FLAGS = [
 ];
 
 export async function POST(req: NextRequest) {
+  if (!isStaffRequest(req)) return staffUnauthorized();
+
   try {
     const body = await req.json();
     const { email, flag, value } = body;

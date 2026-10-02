@@ -1,3 +1,4 @@
+import { requirePortalAccess } from '@/backend/auth/portal-user';
 import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@/backend/firebase/admin';
 
@@ -21,6 +22,8 @@ export async function POST(req: NextRequest) {
     if (!referralName || !referralPhone) {
       return NextResponse.json({ error: 'El nombre y teléfono del referido son requeridos' }, { status: 400 });
     }
+    const denied = await requirePortalAccess(req, referrerEmail);
+    if (denied) return denied;
 
     const now = new Date().toISOString();
     const docRef = db.collection('referrals').doc();
@@ -64,13 +67,16 @@ export async function GET(req: NextRequest) {
     if (!userId && !userEmail) {
       return NextResponse.json({ referrals: [] });
     }
+    // Se filtra siempre por el correo de la sesión (no por un userId arbitrario).
+    const denied = await requirePortalAccess(req, userEmail || '__requiere_email__');
+    if (denied) return denied;
 
     let query: FirebaseFirestore.Query = db.collection('referrals');
 
-    if (userId) {
-      query = query.where('referrerId', '==', userId);
-    } else if (userEmail) {
+    if (userEmail) {
       query = query.where('referrerEmail', '==', userEmail.toLowerCase().trim());
+    } else if (userId) {
+      query = query.where('referrerId', '==', userId);
     }
 
     const snap = await query.get();

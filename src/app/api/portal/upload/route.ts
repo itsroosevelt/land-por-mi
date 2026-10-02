@@ -1,3 +1,4 @@
+import { requirePortalAccess } from '@/backend/auth/portal-user';
 import { NextRequest, NextResponse } from 'next/server';
 import { admin } from '@/backend/firebase/admin';
 import { randomUUID } from 'crypto';
@@ -16,6 +17,11 @@ export async function POST(req: NextRequest) {
     if (!dataUrl || !docType) {
       return NextResponse.json({ error: 'Faltan datos obligatorios (dataUrl, docType)' }, { status: 400 });
     }
+    if (!email) {
+      return NextResponse.json({ error: 'Email requerido' }, { status: 400 });
+    }
+    const denied = await requirePortalAccess(req, email);
+    if (denied) return denied;
 
     const match = /^data:([^;]+);base64,(.+)$/.exec(dataUrl);
     if (!match) {

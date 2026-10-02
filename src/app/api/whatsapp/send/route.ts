@@ -1,8 +1,11 @@
-import { NextResponse } from 'next/server';
+import { isStaffRequest, staffUnauthorized } from '@/backend/auth/staff-session';
+import { NextResponse, NextRequest } from 'next/server';
 import axios from 'axios';
 import { db, admin } from '@/backend/firebase/admin';
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
+  if (!isStaffRequest(req)) return staffUnauthorized();
+
     try {
         const bodyValue = await req.json();
         const { message, toNumber, cardId, groupId, type, template } = bodyValue;

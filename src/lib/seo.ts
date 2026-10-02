@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 
-export const SITE_URL = "https://udreamms.com";
+export const SITE_URL = "https://itspormi.com";
 export const SITE_NAME = "Por mí";
 
 /** URL estable del logo (Google Search favicon + schema.org). */
-export const SITE_LOGO_PATH = "/icons/new-icon-udreamms.png";
+export const SITE_LOGO_PATH = "/icons/logo-por-mi-840.webp";
 export const SITE_LOGO_URL = `${SITE_URL}${SITE_LOGO_PATH}`;
 export const SITE_FAVICON_URL = "/icons/favicon-por-mi.png";
 

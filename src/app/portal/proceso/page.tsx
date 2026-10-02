@@ -21,6 +21,7 @@ import ProcesoCardsGrid from "./components/ProcesoCardsGrid";
 import ProcesoDocModal from "./components/ProcesoDocModal";
 import { AttachedDoc, ApplicantInfo, ActiveApplicantState } from "./types";
 import { toast } from "sonner";
+import { authFetch } from "@/lib/auth-fetch";
 
 export default function ProcesoPage() {
   const router = useRouter();
@@ -263,7 +264,7 @@ export default function ProcesoPage() {
 
     const hydrateFromCloud = async (visaType: 'F-1' | 'B-2', applicantId: string = '1') => {
       try {
-        const res = await fetch(`/api/portal/submission?email=${encodeURIComponent(user.email!)}&visaType=${visaType}&applicantId=${encodeURIComponent(applicantId)}`);
+        const res = await authFetch(`/api/portal/submission?email=${encodeURIComponent(user.email!)}&visaType=${visaType}&applicantId=${encodeURIComponent(applicantId)}`);
         if (!res.ok) return;
         const data = await res.json();
         if (data.case) {
@@ -382,7 +383,7 @@ export default function ProcesoPage() {
               if (rawAffidavit) try { affidavitDoc = JSON.parse(rawAffidavit); } catch (e) {}
               if (rawEmbassy) try { embassyDoc = JSON.parse(rawEmbassy); } catch (e) {}
 
-              await fetch('/api/portal/submission', {
+              await authFetch('/api/portal/submission', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -417,7 +418,7 @@ export default function ProcesoPage() {
     // each newly-discovered card's data.
     const syncApplicantList = async (visaType: 'F-1' | 'B-2') => {
       try {
-        const res = await fetch(`/api/portal/applicants?email=${encodeURIComponent(user.email!)}&visaType=${visaType}`);
+        const res = await authFetch(`/api/portal/applicants?email=${encodeURIComponent(user.email!)}&visaType=${visaType}`);
         if (!res.ok) return;
         const data = await res.json();
         const cloudIds: string[] = data.applicantIds || [];
@@ -523,7 +524,7 @@ export default function ProcesoPage() {
     }
 
     if (user?.email) {
-      void fetch(`/api/portal/submission?email=${encodeURIComponent(user.email)}&visaType=${isStudent ? 'F-1' : 'B-2'}&applicantId=${encodeURIComponent(idToRemove)}`, {
+      void authFetch(`/api/portal/submission?email=${encodeURIComponent(user.email)}&visaType=${isStudent ? 'F-1' : 'B-2'}&applicantId=${encodeURIComponent(idToRemove)}`, {
         method: 'DELETE',
       }).catch(err => console.error('Error deleting applicant card from cloud:', err));
     }
@@ -601,7 +602,7 @@ export default function ProcesoPage() {
   ): Promise<string | null> => {
     if (!activeApplicant) return null;
     try {
-      const res = await fetch('/api/portal/upload', {
+      const res = await authFetch('/api/portal/upload', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -684,7 +685,7 @@ export default function ProcesoPage() {
         payload.embassyAppointmentDoc = embassy ? { name: embassy.name, type: embassy.type, url: embassy.url || '', size: embassy.size } : null;
       }
 
-      const res = await fetch('/api/portal/submission', {
+      const res = await authFetch('/api/portal/submission', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),

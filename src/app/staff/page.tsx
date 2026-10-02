@@ -42,14 +42,12 @@ export default function StaffPortalPage() {
   const [editedFormData, setEditedFormData] = useState<Record<string, string>>({});
   const [dossierSaveStatus, setDossierSaveStatus] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle');
 
-  // Check auth session on load
+  // La sesión del staff es una cookie httpOnly que valida el servidor.
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const auth = sessionStorage.getItem('udreamms_staff_auth');
-      if (auth === 'true') {
-        setIsAuthenticated(true);
-      }
-    }
+    fetch('/api/staff/login')
+      .then((res) => res.json())
+      .then((data) => setIsAuthenticated(!!data.authenticated))
+      .catch(() => setIsAuthenticated(false));
   }, []);
 
   // Fetch cases from Firebase Firestore via API
@@ -271,25 +269,32 @@ export default function StaffPortalPage() {
     }
   }, [isAuthenticated]);
 
-  const handleLogin = (e: React.FormEvent) => {
+  // La contraseña se valida en el servidor (STAFF_PASSWORD); nunca está en el código del navegador.
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (passwordInput === '@Udreamms2026') {
-      setIsAuthenticated(true);
-      if (typeof window !== 'undefined') {
-        sessionStorage.setItem('udreamms_staff_auth', 'true');
+    try {
+      const res = await fetch('/api/staff/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password: passwordInput }),
+      });
+      if (res.ok) {
+        setIsAuthenticated(true);
+        setPasswordInput('');
+        toast.success('¡Bienvenido al Panel de Staff Por mí!');
+      } else {
+        const data = await res.json().catch(() => ({}));
+        toast.error(data.error || 'Contraseña incorrecta. Intenta nuevamente.');
       }
-      toast.success('¡Bienvenido al Panel de Staff Por mí!');
-    } else {
-      toast.error('Contraseña incorrecta. Intenta nuevamente.');
+    } catch {
+      toast.error('No se pudo iniciar sesión. Revisa tu conexión.');
     }
   };
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    await fetch('/api/staff/login', { method: 'DELETE' }).catch(() => {});
     setIsAuthenticated(false);
     setPasswordInput('');
-    if (typeof window !== 'undefined') {
-      sessionStorage.removeItem('udreamms_staff_auth');
-    }
     toast.info('Sesión de Staff cerrada.');
   };
 

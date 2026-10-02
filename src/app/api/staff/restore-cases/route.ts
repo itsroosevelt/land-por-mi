@@ -1,7 +1,10 @@
+import { isStaffRequest, staffUnauthorized } from '@/backend/auth/staff-session';
 import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@/backend/firebase/admin';
 
 export async function POST(req: NextRequest) {
+  if (!isStaffRequest(req)) return staffUnauthorized();
+
   try {
     if (!db) {
       return NextResponse.json({ error: 'Firebase Admin no está inicializado' }, { status: 500 });

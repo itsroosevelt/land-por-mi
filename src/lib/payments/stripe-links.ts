@@ -59,11 +59,11 @@ export const STRIPE_ITEM_PRICE_CENTS: Record<string, number> = {
 
 export const PORTAL_STRIPE_SUCCESS_URL =
   process.env.NEXT_PUBLIC_PORTAL_STRIPE_SUCCESS_URL ||
-  'https://www.udreamms.com/portal?stripe=success';
+  'https://itspormi.com/portal?stripe=success';
 
 export const BOOK_STRIPE_SUCCESS_URL =
   process.env.NEXT_PUBLIC_BOOK_STRIPE_SUCCESS_URL ||
-  'https://www.udreamms.com/visas/student/book?stripe=success';
+  'https://itspormi.com/visas/student/book?stripe=success';
 
 export function buildStripePaymentLink(itemId: string, email?: string) {
   const base = STRIPE_ITEM_LINKS[itemId];

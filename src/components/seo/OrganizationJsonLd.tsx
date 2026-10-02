@@ -1,6 +1,6 @@
 import { SITE_NAME, SITE_URL } from "@/lib/seo";
 
-const LOGO_URL = `${SITE_URL}/icons/new-icon-udreamms.png`;
+const LOGO_URL = `${SITE_URL}/icons/logo-por-mi-840.webp`;
 
 export default function OrganizationJsonLd() {
   const jsonLd = {

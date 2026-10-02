@@ -1,3 +1,5 @@
+import { isStaffRequest } from '@/backend/auth/staff-session';
+import { requirePortalAccess } from '@/backend/auth/portal-user';
 import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@/backend/firebase/admin';
 
@@ -19,6 +21,8 @@ export async function GET(req: NextRequest) {
     if (!email) {
       return NextResponse.json({ error: 'Email es requerido' }, { status: 400 });
     }
+    const denied = await requirePortalAccess(req, email);
+    if (denied) return denied;
 
     const cleanEmail = email.toLowerCase().replace(/[^a-zA-Z0-9]/g, '_');
     const docId = `chat_${cleanEmail}`;
@@ -69,6 +73,12 @@ export async function POST(req: NextRequest) {
     if (!clientEmail || !text || !sender) {
       return NextResponse.json({ error: 'Faltan parámetros (clientEmail, text, sender)' }, { status: 400 });
     }
+    // Solo el staff puede escribir como "staff"; el cliente solo en su propio chat.
+    if (sender === 'staff' && !isStaffRequest(req)) {
+      return NextResponse.json({ error: 'No autorizado.' }, { status: 401 });
+    }
+    const denied = await requirePortalAccess(req, clientEmail);
+    if (denied) return denied;
 
     const cleanEmail = clientEmail.toLowerCase().replace(/[^a-zA-Z0-9]/g, '_');
     const docId = `chat_${cleanEmail}`;

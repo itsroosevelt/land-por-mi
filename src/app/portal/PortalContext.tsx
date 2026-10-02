@@ -437,30 +437,13 @@ export function PortalProvider({ children }: { children: ReactNode }) {
     return Array.from(new Set(cart));
   };
 
-  const completeDatabasePurchase = async (itemsToUnlock: string[]) => {
+  // El pago ya lo registró el servidor (confirm-session de Stripe o el pago QR en cripto),
+  // que escribe purchased_* en users/{uid}; el portal lo recibe por onSnapshot.
+  // Aquí solo se limpia el carrito y se cierra el checkout (las reglas no permiten escribir compras desde el navegador).
+  const completeDatabasePurchase = async (_itemsToUnlock: string[]) => {
     if (!user) return;
     setLoading(true);
     try {
-      const userRef = doc(db, 'users', user.uid);
-      const updates: Record<string, boolean> = {};
-      
-      itemsToUnlock.forEach((itemId) => {
-        if (itemId === 'sevis') updates.purchased_sevis = true;
-        if (itemId === 'entrevista-embajada') updates.purchased_entrevista_embajada = true;
-        if (itemId === 'curso-estudiante') updates.purchased_curso_estudiante = true;
-        if (itemId === 'libro-estudiante') updates.purchased_libro_estudiante = true;
-        if (itemId === 'curso-turista') updates.purchased_curso_turista = true;
-        if (itemId === 'libro-turista') updates.purchased_libro_turista = true;
-        if (itemId === 'plan-esencial') updates.purchased_plan_esencial = true;
-        if (itemId === 'plan-pro') updates.purchased_plan_pro = true;
-        if (itemId === 'plan-elite') updates.purchased_plan_elite = true;
-        if (itemId === 'plan-allinclusive') updates.purchased_plan_allinclusive = true;
-        if (itemId === 'plan-turista-basico') updates.purchased_plan_turista_basico = true;
-        if (itemId === 'plan-turista-premium') updates.purchased_plan_turista_premium = true;
-        if (itemId === 'plan-turista-vip') updates.purchased_plan_turista_vip = true;
-      });
-
-      await updateDoc(userRef, updates);
       toast.success("¡Pago completado con éxito! Contenido desbloqueado.");
       setCart([]);
       setIsCartOpen(false);

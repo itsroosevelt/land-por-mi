@@ -1,3 +1,4 @@
+import { requirePortalAccess } from '@/backend/auth/portal-user';
 import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@/backend/firebase/admin';
 
@@ -13,6 +14,8 @@ export async function GET(req: NextRequest) {
     if (!email) {
       return NextResponse.json({ error: 'Email requerido' }, { status: 400 });
     }
+    const denied = await requirePortalAccess(req, email);
+    if (denied) return denied;
     if (!db) {
       return NextResponse.json({ applicantIds: [] });
     }

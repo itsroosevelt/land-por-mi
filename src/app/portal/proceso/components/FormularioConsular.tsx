@@ -21,6 +21,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import { usePortal } from "../../PortalContext";
+import { authFetch } from "@/lib/auth-fetch";
 
 interface FormularioConsularProps {
   isStudent: boolean;
@@ -93,7 +94,7 @@ export default function FormularioConsular({ isStudent, applicantId, onNameChang
           userId: user?.uid || '',
         };
 
-        let res = await fetch('/api/portal/submission', {
+        let res = await authFetch('/api/portal/submission', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload)

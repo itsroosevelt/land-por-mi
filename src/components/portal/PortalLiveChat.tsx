@@ -15,6 +15,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { toast } from 'sonner';
+import { authFetch } from "@/lib/auth-fetch";
 
 export interface ChatMessage {
   id: string;
@@ -55,7 +56,7 @@ export default function PortalLiveChat({
   const fetchMessages = async (signal?: AbortSignal) => {
     if (!userEmail) return;
     try {
-      const res = await fetch(`/api/portal/chat?email=${encodeURIComponent(userEmail)}&viewer=client`, {
+      const res = await authFetch(`/api/portal/chat?email=${encodeURIComponent(userEmail)}&viewer=client`, {
         signal,
         cache: 'no-store',
       });
@@ -121,7 +122,7 @@ export default function PortalLiveChat({
     setMessages(prev => [...prev, tempMessage]);
 
     try {
-      const res = await fetch('/api/portal/chat', {
+      const res = await authFetch('/api/portal/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

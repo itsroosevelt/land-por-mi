@@ -25,6 +25,7 @@ import { usePortal } from '../PortalContext';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { toast } from 'sonner';
+import { authFetch } from "@/lib/auth-fetch";
 
 interface ClientReferralItem {
   id: string;
@@ -58,7 +59,7 @@ export default function ReferidosPage() {
     setIsLoadingReferrals(true);
     try {
       const url = `/api/portal/referrals?userId=${encodeURIComponent(user.uid || '')}&email=${encodeURIComponent(user.email || '')}`;
-      const res = await fetch(url);
+      const res = await authFetch(url);
       const data = await res.json();
       if (res.ok) {
         setMyReferrals(data.referrals || []);
@@ -95,7 +96,7 @@ export default function ReferidosPage() {
     setIsSubmitting(true);
     try {
       // 1. Save directly to Firestore database via API
-      const res = await fetch('/api/portal/referrals', {
+      const res = await authFetch('/api/portal/referrals', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

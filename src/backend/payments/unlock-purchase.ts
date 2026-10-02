@@ -1,4 +1,5 @@
 import { requireAdminDb } from '@/backend/firebase/admin';
+import { PRODUCT_CATALOG } from '@/lib/payments/product-catalog';
 
 export const PENDING_PURCHASES_COLLECTION = 'pendingPurchases';
 
@@ -75,6 +76,13 @@ export const PURCHASE_FIELD_BY_ITEM: Record<string, string> = {
   'tourist-basic': 'purchased_plan_turista_basico',
   'tourist-premium': 'purchased_plan_turista_premium',
   'tourist-vip': 'purchased_plan_turista_vip',
+
+  // Servicios para empresas de la tienda (servicio-*): purchased_servicio_<nombre>
+  ...Object.fromEntries(
+    Object.keys(PRODUCT_CATALOG)
+      .filter((id) => id.startsWith('servicio-'))
+      .map((id) => [id, `purchased_${id.replace(/-/g, '_')}`])
+  ),
 };
 
 export function normalizePurchaseEmail(email: string) {

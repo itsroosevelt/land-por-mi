@@ -1,3 +1,4 @@
+import { isStaffRequest, staffUnauthorized } from '@/backend/auth/staff-session';
 import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@/backend/firebase/admin';
 
@@ -67,6 +68,8 @@ function parseTimestampMs(val: any): number {
 }
 
 export async function GET(req: NextRequest) {
+  if (!isStaffRequest(req)) return staffUnauthorized();
+
   try {
     if (!db) {
       return NextResponse.json({
@@ -440,6 +443,8 @@ export async function GET(req: NextRequest) {
 // Mirrors the doc id scheme /api/portal/submission uses so the client's own portal picks
 // this new applicant up the same way it would one it created itself.
 export async function POST(req: NextRequest) {
+  if (!isStaffRequest(req)) return staffUnauthorized();
+
   try {
     const body = await req.json();
     const { email, visaType, name } = body;
@@ -513,6 +518,8 @@ export async function POST(req: NextRequest) {
 }
 
 export async function DELETE(req: NextRequest) {
+  if (!isStaffRequest(req)) return staffUnauthorized();
+
   try {
     const { searchParams } = new URL(req.url);
     const caseId = searchParams.get('caseId');
@@ -612,6 +619,8 @@ export async function DELETE(req: NextRequest) {
 }
 
 export async function PATCH(req: NextRequest) {
+  if (!isStaffRequest(req)) return staffUnauthorized();
+
   try {
     const body = await req.json();
     const {
