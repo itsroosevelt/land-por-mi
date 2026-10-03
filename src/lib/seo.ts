@@ -4,9 +4,9 @@ export const SITE_URL = "https://itspormi.com";
 export const SITE_NAME = "Por mí";
 
 /** URL estable del logo (Google Search favicon + schema.org). */
-export const SITE_LOGO_PATH = "/icons/logo-por-mi-840.webp";
+export const SITE_LOGO_PATH = "/icons/logo-por-mi-america-840.webp";
 export const SITE_LOGO_URL = `${SITE_URL}${SITE_LOGO_PATH}`;
-export const SITE_FAVICON_URL = "/icons/favicon-por-mi.png";
+export const SITE_FAVICON_URL = "/icons/favicon-por-mi-america.png";
 
 export const DEFAULT_DESCRIPTION =
   "Comunidad que brinda productos y servicios accesibles a emprendedores y empresarios de toda Latinoamérica, respaldados por inteligencia artificial, tecnología y finanzas descentralizadas creadas en los Estados Unidos.";

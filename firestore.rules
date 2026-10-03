@@ -49,6 +49,8 @@ service cloud.firestore {
     }
     match /cards/{cardId} { allow read, write: if false; }
     match /pendingPurchases/{docId} { allow read, write: if false; }
+    // Tarjetas del cliente (Mi proceso / expediente del staff): se leen y escriben por /api/expediente.
+    match /expedientes/{docId} { allow read, write: if false; }
 
     // Pagos con cripto (QR) — escritos solo por el servidor.
     match /visaCryptoSessions/{sessionId} {

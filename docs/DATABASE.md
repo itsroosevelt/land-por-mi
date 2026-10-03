@@ -45,6 +45,24 @@ registrarse (`/api/payments/apply-pending`).
 | `lastReferenceId` | string \| null | Id de la sesión de Stripe o del pago cripto |
 | `createdAt`, `updatedAt` | string ISO | |
 
+## `expedientes/{emailKey}` — tarjetas del cliente (Mi proceso / expediente del staff)
+
+Un documento por cliente (`emailKey` = correo en minúsculas con símbolos → `_`). Se lee y escribe
+solo por `/api/expediente` y `/api/expediente/files`. Campos de cada tarjeta: `src/lib/expediente-cards.ts`.
+
+| Campo | Tipo | Descripción |
+|---|---|---|
+| `email` | string | Correo del cliente |
+| `cards.{cardId}` | map | `cardId` = `datos-personales` o el id del servicio (`servicio-crear-empresa-usa`, …) |
+| `cards.{cardId}.fields` | map `{ campo: texto }` | Datos de la tarjeta (cliente y staff, botón Editar) |
+| `cards.{cardId}.status` | `'pendiente' \| 'en_progreso' \| 'entregado'` | Estado del servicio (solo staff) |
+| `cards.{cardId}.activatedByStaff` | boolean | Tarjeta abierta por el staff sin compra (regalo / pago externo) |
+| `cards.{cardId}.files` | array de `{ id, name, url, path, contentType, size, uploadedAt }` | Documentos (solo staff sube/borra). Archivos en Storage: `expedientes/{emailKey}/{cardId}/` |
+| `cards.{cardId}.updatedAt`, `updatedBy` | string, `'staff' \| 'client'` | Última edición |
+
+Una tarjeta de servicio está **abierta** si el cliente la compró (`purchased_servicio_*` en `users`) o si
+`activatedByStaff` es `true`. "Datos Personales" siempre está abierta.
+
 ## `solicitudes_visas/{caseId}` — expedientes del staff
 
 Una tarjeta por persona/postulante. El nombre de la colección viene del modelo anterior (visas) y se

@@ -1,3 +1,4 @@
+import { emailKey } from '@/backend/auth/email-key';
 import { isStaffRequest, staffUnauthorized } from '@/backend/auth/staff-session';
 import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@/backend/firebase/admin';
@@ -95,9 +96,9 @@ export async function GET(req: NextRequest) {
       const chatSnap = await db.collection('portal_chats').get();
       chatSnap.forEach(cDoc => {
         const cData = cDoc.data();
-        const emailKey = (cData.clientEmail || '').toLowerCase().trim();
-        if (emailKey) {
-          chatMap[emailKey] = {
+        const chatEmail = (cData.clientEmail || '').toLowerCase().trim();
+        if (chatEmail) {
+          chatMap[chatEmail] = {
             unreadByStaff: cData.unreadByStaff || 0,
             lastMessage: cData.lastMessage || '',
           };
@@ -123,15 +124,15 @@ export async function GET(req: NextRequest) {
           data.email ||
           'Postulante';
 
-        const emailKey = (data.email || formData.email_contacto || '').toLowerCase().trim();
+        const caseEmail = (data.email || formData.email_contacto || '').toLowerCase().trim();
         const typeKey = data.visaType === 'B-2' ? 'b2' : 'f1';
-        if (emailKey) {
-          existingCaseKeys.add(`${emailKey}_${typeKey}`);
+        if (caseEmail) {
+          existingCaseKeys.add(`${caseEmail}_${typeKey}`);
         }
 
         if (hiddenIds.has(doc.id)) return;
 
-        const chatInfo = chatMap[emailKey] || { unreadByStaff: 0, lastMessage: '' };
+        const chatInfo = chatMap[caseEmail] || { unreadByStaff: 0, lastMessage: '' };
         const cleanPhotoUrl = (data.photoUrl && !data.photoUrl.includes('unsplash.com')) ? data.photoUrl : '';
 
         realCases.push({
@@ -216,19 +217,6 @@ export async function GET(req: NextRequest) {
         entitlementsByEmail[uEmail] = newEnt;
         purchasesByEmail[uEmail] = Object.keys(PURCHASE_LABELS).filter(key => Boolean(newEnt[key])).map(key => PURCHASE_LABELS[key]);
 
-        const hasStudent = Boolean(
-          uData.purchased_plan_esencial ||
-          uData.purchased_plan_pro ||
-          uData.purchased_plan_elite ||
-          uData.purchased_plan_allinclusive
-        );
-
-        const hasTourist = Boolean(
-          uData.purchased_plan_turista_basico ||
-          uData.purchased_plan_turista_premium ||
-          uData.purchased_plan_turista_vip
-        );
-
         const userDisplayName = uData.displayName || uData.name || (uEmail.split('@')[0] || 'Cliente Registrado');
         const userPhone = uData.phone || uData.phoneNumber || '';
         const userSubmittedAt = parseDateSafe(uData.createdAt || uData.last_payment_at || uData.lastLogin);
@@ -236,90 +224,9 @@ export async function GET(req: NextRequest) {
         const userCountry = uData.country || uData.pais || uData.nacionalidad || '';
         const userBirthDate = uData.birthDate || uData.fecha_nacimiento || uData.birth_date || '';
 
-        const syntheticF1Id = `case_${uEmail.replace(/[^a-zA-Z0-9]/g, '_')}_f1`;
-        const syntheticB2Id = `case_${uEmail.replace(/[^a-zA-Z0-9]/g, '_')}_b2`;
-
-        if (hasStudent && !existingCaseKeys.has(`${uEmail}_f1`) && !hiddenIds.has(syntheticF1Id)) {
-          const chatInfo = chatMap[uEmail] || { unreadByStaff: 0, lastMessage: '' };
-          existingCaseKeys.add(`${uEmail}_f1`);
-          realCases.push({
-            id: syntheticF1Id,
-            applicantId: '1',
-            name: userDisplayName,
-            email: uEmail,
-            phone: userPhone,
-            visaType: 'F-1',
-            schoolState: 'Utah',
-            schoolName: 'Lumos Language School (Salt Lake City)',
-            status: 'nuevos',
-            submittedAt: userSubmittedAt,
-            updatedAt: userUpdatedAt,
-            photoUrl: '',
-            passportDoc: null,
-            bankStatementDoc: null,
-            sevisDoc: null,
-            i20Doc: null,
-            ds160Doc: null,
-            acceptanceLetterDoc: null,
-            affidavitDoc: null,
-            embassyAppointmentDoc: null,
-            formData: {
-              email_contacto: uEmail,
-              celular_contacto: userPhone,
-              pais_domicilio: userCountry,
-              fecha_nacimiento: userBirthDate,
-              nombres: userDisplayName.split(' ')[0] || '',
-              apellidos: userDisplayName.split(' ').slice(1).join(' ') || '',
-            },
-            notes: 'Plan Estudiante F-1 adquirido. Expediente pendiente de llenado consular.',
-            unreadCount: chatInfo.unreadByStaff || 0,
-            lastChatMessage: chatInfo.lastMessage || '',
-            purchases: purchasesByEmail[uEmail] || [],
-          });
-        }
-
-        if (hasTourist && !existingCaseKeys.has(`${uEmail}_b2`) && !hiddenIds.has(syntheticB2Id)) {
-          const chatInfo = chatMap[uEmail] || { unreadByStaff: 0, lastMessage: '' };
-          existingCaseKeys.add(`${uEmail}_b2`);
-          realCases.push({
-            id: syntheticB2Id,
-            applicantId: '1',
-            name: userDisplayName,
-            email: uEmail,
-            phone: userPhone,
-            visaType: 'B-2',
-            schoolState: 'Utah',
-            schoolName: 'N/A (Turismo B-2)',
-            status: 'nuevos',
-            submittedAt: userSubmittedAt,
-            updatedAt: userUpdatedAt,
-            photoUrl: '',
-            passportDoc: null,
-            bankStatementDoc: null,
-            sevisDoc: null,
-            i20Doc: null,
-            ds160Doc: null,
-            acceptanceLetterDoc: null,
-            affidavitDoc: null,
-            embassyAppointmentDoc: null,
-            formData: {
-              email_contacto: uEmail,
-              celular_contacto: userPhone,
-              pais_domicilio: userCountry,
-              fecha_nacimiento: userBirthDate,
-              nombres: userDisplayName.split(' ')[0] || '',
-              apellidos: userDisplayName.split(' ').slice(1).join(' ') || '',
-            },
-            notes: 'Plan Turista B-2 adquirido. Expediente pendiente de llenado consular.',
-            unreadCount: chatInfo.unreadByStaff || 0,
-            lastChatMessage: chatInfo.lastMessage || '',
-            purchases: purchasesByEmail[uEmail] || [],
-          });
-        }
-
-        const placeholderId = `case_${uEmail.replace(/[^a-zA-Z0-9]/g, '_')}_registered`;
+        const placeholderId = `case_${emailKey(uEmail)}_registered`;
+        // Cada usuario registrado tiene un expediente en el panel de staff.
         if (
-          !hasStudent && !hasTourist &&
           !existingCaseKeys.has(`${uEmail}_f1`) && !existingCaseKeys.has(`${uEmail}_b2`) &&
           !hiddenIds.has(placeholderId)
         ) {
@@ -354,7 +261,7 @@ export async function GET(req: NextRequest) {
               nombres: userDisplayName.split(' ')[0] || '',
               apellidos: userDisplayName.split(' ').slice(1).join(' ') || '',
             },
-            notes: 'Cliente registrado. Aún no ha comprado ningún servicio de visa (F-1 o B-2).',
+            notes: 'Cliente registrado. Aún no ha comprado ningún servicio.',
             unreadCount: chatInfo.unreadByStaff || 0,
             lastChatMessage: chatInfo.lastMessage || '',
             purchases: purchasesByEmail[uEmail] || [],
@@ -438,85 +345,6 @@ export async function GET(req: NextRequest) {
   }
 }
 
-// Staff-triggered "add another card" for a client who needs more than one applicant slot
-// under the same visa service (e.g. bought 3 F-1 visa services for 3 family members).
-// Mirrors the doc id scheme /api/portal/submission uses so the client's own portal picks
-// this new applicant up the same way it would one it created itself.
-export async function POST(req: NextRequest) {
-  if (!isStaffRequest(req)) return staffUnauthorized();
-
-  try {
-    const body = await req.json();
-    const { email, visaType, name } = body;
-
-    if (!email || !visaType) {
-      return NextResponse.json({ error: 'email y visaType son requeridos' }, { status: 400 });
-    }
-    if (!db) {
-      return NextResponse.json({ error: 'Firebase Admin no está configurado' }, { status: 500 });
-    }
-
-    const emailLower = String(email).toLowerCase().trim();
-    const emailKey = emailLower.replace(/[^a-zA-Z0-9]/g, '_');
-    const typeKey = visaType === 'B-2' ? 'b2' : 'f1';
-
-    // Never collide with the default (unsuffixed) card — staff-created cards always get a
-    // fresh, unique applicant id, even if this happens to be the client's very first card.
-    const applicantId = String(Date.now());
-    const docId = `case_${emailKey}_${typeKey}_${applicantId}`;
-
-    const caseData = {
-      id: docId,
-      applicantId,
-      name: name || 'Postulante',
-      email: emailLower,
-      phone: '',
-      visaType: visaType === 'B-2' ? 'B-2' : 'F-1',
-      schoolState: 'Utah',
-      schoolName: visaType === 'B-2' ? 'N/A (Turismo B-2)' : 'Sin escuela seleccionada',
-      status: 'nuevos',
-      submittedAt: new Date().toISOString().split('T')[0],
-      updatedAt: new Date().toISOString(),
-      createdAt: new Date().toISOString(),
-      formData: {
-        email_contacto: emailLower,
-      },
-      notes: 'Expediente creado manualmente por Staff.',
-    };
-
-    await db.collection('solicitudes_visas').doc(docId).set(caseData);
-
-    // If this doc was previously in staff_hidden_cases, un-hide it
-    await db.collection('staff_hidden_cases').doc(docId).delete().catch(() => {});
-
-    // Ensure the client's account has the respective visa process unlocked in the Portal
-    try {
-      const usersSnap = await db.collection('users').get();
-      const batch = db.batch();
-      let matchedAny = false;
-      usersSnap.forEach((uDoc) => {
-        const uData = uDoc.data();
-        const uEmail = (uData.email || '').toLowerCase().trim();
-        if (uEmail === emailLower) {
-          matchedAny = true;
-          const planField = visaType === 'B-2' ? 'purchased_plan_turista_basico' : 'purchased_plan_esencial';
-          batch.set(uDoc.ref, { [planField]: true, updatedAt: new Date().toISOString() }, { merge: true });
-        }
-      });
-      if (matchedAny) {
-        await batch.commit();
-      }
-    } catch (uErr) {
-      console.warn('Could not auto-unlock visa plan for user in users collection:', uErr);
-    }
-
-    return NextResponse.json({ success: true, caseId: docId, applicantId, createdCase: caseData });
-  } catch (error: any) {
-    console.error('Error creating new applicant card:', error);
-    return NextResponse.json({ error: error?.message || 'Error al crear la tarjeta' }, { status: 500 });
-  }
-}
-
 export async function DELETE(req: NextRequest) {
   if (!isStaffRequest(req)) return staffUnauthorized();
 
@@ -543,7 +371,7 @@ export async function DELETE(req: NextRequest) {
         console.warn('Could not read doc before delete:', err);
       }
 
-      // If synthetic case id, parse email and visaType from id: case_${emailKey}_${typeKey}
+      // If synthetic case id, parse visaType from id: case_<llave>_<f1|b2>
       if (!targetEmail && caseId.startsWith('case_')) {
         const parts = caseId.split('_');
         if (parts.includes('f1')) targetVisaType = 'F-1';

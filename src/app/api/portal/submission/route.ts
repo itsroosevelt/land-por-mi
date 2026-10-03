@@ -1,3 +1,4 @@
+import { emailKey } from '@/backend/auth/email-key';
 import { requirePortalAccess } from '@/backend/auth/portal-user';
 import { NextRequest, NextResponse } from 'next/server';
 import { admin, db } from '@/backend/firebase/admin';
@@ -52,15 +53,15 @@ export async function POST(req: NextRequest) {
     if (deniedPost) return deniedPost;
 
     const email = userEmail || formData.email_contacto || 'anonimo';
-    const emailKey = email.toLowerCase().replace(/[^a-zA-Z0-9]/g, '_');
+    const clientKey = emailKey(email);
     const typeKey = visaType === 'B-2' ? 'b2' : 'f1';
     // Applicant '1' (the default, single-applicant case) keeps the legacy doc id so
     // existing expedientes keep merging into the same document. Additional applicants
     // under the same account get their own suffixed id so they never overwrite each other.
     const normalizedApplicantId = applicantId || '1';
     const docId = normalizedApplicantId === '1'
-      ? `case_${emailKey}_${typeKey}`
-      : `case_${emailKey}_${typeKey}_${normalizedApplicantId}`;
+      ? `case_${clientKey}_${typeKey}`
+      : `case_${clientKey}_${typeKey}_${normalizedApplicantId}`;
 
     const fullName = `${formData.nombres || ''} ${formData.apellidos || ''}`.trim() || userName || userEmail || 'Postulante';
 
@@ -179,11 +180,11 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ case: null, dbConnected: false });
     }
 
-    const emailKey = email.toLowerCase().replace(/[^a-zA-Z0-9]/g, '_');
+    const clientKey = emailKey(email);
     const typeKey = visaType === 'B-2' ? 'b2' : 'f1';
     const docId = applicantId === '1'
-      ? `case_${emailKey}_${typeKey}`
-      : `case_${emailKey}_${typeKey}_${applicantId}`;
+      ? `case_${clientKey}_${typeKey}`
+      : `case_${clientKey}_${typeKey}_${applicantId}`;
 
     const doc = await db.collection('solicitudes_visas').doc(docId).get();
     if (!doc.exists) {
@@ -220,11 +221,11 @@ export async function DELETE(req: NextRequest) {
       return NextResponse.json({ error: 'Firebase Admin no está configurado' }, { status: 500 });
     }
 
-    const emailKey = email.toLowerCase().replace(/[^a-zA-Z0-9]/g, '_');
+    const clientKey = emailKey(email);
     const typeKey = visaType === 'B-2' ? 'b2' : 'f1';
     const docId = applicantId === '1'
-      ? `case_${emailKey}_${typeKey}`
-      : `case_${emailKey}_${typeKey}_${applicantId}`;
+      ? `case_${clientKey}_${typeKey}`
+      : `case_${clientKey}_${typeKey}_${applicantId}`;
 
     await db.collection('solicitudes_visas').doc(docId).delete();
 

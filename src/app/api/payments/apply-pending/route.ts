@@ -13,6 +13,10 @@ export async function POST(request: NextRequest) {
 
     const decoded = await admin.auth().verifyIdToken(token);
     const email = decoded.email;
+    // Las compras pendientes de un correo solo se aplican si la persona demostró que es suyo.
+    if (decoded.email_verified !== true) {
+      return NextResponse.json({ error: 'Correo no verificado', code: 'email_not_verified' }, { status: 403 });
+    }
     if (!email) {
       return NextResponse.json({ error: 'User email not available' }, { status: 400 });
     }

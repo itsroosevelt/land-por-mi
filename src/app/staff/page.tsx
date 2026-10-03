@@ -36,8 +36,6 @@ export default function StaffPortalPage() {
   const [dbConnectionError, setDbConnectionError] = useState<string | null>(null);
   const [deletingCaseId, setDeletingCaseId] = useState<string | null>(null);
   const [caseModalGroup, setCaseModalGroup] = useState<StudentCase[]>([]);
-  const [isCreatingApplicant, setIsCreatingApplicant] = useState<boolean>(false);
-  const [togglingFlags, setTogglingFlags] = useState<Set<string>>(new Set());
   const [isEditingDossier, setIsEditingDossier] = useState<boolean>(false);
   const [editedFormData, setEditedFormData] = useState<Record<string, string>>({});
   const [dossierSaveStatus, setDossierSaveStatus] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle');
@@ -95,126 +93,6 @@ export default function StaffPortalPage() {
     setCaseModalGroup([]);
     setIsEditingDossier(false);
     setEditedFormData({});
-  };
-
-  const handleCreateApplicant = async (email: string, visaType: 'F-1' | 'B-2', name?: string) => {
-    setIsCreatingApplicant(true);
-    try {
-      const res = await fetch('/api/staff/cases', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, visaType, name }),
-      });
-      const data = await res.json().catch(() => ({}));
-      if (res.ok) {
-        toast.success(`¡Nueva tarjeta ${visaType === 'F-1' ? 'Estudiante F-1' : 'Turista B-2'} creada y activa en el portal!`);
-        const freshCases = await fetchCases();
-        const clientEmail = (email || '').trim().toLowerCase();
-        const freshGroup = freshCases.filter((c) => {
-          const cEmail = (c.email || c.formData?.email_contacto || '').trim().toLowerCase();
-          return Boolean(clientEmail && cEmail && clientEmail === cEmail);
-        });
-        if (freshGroup.length > 0) {
-          setCaseModalGroup(freshGroup);
-          const targetId = data?.caseId || data?.createdCase?.id;
-          if (targetId) {
-            const created = freshGroup.find((c) => c.id === targetId);
-            if (created) setSelectedCaseModal(created);
-            else setSelectedCaseModal(freshGroup[freshGroup.length - 1]);
-          } else {
-            setSelectedCaseModal(freshGroup[freshGroup.length - 1]);
-          }
-        }
-      } else {
-        toast.error(data?.error || 'No se pudo crear la tarjeta.');
-      }
-    } catch (err) {
-      console.error('Error creating applicant card:', err);
-      toast.error('No se pudo crear la tarjeta. Revisa tu conexión.');
-    } finally {
-      setIsCreatingApplicant(false);
-    }
-  };
-
-  const handleToggleEntitlement = async (email: string, flag: string, value: boolean) => {
-    if (!selectedCaseModal) return;
-    if (togglingFlags.has(flag)) return;
-    setTogglingFlags((prev) => new Set(prev).add(flag));
-
-    const emailNorm = email.toLowerCase().trim();
-
-    // Optimistic UI updates
-    setSelectedCaseModal((prev) => (prev ? { ...prev, entitlements: { ...(prev.entitlements || {}), [flag]: value } } : prev));
-    setStudentCases((prev) =>
-      prev.map((c) =>
-        c.email.toLowerCase().trim() === emailNorm
-          ? { ...c, entitlements: { ...(c.entitlements || {}), [flag]: value } }
-          : c
-      )
-    );
-    setCaseModalGroup((prev) =>
-      prev.map((c) =>
-        c.email.toLowerCase().trim() === emailNorm
-          ? { ...c, entitlements: { ...(c.entitlements || {}), [flag]: value } }
-          : c
-      )
-    );
-
-    try {
-      const res = await fetch('/api/staff/entitlements', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: emailNorm, flag, value }),
-      });
-      const data = await res.json().catch(() => ({}));
-      if (!res.ok) {
-        // Rollback
-        setSelectedCaseModal((prev) => (prev ? { ...prev, entitlements: { ...(prev.entitlements || {}), [flag]: !value } } : prev));
-        setStudentCases((prev) =>
-          prev.map((c) =>
-            c.email.toLowerCase().trim() === emailNorm
-              ? { ...c, entitlements: { ...(c.entitlements || {}), [flag]: !value } }
-              : c
-          )
-        );
-        setCaseModalGroup((prev) =>
-          prev.map((c) =>
-            c.email.toLowerCase().trim() === emailNorm
-              ? { ...c, entitlements: { ...(c.entitlements || {}), [flag]: !value } }
-              : c
-          )
-        );
-        toast.error(data?.error || 'No se pudo actualizar el producto.');
-      } else {
-        toast.success(value ? 'Producto desbloqueado para el cliente.' : 'Producto bloqueado para el cliente.');
-        void fetchCases();
-      }
-    } catch (err) {
-      console.error('Error toggling entitlement:', err);
-      // Rollback
-      setSelectedCaseModal((prev) => (prev ? { ...prev, entitlements: { ...(prev.entitlements || {}), [flag]: !value } } : prev));
-      setStudentCases((prev) =>
-        prev.map((c) =>
-          c.email.toLowerCase().trim() === emailNorm
-            ? { ...c, entitlements: { ...(c.entitlements || {}), [flag]: !value } }
-            : c
-        )
-      );
-      setCaseModalGroup((prev) =>
-        prev.map((c) =>
-          c.email.toLowerCase().trim() === emailNorm
-            ? { ...c, entitlements: { ...(c.entitlements || {}), [flag]: !value } }
-            : c
-        )
-      );
-      toast.error('No se pudo actualizar el producto. Revisa tu conexión.');
-    } finally {
-      setTogglingFlags((prev) => {
-        const next = new Set(prev);
-        next.delete(flag);
-        return next;
-      });
-    }
   };
 
   const handleDeleteCase = async (caseItem: StudentCase) => {
@@ -573,7 +451,7 @@ export default function StaffPortalPage() {
                     {getStatusLabel(activeTab)}
                   </h2>
                   <p className="text-xs text-slate-500">
-                    Visualiza los datos en tiempo real de los alumnos para llenar el DS-160 y gestionar trámites.
+                    Visualiza en tiempo real los datos de tus clientes y gestiona sus servicios.
                   </p>
                 </div>
 
@@ -582,7 +460,7 @@ export default function StaffPortalPage() {
                   <div className="relative flex-1 md:w-72">
                     <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
                     <Input
-                      placeholder="Buscar alumno, email, escuela..."
+                      placeholder="Buscar cliente o email..."
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
                       className="pl-9 h-9 text-xs bg-white border-slate-200 rounded-full shadow-sm focus:border-blue-600 w-full"
@@ -675,14 +553,10 @@ export default function StaffPortalPage() {
         setSelectedCaseModal={setSelectedCaseModal}
         onClose={closeCaseModal}
         onMoveStatus={handleMoveStatus}
-        onCreateApplicant={handleCreateApplicant}
-        onToggleEntitlement={handleToggleEntitlement}
         onDeleteCase={handleDeleteCase}
         onStartChat={(s) => setActiveChatStudent(s)}
         onCopy={handleCopy}
         onCaseUpdated={fetchCases}
-        isCreatingApplicant={isCreatingApplicant}
-        togglingFlags={togglingFlags}
         deletingCaseId={deletingCaseId}
         isEditingDossier={isEditingDossier}
         editedFormData={editedFormData}

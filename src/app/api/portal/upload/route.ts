@@ -1,3 +1,4 @@
+import { emailKey } from '@/backend/auth/email-key';
 import { requirePortalAccess } from '@/backend/auth/portal-user';
 import { NextRequest, NextResponse } from 'next/server';
 import { admin } from '@/backend/firebase/admin';
@@ -35,10 +36,10 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'El archivo excede el tamaño máximo permitido (15MB).' }, { status: 400 });
     }
 
-    const emailKey = (email || 'anonimo').toLowerCase().replace(/[^a-zA-Z0-9]/g, '_');
+    const clientKey = emailKey(email);
     const typeKey = visaType === 'B-2' ? 'b2' : 'f1';
     const safeFileName = String(fileName || 'archivo').replace(/[^a-zA-Z0-9._-]/g, '_');
-    const objectPath = `client-uploads/${emailKey}/${typeKey}_${applicantId || '1'}/${docType}-${Date.now()}-${safeFileName}`;
+    const objectPath = `client-uploads/${clientKey}/${typeKey}_${applicantId || '1'}/${docType}-${Date.now()}-${safeFileName}`;
 
     const bucketName = process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET || undefined;
     const bucket = bucketName ? admin.storage().bucket(bucketName) : admin.storage().bucket();

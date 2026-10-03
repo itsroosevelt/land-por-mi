@@ -1,14 +1,9 @@
 'use client';
 
 import React from 'react';
-import { Lock } from 'lucide-react';
-import { Button } from '@/components/ui/button';
 import { StudentCase, StaffTabType } from '../types';
+import ExpedienteCards from '@/components/expediente/ExpedienteCards';
 import { DossierHeader } from './dossier/DossierHeader';
-import { DossierToolbar } from './dossier/DossierToolbar';
-import { DossierSectionNav } from './dossier/DossierSectionNav';
-import { DossierDocGrid } from './dossier/DossierDocGrid';
-import { DossierFormSections } from './dossier/DossierFormSections';
 import { DossierChatFooter } from './dossier/DossierChatFooter';
 
 interface StaffDossierModalProps {
@@ -17,14 +12,10 @@ interface StaffDossierModalProps {
   setSelectedCaseModal: React.Dispatch<React.SetStateAction<StudentCase | null>>;
   onClose: () => void;
   onMoveStatus: (caseId: string, newStatus: StaffTabType) => void;
-  onCreateApplicant: (email: string, visaType: 'F-1' | 'B-2', name?: string) => void;
-  onToggleEntitlement: (email: string, flag: string, currentVal: boolean) => void;
   onDeleteCase: (targetCase: StudentCase) => void;
   onStartChat: (targetCase: StudentCase) => void;
   onCopy: (text: string, label: string) => void;
   onCaseUpdated?: () => void;
-  isCreatingApplicant: boolean;
-  togglingFlags: Set<string>;
   deletingCaseId: string | null;
   isEditingDossier: boolean;
   editedFormData: Record<string, string>;
@@ -40,14 +31,10 @@ export const StaffDossierModal: React.FC<StaffDossierModalProps> = ({
   setSelectedCaseModal,
   onClose,
   onMoveStatus,
-  onCreateApplicant,
-  onToggleEntitlement,
   onDeleteCase,
   onStartChat,
   onCopy,
   onCaseUpdated,
-  isCreatingApplicant,
-  togglingFlags,
   deletingCaseId,
   isEditingDossier,
   editedFormData,
@@ -68,68 +55,22 @@ export const StaffDossierModal: React.FC<StaffDossierModalProps> = ({
           setSelectedCaseModal={setSelectedCaseModal}
           onClose={onClose}
           onMoveStatus={onMoveStatus}
-          onCreateApplicant={onCreateApplicant}
-          onToggleEntitlement={onToggleEntitlement}
           onDeleteCase={onDeleteCase}
           onCopy={onCopy}
-          isCreatingApplicant={isCreatingApplicant}
-          togglingFlags={togglingFlags}
           isEditingDossier={isEditingDossier}
           editedFormData={editedFormData}
           startEditingDossier={startEditingDossier}
           stopEditingDossier={stopEditingDossier}
         />
 
-        {!selectedCaseModal.hasVisaService ? (
-          <div className="p-10 flex flex-col items-center justify-center text-center gap-3">
-            <div className="w-14 h-14 rounded-2xl bg-amber-50 border border-amber-200 flex items-center justify-center">
-              <Lock className="w-6 h-6 text-amber-600" />
-            </div>
-            <h4 className="text-base font-bold text-slate-900">Este cliente no ha comprado ningún servicio</h4>
-            <p className="text-sm text-slate-500 max-w-md">
-              Se registró en el portal pero todavía no ha adquirido un servicio de Visa Estudiante (F-1) o Visa Turista (B-2).
-              El expediente y los formularios se activan automáticamente en cuanto compre uno de esos servicios.
-            </p>
-          </div>
-        ) : (
-          <>
-            {/* Auto-save & Edit Notice Bar (Only visible while editing) */}
-            {isEditingDossier && (
-              <DossierToolbar
-                isEditingDossier={isEditingDossier}
-                dossierSaveStatus={dossierSaveStatus}
-                startEditingDossier={startEditingDossier}
-                stopEditingDossier={stopEditingDossier}
-              />
-            )}
-
-            {/* Modal Body: Navigation Capsules, Documents Grid & Form Sections */}
-            <div className="p-6 md:p-8 overflow-y-auto space-y-6 text-slate-900 flex-1 min-h-0 sleek-scrollbar">
-              {/* 13 Section Navigation Capsules (Full Width) */}
-              <DossierSectionNav
-                formData={isEditingDossier ? editedFormData : selectedCaseModal.formData}
-                isEditingDossier={isEditingDossier}
-                startEditingDossier={startEditingDossier}
-                stopEditingDossier={stopEditingDossier}
-              />
-
-              {/* 9 Documents Grid */}
-              <DossierDocGrid
-                selectedCaseModal={selectedCaseModal}
-                setSelectedCaseModal={setSelectedCaseModal}
-                onCaseUpdated={onCaseUpdated}
-              />
-
-              {/* 13 Form Sections */}
-              <DossierFormSections
-                selectedCaseModal={selectedCaseModal}
-                isEditingDossier={isEditingDossier}
-                editedFormData={editedFormData}
-                setEditedFormData={setEditedFormData}
-              />
-            </div>
-          </>
-        )}
+        {/* Mismas tarjetas que el cliente ve en "Mi proceso": Datos Personales + los 25 servicios */}
+        <div className="p-6 md:p-8 overflow-y-auto text-slate-900 flex-1 min-h-0 sleek-scrollbar bg-slate-50/60">
+          {selectedCaseModal.email ? (
+            <ExpedienteCards email={selectedCaseModal.email} mode="staff" request={fetch} />
+          ) : (
+            <p className="text-sm text-slate-500">Este expediente no tiene correo registrado.</p>
+          )}
+        </div>
 
         {/* Modal Footer: Live Embedded Chat with Client */}
         {selectedCaseModal.email && (

@@ -12,6 +12,7 @@ import {
   TwitterAuthProvider,
   OAuthProvider,
   onAuthStateChanged,
+  sendEmailVerification,
 } from 'firebase/auth';
 import { auth, db, isFirebaseConfigured } from '@/lib/firebase';
 import { DEV_AUTH_BYPASS } from '@/lib/dev-auth';
@@ -188,7 +189,9 @@ function LoginContent() {
       let userCredential;
       if (isRegistering) {
         userCredential = await createUserWithEmailAndPassword(auth, email, password);
-        toast.success('Cuenta creada exitosamente');
+        // Confirmar que el correo es suyo: sin verificarlo no verá datos en el portal.
+        await sendEmailVerification(userCredential.user, { url: `${window.location.origin}/portal` }).catch(() => {});
+        toast.success('Cuenta creada. Te enviamos un correo para verificar tu dirección.');
       } else {
         userCredential = await signInWithEmailAndPassword(auth, email, password);
         toast.success('Sesión iniciada correctamente');

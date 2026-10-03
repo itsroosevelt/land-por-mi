@@ -7,11 +7,19 @@ export default function StudentShowcase() {
       <div className="container mx-auto px-6 max-w-[1200px]">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16">
           <div className="lg:col-span-5">
-            <p className="text-xs font-medium uppercase tracking-[0.25em] text-gray-400 mb-4">01 · Visión y Origen</p>
-            <h2 className="font-normal tracking-tight text-black leading-[1.1]">
-              <span className="text-3xl md:text-3xl lg:text-4xl xl:text-5xl block mb-2">La Gran Colombia</span>
-              <span className="text-gray-500 text-xl md:text-2xl lg:text-3xl font-light">resurgirá</span>
-            </h2>
+            <div>
+              <p className="text-xs font-medium uppercase tracking-[0.25em] text-gray-400 mb-4">01 · Visión y Origen</p>
+              <h2 className="font-normal tracking-tight text-black leading-[1.1]">
+                <span className="text-3xl md:text-3xl lg:text-4xl xl:text-5xl block mb-2">La Gran Colombia</span>
+                <span className="text-gray-500 text-xl md:text-2xl lg:text-3xl font-light">resurgirá</span>
+              </h2>
+              <img
+                src="/icons/logo-por-mi-america-840.webp"
+                alt="Por Mí | The New Technological Republic"
+                loading="lazy"
+                className="mt-8 w-56 sm:w-64 lg:w-full lg:max-w-sm h-auto"
+              />
+            </div>
           </div>
 
           <div className="lg:col-span-7">

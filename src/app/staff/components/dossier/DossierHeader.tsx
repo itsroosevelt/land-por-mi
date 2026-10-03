@@ -6,9 +6,6 @@ import {
   Mail,
   Phone,
   Copy,
-  Plus,
-  Unlock,
-  Lock,
   User,
   Globe,
   Calendar,
@@ -26,12 +23,8 @@ interface DossierHeaderProps {
   setSelectedCaseModal: React.Dispatch<React.SetStateAction<StudentCase | null>>;
   onClose: () => void;
   onMoveStatus: (caseId: string, newStatus: StaffTabType) => void;
-  onCreateApplicant: (email: string, visaType: 'F-1' | 'B-2', name?: string) => void;
-  onToggleEntitlement: (email: string, flag: string, currentVal: boolean) => void;
   onDeleteCase: (targetCase: StudentCase) => void;
   onCopy: (text: string, label: string) => void;
-  isCreatingApplicant: boolean;
-  togglingFlags: Set<string>;
   deletingCaseId?: string | null;
   isEditingDossier?: boolean;
   editedFormData?: Record<string, string>;
@@ -104,73 +97,20 @@ const getCountryFlag = (country?: string): string => {
   return found?.flag || '🌐';
 };
 
-const calculateAge = (birthDateStr?: string): { age: number | null; display: string } => {
-  if (!birthDateStr) return { age: null, display: '' };
-  const str = birthDateStr.trim();
-  let birthDate: Date | null = null;
-
-  if (/^\d{4}[-/.]\d{1,2}[-/.]\d{1,2}$/.test(str)) {
-    const [y, m, d] = str.split(/[-/.]/).map((n) => parseInt(n, 10));
-    birthDate = new Date(y, m - 1, d);
-  } else if (/^\d{1,2}[-/.]\d{1,2}[-/.]\d{4}$/.test(str)) {
-    const [d, m, y] = str.split(/[-/.]/).map((n) => parseInt(n, 10));
-    birthDate = new Date(y, m - 1, d);
-  } else {
-    const parsed = Date.parse(str);
-    if (!isNaN(parsed)) birthDate = new Date(parsed);
-  }
-
-  if (!birthDate || isNaN(birthDate.getTime())) {
-    return { age: null, display: str };
-  }
-
-  const today = new Date();
-  let age = today.getFullYear() - birthDate.getFullYear();
-  const m = today.getMonth() - birthDate.getMonth();
-  if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
-    age--;
-  }
-
-  if (age >= 0 && age < 120) {
-    return { age, display: `${age} años` };
-  }
-  return { age: null, display: str };
-};
-
 export const DossierHeader: React.FC<DossierHeaderProps> = ({
   selectedCaseModal,
   caseModalGroup,
   setSelectedCaseModal,
   onClose,
   onMoveStatus,
-  onCreateApplicant,
-  onToggleEntitlement,
   onDeleteCase,
   onCopy,
-  isCreatingApplicant,
-  togglingFlags,
   deletingCaseId,
   isEditingDossier,
   editedFormData,
   startEditingDossier,
   stopEditingDossier,
 }) => {
-  const isStudentTab = selectedCaseModal.visaType === 'F-1';
-  const extras: { flag: string; label: string }[] = [
-    {
-      flag: isStudentTab ? 'purchased_curso_estudiante' : 'purchased_curso_turista',
-      label: 'Master Class Express',
-    },
-    {
-      flag: isStudentTab ? 'purchased_libro_estudiante' : 'purchased_libro_turista',
-      label: 'Libro Digital',
-    },
-    {
-      flag: isStudentTab ? 'purchased_recursos_estudiante' : 'purchased_recursos_turista',
-      label: 'Recursos Adicionales',
-    },
-  ];
-
   // Extract comprehensive profile details from active formData & case record
   const activeFormData = (isEditingDossier && editedFormData && Object.keys(editedFormData).length > 0)
     ? { ...(selectedCaseModal.formData || {}), ...editedFormData }
@@ -192,16 +132,12 @@ export const DossierHeader: React.FC<DossierHeaderProps> = ({
     }
   }
 
-  const birthDateRaw = activeFormData.fecha_nacimiento?.trim() || activeFormData.birth_date?.trim() || activeFormData.fecha_nac?.trim() || activeFormData.birthDate?.trim() || '';
-  const ageInfo = calculateAge(birthDateRaw);
   const flagEmoji = country ? getCountryFlag(country) : '🌐';
 
   // Calculate active cards statistics for this client's portal
   const currentGroupList = caseModalGroup.length > 0 ? caseModalGroup : [selectedCaseModal];
   const activeCards = currentGroupList.filter(c => c.hasVisaService !== false);
   const totalCardsCount = activeCards.length;
-  const f1CardsCount = activeCards.filter(c => c.visaType === 'F-1').length;
-  const b2CardsCount = activeCards.filter(c => c.visaType === 'B-2').length;
 
   // Extract display name for every card in the expediente, joined with " | "
   const cardsForHeader = activeCards.length > 0 ? activeCards : currentGroupList;
@@ -314,17 +250,6 @@ export const DossierHeader: React.FC<DossierHeaderProps> = ({
                   </span>
                 </span>
 
-                {/* 4. Edad / Fecha de Nacimiento */}
-                <span className="flex items-center gap-1.5 font-normal text-slate-600">
-                  <Calendar className="w-3.5 h-3.5 text-amber-600 shrink-0" />
-                  <span className={(ageInfo.display || birthDateRaw) ? 'text-slate-700' : 'text-slate-400 italic'}>
-                    {ageInfo.display
-                      ? `Edad: ${ageInfo.display}`
-                      : birthDateRaw
-                      ? `Nacimiento: ${birthDateRaw}`
-                      : 'Sin edad registrada'}
-                  </span>
-                </span>
               </div>
             </div>
 
@@ -348,66 +273,6 @@ export const DossierHeader: React.FC<DossierHeaderProps> = ({
                 </select>
               </div>
 
-              {/* Two buttons to create cards with card count in parentheses */}
-              <button
-                type="button"
-                onClick={() => onCreateApplicant(selectedCaseModal.email, 'F-1', selectedCaseModal.name)}
-                disabled={isCreatingApplicant || !selectedCaseModal.email}
-                className="h-8 px-3 rounded-full text-xs font-semibold text-blue-700 hover:text-blue-900 bg-blue-50 hover:bg-blue-100 border border-blue-200 flex items-center gap-1.5 disabled:opacity-50 cursor-pointer shadow-2xs transition-colors shrink-0"
-                title="Crear tarjeta F-1 para este cliente en su portal (/portal/proceso)"
-              >
-                <Plus className="w-3.5 h-3.5 text-blue-600" />
-                <span>Tarjeta F-1 ({f1CardsCount})</span>
-              </button>
-              
-              <button
-                type="button"
-                onClick={() => onCreateApplicant(selectedCaseModal.email, 'B-2', selectedCaseModal.name)}
-                disabled={isCreatingApplicant || !selectedCaseModal.email}
-                className="h-8 px-3 rounded-full text-xs font-semibold text-indigo-700 hover:text-indigo-900 bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 flex items-center gap-1.5 disabled:opacity-50 cursor-pointer shadow-2xs transition-colors shrink-0"
-                title="Crear tarjeta B-2 para este cliente en su portal (/portal/proceso)"
-              >
-                <Plus className="w-3.5 h-3.5 text-indigo-600" />
-                <span>Tarjeta B-2 ({b2CardsCount})</span>
-              </button>
-
-              <span className="w-px h-4 bg-slate-300 mx-0.5 shrink-0" />
-
-              {extras.map((product) => {
-                const unlocked = Boolean(selectedCaseModal.entitlements?.[product.flag]);
-                const isToggling = togglingFlags.has(product.flag);
-                return (
-                  <button
-                    key={product.flag}
-                    type="button"
-                    onClick={() => onToggleEntitlement(selectedCaseModal.email, product.flag, !unlocked)}
-                    disabled={!selectedCaseModal.email || isToggling}
-                    className={`h-8 px-3 rounded-full text-xs font-medium flex items-center gap-1.5 border transition-all cursor-pointer disabled:cursor-not-allowed shadow-2xs shrink-0 ${
-                      isToggling
-                        ? 'bg-slate-100 border-slate-200 text-slate-400 opacity-70'
-                        : unlocked
-                        ? 'bg-emerald-50 border-emerald-300 text-emerald-800 hover:bg-emerald-100 hover:border-emerald-400'
-                        : 'bg-slate-50 border-slate-200 text-slate-600 hover:bg-slate-100 hover:border-slate-300 disabled:opacity-50'
-                    }`}
-                    title={
-                      selectedCaseModal.email
-                        ? unlocked
-                          ? `Desbloqueado. Clic para bloquear "${product.label}"`
-                          : `Bloqueado. Clic para desbloquear "${product.label}"`
-                        : 'Este cliente no tiene correo registrado aún'
-                    }
-                  >
-                    {isToggling ? (
-                      <span className="w-3.5 h-3.5 shrink-0 rounded-full border-2 border-slate-300 border-t-slate-600 animate-spin" />
-                    ) : unlocked ? (
-                      <Unlock className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                    ) : (
-                      <Lock className="w-3.5 h-3.5 text-slate-400 shrink-0" />
-                    )}
-                    <span>{product.label}</span>
-                  </button>
-                );
-              })}
             </div>
           </div>
         </div>
@@ -429,7 +294,8 @@ export const DossierHeader: React.FC<DossierHeaderProps> = ({
         </div>
       </div>
 
-      {/* Process Tabs Bar: Shows ONLY active cards (if 0 cards, renders zero tabs) */}
+      {/* Barra de tarjetas (modelo anterior de visas): solo se muestra si el cliente tiene tarjetas */}
+      {activeCards.length > 0 && (
       <div className="px-5 md:px-6 pt-2 pb-1 bg-slate-100/90 border-b border-slate-200 shrink-0 flex items-center justify-between gap-3 overflow-x-auto no-scrollbar">
         <div className="flex items-center gap-2 flex-nowrap shrink-0">
           <span className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider mr-1 shrink-0 flex items-center gap-1.5">
@@ -509,6 +375,7 @@ export const DossierHeader: React.FC<DossierHeaderProps> = ({
           )}
         </div>
       </div>
+      )}
     </>
   );
 };

@@ -1,3 +1,4 @@
+import { requirePortalAccess } from '@/backend/auth/portal-user';
 import { NextRequest, NextResponse } from 'next/server';
 import { findPaidSessionsForItems } from '@/backend/payments/stripe';
 import { unlockPurchasesByEmail, PURCHASE_FIELD_BY_ITEM } from '@/backend/payments/unlock-purchase';
@@ -13,6 +14,9 @@ export async function POST(request: NextRequest) {
     if (!email.includes('@')) {
       return NextResponse.json({ error: 'Valid email is required' }, { status: 400 });
     }
+    // Solo el propio cliente (correo verificado) o el staff pueden consultar las compras de un correo.
+    const denied = await requirePortalAccess(request, email);
+    if (denied) return denied;
 
     const validItemIds: string[] = Array.from(
       new Set(itemIds.filter((id): id is string => typeof id === 'string' && Boolean(PURCHASE_FIELD_BY_ITEM[id])))

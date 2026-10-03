@@ -6,6 +6,8 @@ import { isStaffRequest } from '@/backend/auth/staff-session';
 export interface PortalUser {
   uid: string;
   email: string; // en minúsculas
+  /** true si el correo está verificado (Google lo verifica; correo/contraseña requiere confirmar el enlace) */
+  emailVerified: boolean;
 }
 
 /**
@@ -18,7 +20,11 @@ export async function getPortalUser(request: NextRequest): Promise<PortalUser | 
   if (!match || !adminAuth) return null;
   try {
     const decoded = await adminAuth.verifyIdToken(match[1]);
-    return { uid: decoded.uid, email: (decoded.email || '').toLowerCase().trim() };
+    return {
+      uid: decoded.uid,
+      email: (decoded.email || '').toLowerCase().trim(),
+      emailVerified: decoded.email_verified === true,
+    };
   } catch {
     return null;
   }
@@ -44,6 +50,13 @@ export async function requirePortalAccess(
   if (isStaffRequest(request)) return null;
   const user = await getPortalUser(request);
   if (!user) return portalUnauthorized();
+  // Sin correo verificado no se entregan datos: evita que alguien se registre con el correo de otra persona.
+  if (!user.emailVerified) {
+    return NextResponse.json(
+      { error: 'Verifica tu correo electrónico para acceder a tus datos.', code: 'email_not_verified' },
+      { status: 403 }
+    );
+  }
   if (email && user.email !== email.toLowerCase().trim()) return portalForbidden();
   return null;
 }

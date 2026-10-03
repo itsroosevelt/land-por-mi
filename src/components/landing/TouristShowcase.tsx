@@ -12,6 +12,12 @@ export default function TouristShowcase() {
                             <span className="text-3xl md:text-4xl lg:text-5xl block mb-2">Una alianza</span>
                             <span className="text-gray-500 text-xl md:text-2xl lg:text-3xl font-light">con los Estados Unidos</span>
                         </h2>
+                        <img
+                            src="/assets/gran-colombia/gran-colombia-alianza.webp"
+                            alt="La Gran Colombia"
+                            loading="lazy"
+                            className="mt-8 w-56 sm:w-64 lg:w-full lg:max-w-sm h-auto"
+                        />
                     </div>
 
                     <div className="lg:col-span-7">

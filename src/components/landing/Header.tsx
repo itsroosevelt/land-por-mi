@@ -102,7 +102,7 @@ export default function Header() {
           <div className="flex items-center gap-4 lg:gap-12 h-full">
             <Link href="/" className="flex items-center gap-2.5 z-50 shrink-0 group">
               <div className="relative w-8 h-8 overflow-hidden rounded-full bg-black shadow-[0_0_20px_rgba(255,255,255,0.08)] transition-transform duration-300 group-hover:scale-110">
-                <img src="/icons/logo-por-mi.webp" alt="Por mí" className="w-full h-full object-cover object-center" />
+                <img src="/icons/logo-por-mi-america.webp" alt="Por mí" className="w-full h-full object-cover object-center" />
               </div>
               <span className="text-lg font-semibold tracking-tighter text-white group-hover:text-white transition-colors">POR MÍ</span>
             </Link>

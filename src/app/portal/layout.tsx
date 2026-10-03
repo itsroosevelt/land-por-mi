@@ -51,6 +51,7 @@ import {
 import PortalSidebar from "./components/PortalSidebar";
 import PortalLiveChat from "@/components/portal/PortalLiveChat";
 import { toast } from "sonner";
+import VerifyEmailScreen from './components/VerifyEmailScreen';
 
 const IS_DEV = process.env.NODE_ENV === 'development';
 
@@ -233,6 +234,11 @@ function PortalLayoutContent({ children }: { children: React.ReactNode }) {
 
   if (!user) return null;
 
+  // Registrados con correo y contraseña deben confirmar su correo antes de ver datos (Google ya viene verificado).
+  if (user.email && user.emailVerified === false) {
+    return <VerifyEmailScreen user={user} />;
+  }
+
   const userInitials = user.displayName
     ? user.displayName.split(' ').filter(Boolean).map((n: string) => n[0]).join('').toUpperCase().slice(0, 2)
     : user.email ? user.email.slice(0, 2).toUpperCase() : "UD";
@@ -268,7 +274,7 @@ function PortalLayoutContent({ children }: { children: React.ReactNode }) {
           </button>
           <Link href="/" className="flex items-center gap-2">
             <div className="w-6 h-6 relative shrink-0">
-              <img src="/icons/logo-por-mi.webp" alt="Por mí" className="object-contain w-full h-full" />
+              <img src="/icons/logo-por-mi-america.webp" alt="Por mí" className="object-contain w-full h-full" />
             </div>
             <span className="font-bold text-sm text-slate-900 tracking-tight">Portal</span>
           </Link>

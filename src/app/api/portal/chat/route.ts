@@ -1,3 +1,4 @@
+import { emailKey } from '@/backend/auth/email-key';
 import { isStaffRequest } from '@/backend/auth/staff-session';
 import { requirePortalAccess } from '@/backend/auth/portal-user';
 import { NextRequest, NextResponse } from 'next/server';
@@ -24,7 +25,7 @@ export async function GET(req: NextRequest) {
     const denied = await requirePortalAccess(req, email);
     if (denied) return denied;
 
-    const cleanEmail = email.toLowerCase().replace(/[^a-zA-Z0-9]/g, '_');
+    const cleanEmail = emailKey(email);
     const docId = `chat_${cleanEmail}`;
 
     if (!db) {
@@ -80,7 +81,7 @@ export async function POST(req: NextRequest) {
     const denied = await requirePortalAccess(req, clientEmail);
     if (denied) return denied;
 
-    const cleanEmail = clientEmail.toLowerCase().replace(/[^a-zA-Z0-9]/g, '_');
+    const cleanEmail = emailKey(clientEmail);
     const docId = `chat_${cleanEmail}`;
 
     const newMessage: ChatMessage = {

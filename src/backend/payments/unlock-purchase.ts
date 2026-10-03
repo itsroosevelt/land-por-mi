@@ -1,3 +1,4 @@
+import { emailKey } from '@/backend/auth/email-key';
 import { requireAdminDb } from '@/backend/firebase/admin';
 import { PRODUCT_CATALOG } from '@/lib/payments/product-catalog';
 
@@ -90,7 +91,7 @@ export function normalizePurchaseEmail(email: string) {
 }
 
 export function pendingPurchaseDocId(email: string) {
-  return normalizePurchaseEmail(email).replace(/[^a-z0-9]/g, '_');
+  return emailKey(normalizePurchaseEmail(email));
 }
 
 export function buildUnlockUpdates(itemIds: string[]) {

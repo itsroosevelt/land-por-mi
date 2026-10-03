@@ -19,10 +19,22 @@ import {
   Gift,
   Sparkles,
   Radio,
+  Users,
+  ChevronDown,
 } from 'lucide-react';
 import React, { useState, useEffect } from 'react';
 import { usePortal, cartItemsConfig } from '../PortalContext';
 import { Button } from '@/components/ui/button';
+
+// Redes de la comunidad Por Mí (botón "Comunidad" de la barra lateral).
+const COMMUNITY_SOCIALS = [
+  { label: 'WhatsApp', imgSrc: '/assets/w.jpg', href: 'https://chat.whatsapp.com/CAeBvhShHLC7VyBy8yZzVk' },
+  { label: 'Instagram', imgSrc: '/assets/i.jpg', href: 'https://www.instagram.com/itspormi' },
+  { label: 'Facebook', imgSrc: '/assets/f.jpg', href: 'https://www.facebook.com/itspormi' },
+  { label: 'TikTok', imgSrc: '/assets/t.jpg', href: 'https://www.tiktok.com/@itspormi' },
+  { label: 'YouTube', imgSrc: '/assets/y.jpg', href: 'https://www.youtube.com/@itspormi' },
+  { label: 'X', imgSrc: '/assets/x.jpg', href: 'https://x.com/itspormi' },
+];
 
 interface PortalSidebarProps {
   activeTopSection?: string;
@@ -40,6 +52,7 @@ export default function PortalSidebar({
   isMobileOpen,
   onCloseMobile,
 }: PortalSidebarProps) {
+  const [isCommunityOpen, setIsCommunityOpen] = useState(false);
   const {
     user,
     cart,
@@ -121,7 +134,7 @@ export default function PortalSidebar({
           <div className="flex md:hidden items-center justify-between mb-3 pb-3 border-b border-slate-100 px-2">
             <Link href="/" className="flex items-center gap-2 cursor-pointer" onClick={onCloseMobile}>
               <div className="w-7 h-7 relative shrink-0 overflow-hidden rounded-full bg-black/5">
-                <img src="/icons/logo-por-mi.webp" alt="Por mí" className="w-full h-full object-cover object-center" />
+                <img src="/icons/logo-por-mi-america.webp" alt="Por mí" className="w-full h-full object-cover object-center" />
               </div>
               <span className="text-sm font-bold tracking-tight text-black leading-tight">Por Mí | The New Technological Republic</span>
             </Link>
@@ -146,7 +159,7 @@ export default function PortalSidebar({
               </button>
               <Link href="/" title="Por mí" className="w-7 h-7 relative cursor-pointer group overflow-hidden rounded-full bg-black/5">
                 <img
-                  src="/icons/logo-por-mi.webp"
+                  src="/icons/logo-por-mi-america.webp"
                   alt="Por mí"
                   className="w-full h-full object-cover object-center group-hover:scale-110 transition-transform"
                 />
@@ -157,7 +170,7 @@ export default function PortalSidebar({
               <Link href="/" className="flex items-center gap-2 cursor-pointer group">
                 <div className="w-7 h-7 relative shrink-0 overflow-hidden rounded-full bg-black/5">
                   <img
-                    src="/icons/logo-por-mi.webp"
+                    src="/icons/logo-por-mi-america.webp"
                     alt="Por mí"
                     className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform"
                   />
@@ -245,6 +258,47 @@ export default function PortalSidebar({
           <Calendar className="w-4 h-4 shrink-0 text-black group-hover:text-blue-600 transition-colors" />
           {!isSidebarCollapsed && <span>Agendar Videollamada</span>}
         </a>
+
+        {/* Comunidad: al hacer clic se despliegan las redes sociales */}
+        <button
+          type="button"
+          onClick={() => {
+            if (isSidebarCollapsed && onToggleSidebar) {
+              onToggleSidebar();
+              setIsCommunityOpen(true);
+            } else {
+              setIsCommunityOpen((open) => !open);
+            }
+          }}
+          title={isSidebarCollapsed ? 'Comunidad' : undefined}
+          aria-expanded={isCommunityOpen}
+          className={`${linkClass(false)} w-full text-left`}
+        >
+          <Users className="w-4 h-4 shrink-0 text-black group-hover:text-blue-600 transition-colors" />
+          {!isSidebarCollapsed && (
+            <>
+              <span className="flex-1">Comunidad</span>
+              <ChevronDown className={`w-3.5 h-3.5 shrink-0 text-slate-500 transition-transform ${isCommunityOpen ? 'rotate-180' : ''}`} />
+            </>
+          )}
+        </button>
+        {isCommunityOpen && !isSidebarCollapsed && (
+          <div className="grid grid-cols-3 gap-2 px-2 pb-2">
+            {COMMUNITY_SOCIALS.map((social) => (
+              <a
+                key={social.label}
+                href={social.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                title={social.label}
+                className="flex flex-col items-center gap-1 p-2 rounded-xl hover:bg-slate-100 transition-colors"
+              >
+                <img src={social.imgSrc} alt={social.label} className="w-8 h-8 rounded-lg object-cover" />
+                <span className="text-[10px] text-slate-500">{social.label}</span>
+              </a>
+            ))}
+          </div>
+        )}
 
         <a
           href="https://itspormi.com"

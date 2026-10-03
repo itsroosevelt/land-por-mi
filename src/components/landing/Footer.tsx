@@ -38,7 +38,7 @@ const Footer = () => {
             </p>
             <div className="mt-8">
               <div className="w-16 h-16 overflow-hidden rounded-full bg-black mb-4">
-                <img src="/icons/logo-por-mi.webp" loading="lazy" alt="Por Mí | The New Technological Republic" className="w-full h-full object-cover object-center" />
+                <img src="/icons/logo-por-mi-america.webp" loading="lazy" alt="Por Mí | The New Technological Republic" className="w-full h-full object-cover object-center" />
               </div>
               <p className="text-gray-500 text-sm">
                 Por Mí | The New Technological Republic.
