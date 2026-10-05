@@ -74,7 +74,7 @@ export default function FreeTrainingShowcase() {
                         {services.map((service) => (
                             <div
                                 key={service}
-                                className="px-4 py-3 rounded-2xl border border-black/10 bg-black/[0.02] text-sm font-medium text-black"
+                                className="flex items-center justify-center lg:justify-start text-center lg:text-left min-h-[3.25rem] px-3 sm:px-4 py-3 rounded-2xl border border-black/10 bg-black/[0.02] text-[13px] sm:text-sm font-medium text-black leading-snug"
                             >
                                 {service}
                             </div>
@@ -82,7 +82,7 @@ export default function FreeTrainingShowcase() {
                     </div>
 
                     {/* Dos caminos */}
-                    <div className="mt-10 grid grid-cols-1 md:grid-cols-2 gap-4 w-full max-w-4xl text-left">
+                    <div className="mt-10 grid grid-cols-1 md:grid-cols-2 gap-4 w-full max-w-4xl text-center lg:text-left">
                         <div className="p-6 rounded-3xl border border-black/10">
                             <p className="text-xs font-medium uppercase tracking-[0.25em] text-gray-400 mb-2">Hazlo tú mismo</p>
                             <p className="text-gray-600 text-base leading-[1.7] font-light">
@@ -110,7 +110,7 @@ export default function FreeTrainingShowcase() {
                     <Link
                         href="/login?register=true"
                         onClick={() => sendMetaEvent('Lead', { source: 'FreeTrainingShowcase: Ingresa a la plataforma Por Mí' })}
-                        className="mt-10 inline-flex items-center justify-center px-8 py-3 bg-transparent border border-black text-black rounded-full hover:bg-gradient-to-r hover:from-blue-700 hover:to-blue-500 hover:border-blue-600 hover:text-white transition-all duration-300 hover:scale-105 hover:shadow-lg text-sm md:text-base font-medium"
+                        className="mt-10 w-full sm:w-auto inline-flex items-center justify-center px-8 py-3.5 sm:py-3 bg-transparent border border-black text-black rounded-full hover:bg-gradient-to-r hover:from-blue-700 hover:to-blue-500 hover:border-blue-600 hover:text-white transition-all duration-300 hover:scale-105 hover:shadow-lg text-sm md:text-base font-medium"
                     >
                         Ingresa a la plataforma Por Mí
                     </Link>

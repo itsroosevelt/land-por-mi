@@ -60,7 +60,7 @@ function TiendaContent() {
       <Header />
 
       {/* Encabezado */}
-      <section className="bg-black text-white pt-32 pb-8 md:pt-40 md:pb-10 px-6 text-center">
+      <section className="bg-black text-white pt-28 pb-6 md:pt-40 md:pb-10 px-6 text-center">
         <p className="text-xs font-medium uppercase tracking-[0.25em] text-gray-400 mb-4">Tienda · Por Mí</p>
         <h1 className="text-4xl md:text-5xl font-medium tracking-tighter leading-[1.05]">
           Servicios para tu{" "}
@@ -72,7 +72,7 @@ function TiendaContent() {
         </p>
       </section>
 
-      <main className="max-w-[1500px] mx-auto px-4 sm:px-6 py-12 md:py-16 pb-40">
+      <main className="max-w-[1500px] mx-auto px-4 sm:px-6 pt-8 md:pt-16 pb-48 md:pb-40">
         {stripeStatus === "success" && (
           <div className="mb-8 flex items-start gap-3 rounded-2xl border border-emerald-500/30 bg-emerald-500/10 p-4 text-emerald-300">
             <CheckCircle2 className="w-5 h-5 shrink-0 mt-0.5" />
@@ -92,11 +92,11 @@ function TiendaContent() {
         <div className="space-y-14">
         {PORTAL_SERVICE_SECTIONS.map((section) => (
         <section key={section.title} className="space-y-5">
-          <div>
+          <div className="text-center sm:text-left">
             <h2 className="text-xl md:text-2xl font-medium tracking-tight text-white">{section.title}</h2>
             <p className="text-sm text-gray-400 mt-1">{section.subtitle}</p>
           </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-5 items-stretch">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 sm:gap-5 items-stretch">
           {section.services.map((service) => {
             const Icon = service.icon;
             const inCart = cart.includes(service.id);
@@ -178,7 +178,7 @@ function TiendaContent() {
 
       {/* Carrito flotante */}
       {cart.length > 0 && (
-        <div className="fixed bottom-0 inset-x-0 z-40 p-3 sm:p-4">
+        <div className="fixed bottom-0 inset-x-0 z-40 p-3 sm:p-4 pb-[max(0.75rem,env(safe-area-inset-bottom))]">
           <div className="max-w-3xl mx-auto bg-white border border-slate-200 rounded-3xl shadow-2xl p-4 sm:p-5">
             <div className="flex items-start justify-between gap-4">
               <div className="min-w-0">
@@ -186,11 +186,11 @@ function TiendaContent() {
                   <ShoppingCart className="w-4 h-4 text-blue-600" />
                   {cart.length} {cart.length === 1 ? "servicio" : "servicios"} en tu carrito
                 </p>
-                <div className="mt-2 flex flex-wrap gap-1.5">
+                <div className="mt-2 flex flex-nowrap sm:flex-wrap gap-1.5 overflow-x-auto no-scrollbar max-w-[calc(100vw-10rem)] sm:max-w-none">
                   {cartServices.map((s) => (
-                    <span key={s.id} className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-slate-100 text-[11px] text-slate-700">
+                    <span key={s.id} className="shrink-0 whitespace-nowrap inline-flex items-center gap-1 px-2 py-1 sm:py-0.5 rounded-full bg-slate-100 text-[11px] text-slate-700">
                       {s.name}
-                      <button type="button" onClick={() => toggleCart(s)} aria-label={`Quitar ${s.name}`} className="text-slate-400 hover:text-slate-700">
+                      <button type="button" onClick={() => toggleCart(s)} aria-label={`Quitar ${s.name}`} className="text-slate-400 hover:text-slate-700 p-0.5 -m-0.5">
                         <X className="w-3 h-3" />
                       </button>
                     </span>

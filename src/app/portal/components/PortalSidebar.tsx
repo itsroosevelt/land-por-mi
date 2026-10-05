@@ -116,7 +116,7 @@ export default function PortalSidebar({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/60 z-40 md:hidden backdrop-blur-sm"
+            className="fixed inset-0 bg-black/60 z-40 lg:hidden backdrop-blur-sm"
             onClick={onCloseMobile}
           />
         )}
@@ -124,14 +124,14 @@ export default function PortalSidebar({
 
       <aside
         className={`shrink-0 fixed z-40 flex flex-col justify-between bg-white border border-slate-200 rounded-3xl p-3 md:p-4 shadow-[0_10px_35px_rgba(0,0,0,0.06)] text-black overflow-y-auto no-scrollbar transition-all duration-300
-          top-[12px] bottom-[12px] left-[12px] w-[calc(100vw-24px)] max-w-[320px] md:top-[18px] md:bottom-auto md:left-[18px] md:h-[calc(100vh-36px)]
-          ${isMobileOpen ? 'translate-x-0 shadow-2xl' : '-translate-x-[calc(100%+24px)] md:translate-x-0'}
-          ${isSidebarCollapsed ? 'md:w-20' : 'md:w-80'}
+          top-[12px] bottom-[12px] left-[12px] w-[calc(100vw-24px)] max-w-[320px] lg:top-[18px] lg:bottom-auto lg:left-[18px] lg:h-[calc(100vh-36px)]
+          ${isMobileOpen ? 'translate-x-0 shadow-2xl' : '-translate-x-[calc(100%+24px)] lg:translate-x-0'}
+          ${isSidebarCollapsed ? 'lg:w-20' : 'lg:w-80'}
         `}
       >
         <div className="flex flex-col gap-2">
           {/* Mobile Header with close button */}
-          <div className="flex md:hidden items-center justify-between mb-3 pb-3 border-b border-slate-100 px-2">
+          <div className="flex lg:hidden items-center justify-between mb-3 pb-3 border-b border-slate-100 px-2">
             <Link href="/" className="flex items-center gap-2 cursor-pointer" onClick={onCloseMobile}>
               <div className="w-7 h-7 relative shrink-0 overflow-hidden rounded-full bg-black/5">
                 <img src="/icons/logo-por-mi-america.webp" alt="Por mí" className="w-full h-full object-cover object-center" />
@@ -149,7 +149,7 @@ export default function PortalSidebar({
 
           {/* Desktop/Tablet Header with Por mí Logo & Hamburger Toggle */}
           {isSidebarCollapsed ? (
-            <div className="hidden md:flex flex-col items-center gap-3 mb-4 pb-3 border-b border-slate-100 px-1">
+            <div className="hidden lg:flex flex-col items-center gap-3 mb-4 pb-3 border-b border-slate-100 px-1">
               <button
                 onClick={onToggleSidebar}
                 className="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-black border border-slate-200 transition-all duration-200 cursor-pointer flex items-center justify-center shadow-sm"
@@ -166,7 +166,7 @@ export default function PortalSidebar({
               </Link>
             </div>
           ) : (
-            <div className="hidden md:flex items-center justify-between mb-4 pb-3 border-b border-slate-100 px-2">
+            <div className="hidden lg:flex items-center justify-between mb-4 pb-3 border-b border-slate-100 px-2">
               <Link href="/" className="flex items-center gap-2 cursor-pointer group">
                 <div className="w-7 h-7 relative shrink-0 overflow-hidden rounded-full bg-black/5">
                   <img

@@ -5,8 +5,8 @@ export default function MentorshipShowcase() {
     return (
         <section id="america" className="py-12 md:py-16 lg:py-20 bg-white text-black overflow-hidden font-sans">
             <div className="container mx-auto px-6 max-w-[1200px]">
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16">
-                    <div className="lg:col-span-5">
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 md:gap-12 lg:gap-16">
+                    <div className="lg:col-span-5 text-center lg:text-left">
                         <p className="text-xs font-medium uppercase tracking-[0.25em] text-gray-400 mb-4">03 · Toda América somos Uno</p>
                         <h2 className="font-normal tracking-tight text-black leading-[1.1]">
                             <span className="text-3xl md:text-3xl lg:text-4xl xl:text-5xl block mb-2 font-medium">Bienvenidos a</span>
@@ -14,7 +14,7 @@ export default function MentorshipShowcase() {
                         </h2>
                     </div>
 
-                    <div className="lg:col-span-7">
+                    <div className="lg:col-span-7 text-center lg:text-left max-w-2xl mx-auto lg:max-w-none lg:mx-0">
                         <p className="text-gray-600 text-base leading-[1.7] font-light">
                             Te invitamos a olvidar las barreras entre países que nos han puesto los políticos, a poner la mano
                             en el corazón y a pensar en la humanidad. Ayudaremos a quien sea, venga del país que venga: para

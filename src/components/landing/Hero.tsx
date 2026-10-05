@@ -108,13 +108,13 @@ export default function Hero({ onStartQuote }: HeroProps) {
             </p>
 
             {/* Título Principal */}
-            <h1 className="text-[2.7rem] sm:text-[3.2rem] md:text-[4.2rem] font-medium leading-[1.02] text-white tracking-tighter">
+            <h1 className="text-[2.35rem] min-[400px]:text-[2.7rem] sm:text-[3.2rem] md:text-[4.2rem] font-medium leading-[1.02] text-white tracking-tighter">
               The New <br />
               Technological Republic
             </h1>
 
             <div className="pt-1">
-              <p className="text-gray-300 text-xs sm:text-sm md:text-base font-medium tracking-tight max-w-2xl mx-auto">
+              <p className="text-gray-200 md:text-gray-300 text-sm md:text-base leading-relaxed md:leading-normal font-medium tracking-tight max-w-xl md:max-w-2xl mx-auto">
                 Comunidad occidental que brinda productos y servicios accesibles a emprendedores y empresarios de toda Latinoamérica, respaldados por inteligencia artificial, tecnología y finanzas descentralizadas creadas en los Estados Unidos. Esta comunidad tiene como objetivo unir con tecnología lo que las barreras políticas no lograron unir por años.
               </p>
             </div>

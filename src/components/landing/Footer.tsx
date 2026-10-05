@@ -28,16 +28,16 @@ const linkClass = "hover:text-white transition-colors";
 
 const Footer = () => {
   return (
-    <footer className="bg-black text-white pt-24 pb-8">
-      <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 md:grid-cols-5 gap-12">
+    <footer className="bg-black text-white pt-16 lg:pt-24 pb-8">
+      <div className="container mx-auto px-6 lg:px-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-x-10 gap-y-12 lg:gap-12 text-center sm:text-left">
           {/* Marca */}
-          <div className="md:col-span-1">
-            <p className="text-white text-2xl font-medium tracking-tight">
+          <div className="sm:col-span-2 lg:col-span-1">
+            <p className="text-white text-xl sm:text-2xl font-medium tracking-tight max-w-md mx-auto sm:mx-0">
               Conectamos personas. Creamos oportunidades. Construimos prosperidad.
             </p>
             <div className="mt-8">
-              <div className="w-16 h-16 overflow-hidden rounded-full bg-black mb-4">
+              <div className="w-16 h-16 overflow-hidden rounded-full bg-black mb-4 mx-auto sm:mx-0">
                 <img src="/icons/logo-por-mi-america.webp" loading="lazy" alt="Por Mí | The New Technological Republic" className="w-full h-full object-cover object-center" />
               </div>
               <p className="text-gray-500 text-sm">
@@ -51,7 +51,7 @@ const Footer = () => {
           </div>
 
           {/* La República + Legal */}
-          <div className="mb-24">
+          <div className="lg:mb-24">
             <h4 className="font-medium mb-3 text-sm text-slate-200">The New Technological Republic</h4>
             <ul className="text-gray-400 space-y-2 text-sm mb-4">
               <li><Link href="/#vision" className={linkClass}>La Gran Colombia resurgirá</Link></li>
@@ -60,7 +60,7 @@ const Footer = () => {
               <li><Link href="/#faqs" className={linkClass}>Preguntas Frecuentes</Link></li>
             </ul>
 
-            <h4 className="font-medium mt-16 mb-3 text-sm text-slate-200">Legal</h4>
+            <h4 className="font-medium mt-10 lg:mt-16 mb-3 text-sm text-slate-200">Legal</h4>
             <ul className="text-gray-400 space-y-2 text-sm">
               <li><Link href="/privacidad" className={linkClass}>Política de Privacidad</Link></li>
               <li><Link href="/terminos" className={linkClass}>Términos y Condiciones</Link></li>
@@ -68,7 +68,7 @@ const Footer = () => {
           </div>
 
           {/* Servicios + Contacto */}
-          <div className="mb-24">
+          <div className="lg:mb-24">
             <h4 className="font-medium mb-3 text-sm text-slate-200">Servicios para tu Empresa</h4>
             <ul className="text-gray-400 space-y-2 text-sm">
               <li><Link href="/#servicios" className={linkClass}>Creación de tu empresa</Link></li>
@@ -78,7 +78,7 @@ const Footer = () => {
               <li><Link href="/tienda" className={linkClass}>Tienda</Link></li>
             </ul>
 
-            <h4 className="font-medium mt-16 mb-3 text-sm text-slate-200">Contacto</h4>
+            <h4 className="font-medium mt-10 lg:mt-16 mb-3 text-sm text-slate-200">Contacto</h4>
             <ul className="text-gray-400 space-y-2 text-sm mt-auto">
               <li className="flex flex-col gap-1.5 text-xs">
                 <span className="block">
@@ -129,7 +129,7 @@ const Footer = () => {
               <li><Link href="/#planes" className={linkClass}>Todos los países</Link></li>
             </ul>
 
-            <h4 className="font-medium mt-16 mb-3 text-sm text-slate-200">Plataforma Por Mí</h4>
+            <h4 className="font-medium mt-10 lg:mt-16 mb-3 text-sm text-slate-200">Plataforma Por Mí</h4>
             <ul className="text-gray-400 space-y-2 text-sm">
               <li><Link href="/login?register=true" className={`${linkClass} font-medium text-white`}>Ingresa a la plataforma</Link></li>
               <li><Link href="/portal/streaming" className={linkClass}>Por Mí Streaming</Link></li>
@@ -139,7 +139,7 @@ const Footer = () => {
           {/* Síguenos */}
           <div>
             <h4 className="font-medium mb-3 text-sm text-slate-200">Síguenos</h4>
-            <div className="flex flex-wrap gap-4">
+            <div className="flex flex-wrap justify-center sm:justify-start gap-4">
               {socials.map((social) => (
                 <a
                   key={social.label}
@@ -157,15 +157,15 @@ const Footer = () => {
         </div>
 
         {/* Footer Bottom */}
-        <div className="items-center flex mt-20 flex-col md:flex-row gap-4">
+        <div className="items-center flex mt-14 lg:mt-20 pt-8 lg:pt-0 border-t border-white/10 lg:border-0 flex-col lg:flex-row gap-4">
           <Link href="/" className="text-white text-lg font-semibold hover:text-white transition-colors tracking-tighter shrink-0">POR MÍ</Link>
-          <div className="flex justify-center space-x-6 w-full flex-wrap">
+          <div className="flex justify-center gap-x-6 gap-y-2 w-full flex-wrap">
             <Link href="/#vision" className="text-gray-400 hover:text-white transition-colors text-xs">The New Technological Republic</Link>
             <Link href="/tienda" className="text-gray-400 hover:text-white transition-colors text-xs">Tienda</Link>
             <Link href="/privacidad" className="text-gray-400 hover:text-white transition-colors text-xs">Privacidad</Link>
             <Link href="/terminos" className="text-gray-400 hover:text-white transition-colors text-xs">Términos</Link>
           </div>
-          <div className="text-gray-600 text-[10px] w-full text-center md:text-right">
+          <div className="text-gray-600 text-[10px] w-full text-center lg:text-right">
             © {new Date().getFullYear()} Luxor Intelligence LLC. All rights reserved.
           </div>
         </div>

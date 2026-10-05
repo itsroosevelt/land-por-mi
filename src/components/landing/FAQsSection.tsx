@@ -112,18 +112,18 @@ export default function FAQsSection() {
       <div className="container mx-auto px-6 md:px-12 max-w-5xl relative z-10">
         
         {/* Header */}
-        <div className="mb-16 text-center flex flex-col items-center">
+        <div className="mb-10 md:mb-16 text-center flex flex-col items-center">
           <h2 className="text-3xl md:text-5xl font-medium tracking-tight mb-4 text-white">
             Tus dudas resueltas <br className="hidden md:inline" />
             <span className="text-gray-400">de forma directa</span>
           </h2>
-          <p className="text-lg text-gray-400 font-normal leading-relaxed max-w-2xl mx-auto">
+          <p className="text-base md:text-lg text-gray-400 font-normal leading-relaxed max-w-2xl mx-auto">
             Todo sobre The New Technological Republic, la comunidad, nuestros servicios y la plataforma Por Mí. Transparencia total desde el primer momento.
           </p>
         </div>
 
         {/* Category Pills (Filtros) */}
-        <div className="flex flex-wrap items-center justify-center gap-2.5 mb-12">
+        <div className="flex flex-nowrap sm:flex-wrap items-center justify-start sm:justify-center gap-2.5 mb-10 md:mb-12 overflow-x-auto no-scrollbar -mx-6 px-6 sm:mx-0 sm:px-0">
           {categories.map((cat) => (
             <button
               key={cat.id}
@@ -131,7 +131,7 @@ export default function FAQsSection() {
                 setSelectedCategory(cat.id);
                 setExpandedIndex(null);
               }}
-              className={`px-5 py-2.5 rounded-full text-xs font-semibold tracking-wider uppercase transition-all duration-300 ${
+              className={`shrink-0 whitespace-nowrap px-5 py-2.5 rounded-full text-xs font-semibold tracking-wider uppercase transition-all duration-300 ${
                 selectedCategory === cat.id
                   ? "bg-white text-black shadow-md shadow-white/10"
                   : "bg-white/5 text-gray-300 border border-white/10 hover:bg-white/10 hover:text-white"

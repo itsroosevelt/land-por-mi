@@ -122,6 +122,11 @@ function PortalLayoutContent({ children }: { children: React.ReactNode }) {
   const [mobileAvatarError, setMobileAvatarError] = useState(false);
 
   // Reset error when user photo changes
+  // En celular y tablet, al elegir una sección del menú se cierra el panel lateral.
+  useEffect(() => {
+    setIsMobileSidebarOpen(false);
+  }, [activeSection]);
+
   useEffect(() => {
     setMobileAvatarError(false);
   }, [user?.photoURL]);
@@ -262,8 +267,8 @@ function PortalLayoutContent({ children }: { children: React.ReactNode }) {
       <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-slate-200/40 rounded-full blur-[120px] pointer-events-none z-0" />
       <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-blue-100/30 rounded-full blur-[120px] pointer-events-none z-0" />
 
-      {/* MOBILE TOPBAR (< md) */}
-      <header className="md:hidden sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-slate-200 px-4 py-3 flex items-center justify-between safe-top">
+      {/* BARRA SUPERIOR EN CELULAR Y TABLET (< lg) */}
+      <header className="lg:hidden sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-slate-200 px-4 py-3 flex items-center justify-between safe-top">
         <div className="flex items-center gap-3">
           <button
             onClick={() => setIsMobileSidebarOpen(true)}
@@ -317,7 +322,8 @@ function PortalLayoutContent({ children }: { children: React.ReactNode }) {
       <main className="flex-1 relative z-10 pt-4 md:pt-8 pb-16 px-4 md:px-8 w-full min-h-screen">
         <PortalSidebar
           activeSection={activeSection}
-          isSidebarCollapsed={isSidebarCollapsed}
+          // En celular y tablet el menú se abre siempre completo (con textos), aunque en computadora esté colapsado.
+          isSidebarCollapsed={isSidebarCollapsed && !isMobileSidebarOpen}
           onToggleSidebar={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
           isMobileOpen={isMobileSidebarOpen}
           onCloseMobile={() => setIsMobileSidebarOpen(false)}
@@ -325,7 +331,7 @@ function PortalLayoutContent({ children }: { children: React.ReactNode }) {
 
         {/* MAIN CONTENT AREA */}
         <div className={`flex-1 min-w-0 w-full transition-all duration-300 ${
-          isSidebarCollapsed ? 'md:pl-24' : 'md:pl-[21.5rem]'
+          isSidebarCollapsed ? 'lg:pl-24' : 'lg:pl-[21.5rem]'
         }`}>
           <AnimatePresence mode="wait">
             <motion.div

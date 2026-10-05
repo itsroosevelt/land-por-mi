@@ -200,8 +200,15 @@
     scrollbar-color: rgba(148, 163, 184, 0.4) transparent;
   }
 
-  /* Prevent iOS Safari auto-zoom on form inputs by ensuring at least 16px */
-  @media screen and (max-width: 768px) {
+  /* Celular y tablet: la página nunca se desplaza de lado (clip no rompe los elementos "sticky") */
+  @media screen and (max-width: 1023px) {
+    html, body {
+      overflow-x: clip;
+    }
+  }
+
+  /* Evita el zoom automático de Safari (iPhone e iPad) al tocar un campo: mínimo 16px en celular y tablet */
+  @media screen and (max-width: 1023px) {
     input, select, textarea {
       font-size: 16px !important;
     }

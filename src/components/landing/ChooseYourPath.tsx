@@ -9,8 +9,16 @@ import { getCountryQuestionsLink, getCountrySocialLinks } from "@/lib/country-so
 export default function ChooseYourPath() {
   const [selectedCountry, setSelectedCountry] = useState<LatamCountry | null>(null);
 
+  // En celular y tablet, al cambiar de vista se vuelve al inicio de la sección para no quedar en un espacio vacío.
+  const scrollToSectionOnMobile = () => {
+    if (window.innerWidth < 1024) {
+      requestAnimationFrame(() => document.getElementById('planes')?.scrollIntoView({ behavior: 'smooth', block: 'start' }));
+    }
+  };
+
   const selectCountry = (country: LatamCountry) => {
     setSelectedCountry(country);
+    scrollToSectionOnMobile();
     sendMetaEvent('Lead', { source: 'Planes Country', country: country.name });
   };
 
@@ -69,14 +77,17 @@ export default function ChooseYourPath() {
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => sendMetaEvent('Contact', { source: 'Planes Country WhatsApp Button', country: selectedCountry.name })}
-              className="inline-flex items-center justify-center px-8 py-3 text-sm sm:text-base font-medium text-white rounded-full bg-transparent border border-white/40 hover:bg-gradient-to-r hover:from-blue-700 hover:to-blue-500 hover:border-blue-600 hover:scale-105 active:scale-95 transition-all duration-300 shadow-lg"
+              className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-3.5 sm:py-3 text-sm sm:text-base font-medium text-white rounded-full bg-transparent border border-white/40 hover:bg-gradient-to-r hover:from-blue-700 hover:to-blue-500 hover:border-blue-600 hover:scale-105 active:scale-95 transition-all duration-300 shadow-lg"
             >
               Tengo preguntas antes de empezar
             </a>
 
             <button
               type="button"
-              onClick={() => setSelectedCountry(null)}
+              onClick={() => {
+                setSelectedCountry(null);
+                scrollToSectionOnMobile();
+              }}
               className="mt-8 inline-flex items-center gap-2 text-sm text-gray-400 hover:text-white transition-colors"
             >
               <ArrowLeft className="w-4 h-4" /> Elegir otro país
@@ -90,7 +101,7 @@ export default function ChooseYourPath() {
               type="button"
               key={country.code}
               onClick={() => selectCountry(country)}
-              className="text-left group flex items-center gap-3 md:gap-4 p-3 md:p-4 rounded-2xl bg-black border border-white/10 ring-1 ring-white/5 hover:border-white/30 hover:bg-white/[0.03] transition-all duration-300"
+              className="group flex flex-col sm:flex-row items-center gap-2 sm:gap-3 md:gap-4 p-3 md:p-4 text-center sm:text-left rounded-2xl bg-black border border-white/10 ring-1 ring-white/5 hover:border-white/30 hover:bg-white/[0.03] transition-all duration-300"
             >
               <img
                 src={`/flags/${country.code}.svg`}
@@ -98,7 +109,7 @@ export default function ChooseYourPath() {
                 loading="lazy"
                 className="w-12 h-8 md:w-[60px] md:h-10 object-cover shrink-0 shadow-sm transition-transform duration-300 group-hover:scale-105"
               />
-              <span className="text-sm md:text-base font-medium text-slate-200 group-hover:text-white transition-colors truncate">
+              <span className="text-sm md:text-base font-medium text-slate-200 group-hover:text-white transition-colors leading-tight sm:truncate">
                 {country.name}
               </span>
             </button>

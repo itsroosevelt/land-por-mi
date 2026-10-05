@@ -54,6 +54,16 @@ export default function Header() {
   const pathname = usePathname();
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  // Con el menú del celular abierto, la página de atrás no se desplaza.
+  useEffect(() => {
+    if (!isMobileMenuOpen) return;
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = previous;
+    };
+  }, [isMobileMenuOpen]);
   const [isScrolled, setIsScrolled] = useState(false);
 
   // Determinar si es una página de "landing de visa"
@@ -159,19 +169,19 @@ export default function Header() {
 
           {/* MOBILE & TABLET ACTIONS */}
           {!isVisaLandingPage && (
-            <div className="lg:hidden flex items-center gap-2 z-50">
+            <div className="lg:hidden flex items-center gap-1.5 sm:gap-2 z-50">
               <Link href="/tienda" className="shrink-0">
-                <Button className="bg-transparent text-white border border-white/60 hover:bg-white/10 rounded-full h-8 w-24 px-0 font-semibold text-xs transition-all duration-300 active:scale-95">
+                <Button className="bg-transparent text-white border border-white/60 hover:bg-white/10 rounded-full h-9 w-[76px] sm:w-24 px-0 font-semibold text-xs transition-all duration-300 active:scale-95">
                   Tienda
                 </Button>
               </Link>
               <Link href="/login" className="shrink-0">
-                <Button className="bg-white text-black hover:bg-white/90 rounded-full h-8 w-24 px-0 font-semibold text-xs transition-all duration-300 active:scale-95 shadow-md">
+                <Button className="bg-white text-black hover:bg-white/90 rounded-full h-9 w-[76px] sm:w-24 px-0 font-semibold text-xs transition-all duration-300 active:scale-95 shadow-md">
                   Ingresar
                 </Button>
               </Link>
               <button
-                className="text-white p-2 hover:bg-white/10 rounded-full transition-colors"
+                className="text-white p-2.5 -mr-1 hover:bg-white/10 active:bg-white/15 rounded-full transition-colors"
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                 aria-label="Abrir menú de navegación"
               >
@@ -317,7 +327,8 @@ export default function Header() {
             <div className="p-6 max-w-lg mx-auto">
               <div className="flex justify-between items-center mb-8">
                 <div className="flex items-center gap-2.5">
-                  <span className="text-xl font-medium text-white tracking-tight">POR MÍ</span>
+                  <img src="/icons/logo-por-mi-america.webp" alt="" className="w-8 h-8 rounded-full object-cover" />
+                  <span className="text-xl font-semibold text-white tracking-tighter">POR MÍ</span>
                 </div>
                 <button
                   onClick={() => setIsMobileMenuOpen(false)}
@@ -396,6 +407,14 @@ export default function Header() {
                     )}
                   </div>
                 ))}
+
+                <Link
+                  href="/tienda"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="block border-b border-white/10 pb-4 text-2xl font-medium text-white tracking-tight hover:text-white/80 transition-colors"
+                >
+                  TIENDA
+                </Link>
 
                 <div className="pt-4 space-y-3">
                   <Link href="/login?register=true" onClick={() => setIsMobileMenuOpen(false)} className="w-full block">

@@ -231,14 +231,14 @@ export default function ExpedienteCards({ email, mode, request }: ExpedienteCard
                 type="button"
                 disabled={isBusy}
                 onClick={() => patch(cardId, { activated: true }, 'Tarjeta activada para el cliente')}
-                className="self-start inline-flex items-center gap-1.5 h-8 px-3 rounded-full text-[11px] font-semibold bg-violet-50 text-violet-700 border border-violet-200 hover:bg-violet-100 disabled:opacity-50"
+                className="self-start inline-flex items-center gap-1.5 h-10 lg:h-8 px-4 lg:px-3 rounded-full text-xs lg:text-[11px] font-semibold bg-violet-50 text-violet-700 border border-violet-200 hover:bg-violet-100 disabled:opacity-50"
               >
                 <Unlock className="w-3.5 h-3.5" /> Activar tarjeta
               </button>
             ) : (
               <Link
                 href="/portal/tienda"
-                className="self-start inline-flex items-center gap-1.5 h-8 px-3 rounded-full text-[11px] font-semibold bg-blue-600 text-white hover:bg-blue-700"
+                className="self-start inline-flex items-center gap-1.5 h-10 lg:h-8 px-4 lg:px-3 rounded-full text-xs lg:text-[11px] font-semibold bg-blue-600 text-white hover:bg-blue-700"
               >
                 Ver en la tienda
               </Link>
@@ -268,7 +268,7 @@ export default function ExpedienteCards({ email, mode, request }: ExpedienteCard
                           value={value}
                           placeholder={field.placeholder}
                           onChange={(e) => setDraft((d) => ({ ...d, [field.key]: e.target.value }))}
-                          className="w-full h-9 rounded-xl border border-slate-300 px-3 text-xs text-slate-900 focus:outline-none focus:border-blue-600"
+                          className="w-full h-11 lg:h-9 rounded-xl border border-slate-300 px-3 text-xs text-slate-900 focus:outline-none focus:border-blue-600"
                         />
                       )
                     ) : value ? (
@@ -312,7 +312,7 @@ export default function ExpedienteCards({ email, mode, request }: ExpedienteCard
                   </div>
                 ))}
                 {isStaff && (
-                  <label className={`inline-flex items-center gap-1.5 h-8 px-3 rounded-full text-[11px] font-semibold border border-slate-200 bg-slate-50 text-slate-700 hover:bg-slate-100 cursor-pointer ${isBusy ? 'opacity-50 pointer-events-none' : ''}`}>
+                  <label className={`inline-flex items-center gap-1.5 h-10 lg:h-8 px-4 lg:px-3 rounded-full text-xs lg:text-[11px] font-semibold border border-slate-200 bg-slate-50 text-slate-700 hover:bg-slate-100 cursor-pointer ${isBusy ? 'opacity-50 pointer-events-none' : ''}`}>
                     <Upload className="w-3.5 h-3.5" /> Subir documento (máx. 3 MB)
                     <input
                       type="file"
@@ -336,7 +336,7 @@ export default function ExpedienteCards({ email, mode, request }: ExpedienteCard
                     type="button"
                     disabled={isBusy}
                     onClick={() => saveEdit(cardId)}
-                    className="inline-flex items-center gap-1.5 h-8 px-3 rounded-full text-[11px] font-semibold bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50"
+                    className="inline-flex items-center gap-1.5 h-10 lg:h-8 px-4 lg:px-3 rounded-full text-xs lg:text-[11px] font-semibold bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50"
                   >
                     <Save className="w-3.5 h-3.5" /> {isBusy ? 'Guardando…' : 'Guardar'}
                   </button>
@@ -344,7 +344,7 @@ export default function ExpedienteCards({ email, mode, request }: ExpedienteCard
                     type="button"
                     disabled={isBusy}
                     onClick={() => { setEditingId(null); setDraft({}); }}
-                    className="inline-flex items-center gap-1.5 h-8 px-3 rounded-full text-[11px] font-semibold border border-slate-200 text-slate-600 hover:bg-slate-50"
+                    className="inline-flex items-center gap-1.5 h-10 lg:h-8 px-4 lg:px-3 rounded-full text-xs lg:text-[11px] font-semibold border border-slate-200 text-slate-600 hover:bg-slate-50"
                   >
                     <X className="w-3.5 h-3.5" /> Cancelar
                   </button>
@@ -354,7 +354,7 @@ export default function ExpedienteCards({ email, mode, request }: ExpedienteCard
                   type="button"
                   disabled={!!editingId}
                   onClick={() => startEdit(card)}
-                  className="inline-flex items-center gap-1.5 h-8 px-3 rounded-full text-[11px] font-semibold border border-slate-200 text-slate-700 hover:bg-slate-50 disabled:opacity-40"
+                  className="inline-flex items-center gap-1.5 h-10 lg:h-8 px-4 lg:px-3 rounded-full text-xs lg:text-[11px] font-semibold border border-slate-200 text-slate-700 hover:bg-slate-50 disabled:opacity-40"
                 >
                   <Pencil className="w-3.5 h-3.5" /> Editar
                 </button>
@@ -364,7 +364,7 @@ export default function ExpedienteCards({ email, mode, request }: ExpedienteCard
                   type="button"
                   disabled={isBusy}
                   onClick={() => patch(cardId, { activated: false }, 'Tarjeta bloqueada')}
-                  className="inline-flex items-center gap-1.5 h-8 px-3 rounded-full text-[11px] font-medium text-slate-500 hover:text-red-600"
+                  className="inline-flex items-center gap-1.5 h-10 lg:h-8 px-4 lg:px-3 rounded-full text-xs lg:text-[11px] font-medium text-slate-500 hover:text-red-600"
                 >
                   <Lock className="w-3.5 h-3.5" /> Bloquear
                 </button>
