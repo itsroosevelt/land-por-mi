@@ -38,10 +38,10 @@ const Footer = () => {
             </p>
             <div className="mt-8">
               <div className="w-16 h-16 overflow-hidden rounded-full bg-black mb-4 mx-auto sm:mx-0">
-                <img src="/icons/logo-por-mi-america.webp" loading="lazy" alt="Por Mí | The New Technological Republic" className="w-full h-full object-cover object-center" />
+                <img src="/icons/logo-por-mi-america.webp" loading="lazy" alt="The New Technological Republic" className="w-full h-full object-cover object-center" />
               </div>
               <p className="text-gray-500 text-sm">
-                Por Mí | The New Technological Republic.
+                The New Technological Republic.
                 <br />
                 Una nueva generación. Un modelo republicano.
                 <br />
@@ -129,10 +129,10 @@ const Footer = () => {
               <li><Link href="/#planes" className={linkClass}>Todos los países</Link></li>
             </ul>
 
-            <h4 className="font-medium mt-10 lg:mt-16 mb-3 text-sm text-slate-200">Plataforma Por Mí</h4>
+            <h4 className="font-medium mt-10 lg:mt-16 mb-3 text-sm text-slate-200">Plataforma The New Technological Republic</h4>
             <ul className="text-gray-400 space-y-2 text-sm">
               <li><Link href="/login?register=true" className={`${linkClass} font-medium text-white`}>Ingresa a la plataforma</Link></li>
-              <li><Link href="/portal/streaming" className={linkClass}>Por Mí Streaming</Link></li>
+              <li><Link href="/portal/streaming" className={linkClass}>The New Technological Republic Streaming</Link></li>
             </ul>
           </div>
 
@@ -158,7 +158,7 @@ const Footer = () => {
 
         {/* Footer Bottom */}
         <div className="items-center flex mt-14 lg:mt-20 pt-8 lg:pt-0 border-t border-white/10 lg:border-0 flex-col lg:flex-row gap-4">
-          <Link href="/" className="text-white text-lg font-semibold hover:text-white transition-colors tracking-tighter shrink-0">POR MÍ</Link>
+          <Link href="/" className="text-white text-lg font-semibold hover:text-white transition-colors tracking-tighter shrink-0">The New Technological Republic</Link>
           <div className="flex justify-center gap-x-6 gap-y-2 w-full flex-wrap">
             <Link href="/#vision" className="text-gray-400 hover:text-white transition-colors text-xs">The New Technological Republic</Link>
             <Link href="/tienda" className="text-gray-400 hover:text-white transition-colors text-xs">Tienda</Link>

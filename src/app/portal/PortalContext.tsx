@@ -4,7 +4,8 @@ import React, { createContext, useContext, useState, useEffect, ReactNode } from
 import { useRouter, usePathname } from "next/navigation";
 import { onAuthStateChanged, updateProfile, signOut } from "firebase/auth";
 import { DEV_AUTH_BYPASS, DEV_USER } from "@/lib/dev-auth";
-import { readPendingCart, clearPendingCart } from "@/lib/pending-cart";
+import { readPendingCart, clearPendingCart, readSavedDiscountCode, saveDiscountCode } from "@/lib/pending-cart";
+import { applyDiscount, normalizeDiscountCode } from "@/lib/payments/discount-codes";
 import { auth, db } from "@/lib/firebase";
 import { doc, onSnapshot, updateDoc } from "firebase/firestore";
 import { toast } from "sonner";
@@ -311,7 +312,12 @@ interface PortalContextType {
 
   // Functions
   getItemPrice: (itemId: string, method: 'card' | 'crypto' | null) => number;
+  /** Total del carrito con el código de descuento ya aplicado. */
   getCartTotal: (method: 'card' | 'crypto' | null) => number;
+  /** Cuánto descuenta el código en el carrito actual. */
+  getCartDiscount: (method: 'card' | 'crypto' | null) => number;
+  discountCode: string | null;
+  setDiscountCode: (code: string | null) => void;
   addToCart: (itemId: string, count?: number) => void;
   removeFromCart: (itemId: string) => void;
   decreaseQuantity: (itemId: string) => void;
@@ -351,6 +357,15 @@ export function PortalProvider({ children }: { children: ReactNode }) {
 
   const [dbUser, setDbUser] = useState<any>(DEV_AUTH_BYPASS ? {} : null);
   const [cart, setCart] = useState<string[]>([]);
+  const [discountCode, setDiscountCodeState] = useState<string | null>(null);
+  useEffect(() => {
+    setDiscountCodeState(normalizeDiscountCode(readSavedDiscountCode()));
+  }, []);
+  const setDiscountCode = (code: string | null) => {
+    const valid = normalizeDiscountCode(code);
+    setDiscountCodeState(valid);
+    saveDiscountCode(valid);
+  };
   const [isCartOpen, setIsCartOpen] = useState(false);
 
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
@@ -392,8 +407,18 @@ export function PortalProvider({ children }: { children: ReactNode }) {
     return getItemPriceUsd(itemId, method);
   };
 
+  const getCartDiscount = (method: 'card' | 'crypto' | null) => {
+    const m = method || 'card';
+    const total = cart.reduce(
+      (sum, id) => sum + getItemPriceUsd(id, m) - applyDiscount(id, getItemPriceUsd(id, m), discountCode),
+      0
+    );
+    return Math.round(total * 100) / 100;
+  };
+
+  // Mismo cálculo que hace el servidor al cobrar (Stripe y cripto).
   const getCartTotal = (method: 'card' | 'crypto' | null) => {
-    return getCartTotalUsd(cart, method || 'card');
+    return Math.round((getCartTotalUsd(cart, method || 'card') - getCartDiscount(method)) * 100) / 100;
   };
 
   const addToCart = (itemId: string, count: number = 1) => {
@@ -769,6 +794,9 @@ export function PortalProvider({ children }: { children: ReactNode }) {
         // Functions
         getItemPrice,
         getCartTotal,
+        getCartDiscount,
+        discountCode,
+        setDiscountCode,
         addToCart,
         removeFromCart,
         decreaseQuantity,

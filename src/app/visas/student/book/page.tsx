@@ -26,12 +26,12 @@ function BookHeader() {
           <div className="w-8 h-8 relative transition-transform duration-300 group-hover:scale-110 overflow-hidden rounded-full bg-black/5">
             <img
               src="/icons/new-icon-udreamms.png"
-              alt="Por mí"
+              alt="The New Technological Republic"
               className="w-full h-full object-cover object-center"
             />
           </div>
           <span className="text-xl font-bold tracking-tight text-white font-sans">
-            Por mí
+            The New Technological Republic
           </span>
         </Link>
 

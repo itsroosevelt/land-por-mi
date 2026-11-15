@@ -385,7 +385,7 @@ export default function OnboardingPage() {
                 </motion.form>
 
                 <p className="text-center text-neutral-600 text-xs mt-8 font-medium uppercase tracking-widest">
-                    Secured by Por mí Platform · {new Date().getFullYear()}
+                    Secured by The New Technological Republic Platform · {new Date().getFullYear()}
                 </p>
             </div>
         </div>

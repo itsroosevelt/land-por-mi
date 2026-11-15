@@ -20,7 +20,7 @@ const sessions: StreamingSession[] = [
   {
     id: 'stream-1',
     title: 'Adaptación y Primeros Días en EE.UU.: Vivienda, Transporte y Clima',
-    speaker: 'Valentina & Equipo Por mí',
+    speaker: 'Valentina & Equipo The New Technological Republic',
     category: 'Vida en EE.UU.',
     status: 'grabado',
     date: 'Disponible ahora',
@@ -29,7 +29,7 @@ const sessions: StreamingSession[] = [
   {
     id: 'stream-2',
     title: 'Apertura de Cuenta Bancaria y Línea Telefónica sin SSN',
-    speaker: 'Asesor Legal Por mí',
+    speaker: 'Asesor Legal The New Technological Republic',
     category: 'Trámites Iniciales',
     status: 'grabado',
     date: 'Disponible ahora',
@@ -38,7 +38,7 @@ const sessions: StreamingSession[] = [
   {
     id: 'stream-3',
     title: 'Q&A en Vivo: Preguntas Frecuentes sobre Escuela, I-20 y Leyes F-1',
-    speaker: 'Mentores Por mí',
+    speaker: 'Mentores The New Technological Republic',
     category: 'En Vivo Mensual',
     status: 'programado',
     date: 'Próximo Jueves',
@@ -48,7 +48,7 @@ const sessions: StreamingSession[] = [
   {
     id: 'stream-4',
     title: 'Networking estudiantil y Oportunidades en el Campus',
-    speaker: 'Estudiantes Por mí en Utah',
+    speaker: 'Estudiantes The New Technological Republic en Utah',
     category: 'Comunidad',
     status: 'grabado',
     date: 'Disponible ahora',

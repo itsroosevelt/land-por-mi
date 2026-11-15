@@ -127,39 +127,79 @@ export const CARD_FIELDS: Record<string, CardField[]> = {
   ],
   'servicio-seo-local': [
     { key: 'perfil_google', label: 'Perfil de Google Business', type: 'url' },
+    { key: 'search_console', label: 'Propiedad de Search Console', placeholder: 'miempresa.com' },
+    { key: 'analytics_id', label: 'ID de Google Analytics', placeholder: 'G-XXXXXXX' },
     { key: 'palabras_clave', label: 'Palabras clave', type: 'textarea' },
     { key: 'zona', label: 'Ciudad o zona objetivo' },
     notas,
   ],
   'servicio-campana-publicitaria': [
-    { key: 'plataforma', label: 'Plataforma', placeholder: 'Meta, Google, TikTok…' },
+    { key: 'plataforma', label: 'Plataforma', placeholder: 'Facebook / Instagram' },
+    { key: 'cuenta_publicitaria', label: 'Cuenta publicitaria de Facebook' },
     { key: 'objetivo', label: 'Objetivo de la campaña' },
     { key: 'presupuesto_pauta', label: 'Presupuesto de pauta mensual' },
     { key: 'publico', label: 'Público objetivo', type: 'textarea' },
     { key: 'reportes', label: 'Enlace a reportes', type: 'url' },
     notas,
   ],
-  'servicio-produccion-contenido': [
-    { key: 'redes', label: 'Redes de destino' },
-    { key: 'frecuencia', label: 'Frecuencia de publicación' },
-    { key: 'carpeta_contenido', label: 'Carpeta del contenido', type: 'url' },
+  'servicio-campana-x': [
+    { key: 'cuenta_publicitaria', label: 'Cuenta publicitaria de X' },
+    { key: 'objetivo', label: 'Objetivo de la campaña' },
+    { key: 'presupuesto_pauta', label: 'Presupuesto de anuncios mensual (lo paga el cliente)' },
+    { key: 'publico', label: 'Público objetivo', type: 'textarea' },
+    { key: 'reportes', label: 'Enlace a reportes', type: 'url' },
     notas,
   ],
-  'servicio-email-marketing': [
-    { key: 'plataforma', label: 'Plataforma de correo' },
-    { key: 'remitente', label: 'Correo remitente', type: 'email' },
-    { key: 'listas', label: 'Listas de contactos' },
+  'servicio-campana-google': [
+    { key: 'cuenta_publicitaria', label: 'Cuenta publicitaria de Google Ads' },
+    { key: 'objetivo', label: 'Objetivo de la campaña' },
+    { key: 'presupuesto_pauta', label: 'Presupuesto de anuncios mensual (lo paga el cliente)' },
+    { key: 'publico', label: 'Público objetivo', type: 'textarea' },
+    { key: 'reportes', label: 'Enlace a reportes', type: 'url' },
     notas,
   ],
-  'servicio-chatbot-ia': [
-    { key: 'plataforma_url', label: 'Plataforma de IA', type: 'url' },
-    { key: 'usuario_plataforma', label: 'Usuario en la plataforma' },
-    { key: 'canales', label: 'Canales', placeholder: 'WhatsApp, sitio web…' },
-    { key: 'numero_whatsapp', label: 'Número de WhatsApp conectado', type: 'tel' },
+  'servicio-campana-tiktok': [
+    { key: 'cuenta_publicitaria', label: 'Cuenta publicitaria de TikTok' },
+    { key: 'objetivo', label: 'Objetivo de la campaña' },
+    { key: 'presupuesto_pauta', label: 'Presupuesto de anuncios mensual (lo paga el cliente)' },
+    { key: 'publico', label: 'Público objetivo', type: 'textarea' },
+    { key: 'reportes', label: 'Enlace a reportes', type: 'url' },
+    notas,
+  ],
+  'servicio-automatizacion-whatsapp': [
+    { key: 'numero_whatsapp', label: 'Número de WhatsApp', type: 'tel' },
+    { key: 'cuenta_instagram', label: 'Cuenta de Instagram', placeholder: '@usuario' },
+    { key: 'pagina_facebook', label: 'Página de Facebook (Messenger y comentarios)', type: 'url' },
+    { key: 'plataforma', label: 'Plataforma de automatización' },
+    { key: 'flujos', label: 'Respuestas y flujos configurados', type: 'textarea' },
+    notas,
+  ],
+  'servicio-plataforma-web': [
+    { key: 'url_plataforma', label: 'Plataforma web', type: 'url' },
+    { key: 'dominio', label: 'Dominio', placeholder: 'app.miempresa.com' },
+    { key: 'usuario_admin', label: 'Usuario administrador (sin contraseña)' },
+    notas,
+  ],
+  'servicio-app-ios': [
+    { key: 'nombre_app', label: 'Nombre de la app' },
+    { key: 'cuenta_apple', label: 'Cuenta de Apple Developer' },
+    { key: 'url_app_store', label: 'Enlace en la App Store', type: 'url' },
+    notas,
+  ],
+  'servicio-app-android': [
+    { key: 'nombre_app', label: 'Nombre de la app' },
+    { key: 'cuenta_google_play', label: 'Cuenta de Google Play Console' },
+    { key: 'url_google_play', label: 'Enlace en Google Play', type: 'url' },
     notas,
   ],
 
   // ── Para crecer ──
+  'servicio-administracion-empresarial': [
+    { key: 'plan_rsi', label: 'Plan de Roosevelt Super Intelligence' },
+    { key: 'responsable', label: 'Responsable en la empresa' },
+    { key: 'tareas', label: 'Tareas del mes', type: 'textarea' },
+    notas,
+  ],
   'servicio-contabilidad': [
     { key: 'software', label: 'Software contable' },
     { key: 'periodo', label: 'Periodo actual' },
@@ -172,10 +212,11 @@ export const CARD_FIELDS: Record<string, CardField[]> = {
     { key: 'plataforma', label: 'Plataforma de nómina' },
     notas,
   ],
-  'servicio-crm': [
-    { key: 'plataforma', label: 'CRM' },
-    { key: 'url', label: 'Enlace del CRM', type: 'url' },
-    { key: 'usuarios', label: 'Usuarios con acceso' },
+  'servicio-impuestos-estatales': [
+    { key: 'estado', label: 'Estado', placeholder: 'Utah, Florida…' },
+    { key: 'numero_cuenta_estatal', label: 'Número de cuenta estatal' },
+    { key: 'periodo', label: 'Periodo actual', placeholder: 'Mes y año' },
+    { key: 'fecha_presentacion', label: 'Fecha de presentación', type: 'date' },
     notas,
   ],
   'servicio-taxes-empresa': [
@@ -220,13 +261,18 @@ export const CARD_FIELDS: Record<string, CardField[]> = {
     { key: 'contrato', label: 'Dirección del contrato' },
     notas,
   ],
-  'servicio-mentoria-completa': [
-    { key: 'horario', label: 'Horario de las sesiones' },
-    { key: 'enlace_reunion', label: 'Enlace de la reunión', type: 'url' },
-    { key: 'objetivos', label: 'Objetivos', type: 'textarea' },
-    notas,
-  ],
 };
+
+// Versiones "Pago Único" de Web y aplicaciones: mismos campos que el servicio en mensualidades.
+for (const base of ['servicio-diseno-web', 'servicio-plataforma-web', 'servicio-app-ios', 'servicio-app-android', 'servicio-tienda-online']) {
+  CARD_FIELDS[`${base}-unico`] = CARD_FIELDS[base];
+}
+CARD_FIELDS['servicio-mantenimiento-web-apps'] = [
+  { key: 'proyecto', label: 'Web o app en mantenimiento' },
+  { key: 'url', label: 'Enlace', type: 'url' },
+  { key: 'cambios', label: 'Cambios solicitados este mes', type: 'textarea' },
+  notas,
+];
 
 export function getCardFields(cardId: string): CardField[] {
   return CARD_FIELDS[cardId] ?? [notas];

@@ -102,7 +102,7 @@ export default function DestinosPage() {
               ideal en USA
             </h1>
             <p className="text-xl md:text-2xl text-slate-500 max-w-2xl mx-auto leading-relaxed font-medium">
-              Explora las ciudades donde puedes estudiar, crecer y vivir una experiencia inolvidable con el respaldo de Por mí.
+              Explora las ciudades donde puedes estudiar, crecer y vivir una experiencia inolvidable con el respaldo de The New Technological Republic.
             </p>
           </motion.div>
         </div>

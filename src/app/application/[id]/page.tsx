@@ -628,7 +628,7 @@ export default function ApplicationPage({ params }: ApplicationPageProps) {
             {/* Footer logo/info */}
             <footer className="absolute bottom-8 left-0 right-0 text-center animate-fade-in pointer-events-none">
                 <p className="text-[10px] font-bold text-neutral-600 uppercase tracking-[0.3em]">
-                    Powered by Por mí © 2024
+                    Powered by The New Technological Republic © 2024
                 </p>
             </footer>
 

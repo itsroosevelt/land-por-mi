@@ -102,11 +102,6 @@ export default function Hero({ onStartQuote }: HeroProps) {
         <div className="flex flex-col items-center justify-center gap-6 md:gap-8 w-full">
 
           <div className="w-full md:max-w-[80%] lg:max-w-[70%] text-center space-y-2 sm:space-y-3">
-            {/* Texto superior (Eyebrow) */}
-            <p className="text-gray-300 text-xs sm:text-sm md:text-base font-medium tracking-[0.2em] uppercase">
-              Por Mí
-            </p>
-
             {/* Título Principal */}
             <h1 className="text-[2.35rem] min-[400px]:text-[2.7rem] sm:text-[3.2rem] md:text-[4.2rem] font-medium leading-[1.02] text-white tracking-tighter">
               The New <br />

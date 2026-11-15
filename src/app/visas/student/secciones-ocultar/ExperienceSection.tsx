@@ -97,12 +97,12 @@ export default function ExperienceSection() {
                         <div className="w-16 h-16 md:w-24 md:h-24 rounded-2xl flex items-center justify-center shadow-2xl group-hover:scale-105 transition-transform duration-500 overflow-hidden shrink-0">
                             <img
                                 src="/icons/new-icon-udreamms.png"
-                                alt="Por mí App Logo"
+                                alt="The New Technological Republic App Logo"
                                 className="w-full h-full object-cover"
                             />
                         </div>
                         <h2 className="text-4xl md:text-7xl font-medium tracking-tighter text-white leading-none">
-                            Por mí
+                            The New Technological Republic
                         </h2>
                     </div>
 
@@ -117,7 +117,7 @@ export default function ExperienceSection() {
                     <div className="relative w-full md:w-auto">
                         <Button className="rounded-full bg-white text-black hover:bg-white/90 font-medium px-6 py-6 md:px-12 md:py-8 text-sm md:text-xl shadow-2xl transition-all border-none flex items-center justify-center gap-3 w-full md:w-auto">
                             <Smartphone className="w-5 h-5 md:w-6 md:h-6" />
-                            Descargar Por mí App
+                            Descargar The New Technological Republic App
                         </Button>
                         <span className="absolute -top-3 -right-3 bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest shadow-lg border border-white/20 select-none animate-pulse">
                             Próximamente
@@ -138,7 +138,7 @@ export default function ExperienceSection() {
                 {/* Header Title for Video & List */}
                 <div className="mb-12">
                     <h3 className="text-4xl md:text-7xl font-medium tracking-tighter mb-6 leading-none text-white max-w-5xl">
-                        Por mí Reality: <br /> Construida para ti
+                        The New Technological Republic Reality: <br /> Construida para ti
                     </h3>
                     <div className="flex items-center gap-6 text-gray-400 text-sm">
                         <span className="text-white font-medium tracking-tight">FEBRERO 2026</span>

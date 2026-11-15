@@ -177,7 +177,7 @@ export default function ElitePlanShowcase() {
             <div className="container mx-auto px-6 mt-16 flex justify-center">
                 <div className="flex items-center gap-4 text-slate-300">
                     <div className="h-px w-24 bg-slate-100" />
-                    <span className="text-xs uppercase tracking-[0.3em] font-bold">Por mí Elite Standards</span>
+                    <span className="text-xs uppercase tracking-[0.3em] font-bold">The New Technological Republic Elite Standards</span>
                     <div className="h-px w-24 bg-slate-100" />
                 </div>
             </div>

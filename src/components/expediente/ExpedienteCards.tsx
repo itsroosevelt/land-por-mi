@@ -372,7 +372,7 @@ export default function ExpedienteCards({ email, mode, request }: ExpedienteCard
               {card.updatedAt && !isEditing && (
                 <span className="text-[10px] text-slate-400 ml-auto">
                   Actualizado {new Date(card.updatedAt).toLocaleDateString('es')}
-                  {card.updatedBy ? ` · ${card.updatedBy === 'staff' ? 'Equipo Por Mí' : 'Cliente'}` : ''}
+                  {card.updatedBy ? ` · ${card.updatedBy === 'staff' ? 'Equipo The New Technological Republic' : 'Cliente'}` : ''}
                 </span>
               )}
             </div>

@@ -13,7 +13,7 @@ export default function SolutionSection() {
             <div className="max-w-7xl mx-auto px-6 relative z-10">
                 <FadeIn className="text-center mb-16 -mt-24">
                     <h2 className="text-sm font-medium text-primary tracking-[0.2em] uppercase mb-4">
-                        POR MÍ
+                        THE NEW TECHNOLOGICAL REPUBLIC
                     </h2>
                     <h3 className="text-3xl md:text-5xl font-medium text-abyss font-playfair mb-6 leading-tight tracking-tight">
                         Descubre lo extraordinario con la <br className="hidden md:block" />

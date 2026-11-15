@@ -58,7 +58,7 @@ export default function Home() {
           <FreeTrainingShowcase />
         </div>
 
-        {/* Desde Por mí TV: fondo y espacios negros */}
+        {/* Desde The New Technological Republic TV: fondo y espacios negros */}
         <div className="flex flex-col gap-16 md:gap-20 lg:gap-24 bg-black [&>section]:scroll-mt-28">
           <UdreammsTVShowcase />
 
@@ -72,7 +72,7 @@ export default function Home() {
               <div className="flex flex-col lg:flex-row items-center justify-center gap-12 lg:gap-16 xl:gap-24">
                 <img
                   src="/icons/logo-por-mi-america-840.webp"
-                  alt="Por Mí | The New Technological Republic"
+                  alt="The New Technological Republic"
                   loading="lazy"
                   className="w-72 h-72 sm:w-80 sm:h-80 md:w-[28rem] md:h-[28rem] lg:w-[26rem] lg:h-[26rem] xl:w-[30rem] xl:h-[30rem] rounded-full object-cover shadow-[0_0_60px_rgba(255,255,255,0.08)]"
                 />

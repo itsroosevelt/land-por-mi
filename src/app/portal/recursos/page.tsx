@@ -16,7 +16,7 @@ export default function RecursosPage() {
 
   const handleDownloadAttempt = (fileName: string) => {
     if (!unlocked) {
-      toast.info("Estos recursos oficiales se desbloquean al adquirir un Plan de Asesoría de Por mí.", {
+      toast.info("Estos recursos oficiales se desbloquean al adquirir un Plan de Asesoría de The New Technological Republic.", {
         action: {
           label: "Ver Planes",
           onClick: () => router.push('/portal/planes'),
@@ -51,7 +51,7 @@ export default function RecursosPage() {
       <div className="bg-white border border-slate-200 shadow-xl rounded-3xl p-6 md:p-7 flex flex-col md:flex-row items-center gap-6 w-full font-sans transition-all duration-300">
         {/* Book Mockup cover */}
         <div className="w-40 h-56 md:w-44 md:h-60 shrink-0 rounded-2xl bg-gradient-to-tr from-slate-900 via-slate-800 to-black border border-slate-700 flex flex-col justify-between p-4 shadow-xl hover:scale-102 transition-transform duration-300 relative group overflow-hidden text-white">
-          <span className="text-[10px] font-semibold tracking-widest text-slate-300 uppercase">Por mí Ebook</span>
+          <span className="text-[10px] font-semibold tracking-widest text-slate-300 uppercase">The New Technological Republic Ebook</span>
           <div className="space-y-1 z-10">
             <h4 className="text-xs font-semibold leading-tight text-slate-200">
               {isStudent ? "OBTÉN TU" : "TU VIAJE EN"}
@@ -89,8 +89,8 @@ export default function RecursosPage() {
             </h3>
             <p className="text-xs md:text-sm text-slate-600 leading-relaxed font-normal line-clamp-3">
               {isStudent
-                ? "Descubre cómo obtener tu visa de estudiante para Estados Unidos con el libro digital Por mí. Aprende paso a paso cómo gestionar tu documentación oficial, llenar formularios y presentarte a la entrevista consular."
-                : "Este libro digital contiene los secretos prácticos de Por mí para responder con precisión sobre tus planes turísticos, justificar fondos y garantizar tu retorno."}
+                ? "Descubre cómo obtener tu visa de estudiante para Estados Unidos con el libro digital The New Technological Republic. Aprende paso a paso cómo gestionar tu documentación oficial, llenar formularios y presentarte a la entrevista consular."
+                : "Este libro digital contiene los secretos prácticos de The New Technological Republic para responder con precisión sobre tus planes turísticos, justificar fondos y garantizar tu retorno."}
             </p>
           </div>
 
@@ -124,7 +124,7 @@ export default function RecursosPage() {
             <Lock className="w-4 h-4" />
           </div>
           <p className="leading-relaxed">
-            Puedes consultar el catálogo de recursos. Las descargas de plantillas oficiales y guías se liberan exclusivamente al adquirir cualquier <strong>Plan de Asesoría Por mí</strong>.
+            Puedes consultar el catálogo de recursos. Las descargas de plantillas oficiales y guías se liberan exclusivamente al adquirir cualquier <strong>Plan de Asesoría The New Technological Republic</strong>.
           </p>
         </div>
       )}

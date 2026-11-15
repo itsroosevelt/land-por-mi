@@ -159,7 +159,7 @@ export default function StaffPortalPage() {
       if (res.ok) {
         setIsAuthenticated(true);
         setPasswordInput('');
-        toast.success('¡Bienvenido al Panel de Staff Por mí!');
+        toast.success('¡Bienvenido al Panel de Staff The New Technological Republic!');
       } else {
         const data = await res.json().catch(() => ({}));
         toast.error(data.error || 'Contraseña incorrecta. Intenta nuevamente.');

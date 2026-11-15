@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 export const SITE_URL = "https://itspormi.com";
-export const SITE_NAME = "Por mí";
+export const SITE_NAME = "The New Technological Republic";
 
 /** URL estable del logo (Google Search favicon + schema.org). */
 export const SITE_LOGO_PATH = "/icons/logo-por-mi-america-840.webp";
@@ -46,23 +46,23 @@ const PAGE_SEO: Record<
   { title: string; description: string }
 > = {
   "/": {
-    title: "Por Mí | The New Technological Republic",
+    title: "The New Technological Republic",
     description: DEFAULT_DESCRIPTION,
   },
   "/about": {
-    title: "Acerca de Por mí",
+    title: "Acerca de The New Technological Republic",
     description:
-      "Conoce la historia, valores y equipo detrás de Por mí. Transparencia y acompañamiento en tu proceso hacia Estados Unidos.",
+      "Conoce la historia, valores y equipo detrás de The New Technological Republic. Transparencia y acompañamiento en tu proceso hacia Estados Unidos.",
   },
   "/destinos": {
     title: "Destinos en USA",
     description:
-      "Explora ciudades y destinos populares para estudiar, trabajar y vivir en Estados Unidos con Por mí.",
+      "Explora ciudades y destinos populares para estudiar, trabajar y vivir en Estados Unidos con The New Technological Republic.",
   },
   "/courses": {
     title: "Cursos de Inglés en USA",
     description:
-      "Programas de inglés en escuelas aliadas en Estados Unidos. Planifica tu formación con asesoría Por mí.",
+      "Programas de inglés en escuelas aliadas en Estados Unidos. Planifica tu formación con asesoría The New Technological Republic.",
   },
   "/services": {
     title: "Servicios en USA",
@@ -72,22 +72,22 @@ const PAGE_SEO: Record<
   "/brochures": {
     title: "Brochures y Guías",
     description:
-      "Descarga material informativo y da el primer paso en tu proceso con Por mí.",
+      "Descarga material informativo y da el primer paso en tu proceso con The New Technological Republic.",
   },
   "/contact": {
     title: "Contáctanos",
     description:
-      "Habla con el equipo Por mí. Resolvemos dudas sobre visas, estudios y tu plan hacia USA.",
+      "Habla con el equipo The New Technological Republic. Resolvemos dudas sobre visas, estudios y tu plan hacia USA.",
   },
   "/partnerships": {
     title: "Alianzas Institucionales",
     description:
-      "Universidades y escuelas aliadas. Programas de partnership con Por mí.",
+      "Universidades y escuelas aliadas. Programas de partnership con The New Technological Republic.",
   },
   "/referrals": {
     title: "Programa de Referidos",
     description:
-      "Recomienda Por mí y gana beneficios. Comparte tu experiencia con quienes sueñan con USA.",
+      "Recomienda The New Technological Republic y gana beneficios. Comparte tu experiencia con quienes sueñan con USA.",
   },
   "/faqs": {
     title: "Preguntas Frecuentes",
@@ -96,16 +96,16 @@ const PAGE_SEO: Record<
   },
   "/privacidad": {
     title: "Política de Privacidad",
-    description: "Política de privacidad y tratamiento de datos de Por mí.",
+    description: "Política de privacidad y tratamiento de datos de The New Technological Republic.",
   },
   "/terminos": {
     title: "Términos y Condiciones",
-    description: "Términos y condiciones de uso de los servicios Por mí.",
+    description: "Términos y condiciones de uso de los servicios The New Technological Republic.",
   },
   "/visas/student": {
     title: "Visa de Estudiante F-1",
     description:
-      "Planes y asesoría para visa de estudiante F-1. Estudia en USA con acompañamiento experto Por mí.",
+      "Planes y asesoría para visa de estudiante F-1. Estudia en USA con acompañamiento experto The New Technological Republic.",
   },
   "/visas/tourist": {
     title: "Visa de Turismo B1/B2",
@@ -167,7 +167,7 @@ export function noindexMetadata(title: string): Metadata {
 export const rootMetadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "Por Mí | The New Technological Republic",
+    default: "The New Technological Republic",
     template: "%s",
   },
   description: DEFAULT_DESCRIPTION,
@@ -180,7 +180,7 @@ export const rootMetadata: Metadata = {
     locale: "es_US",
     url: SITE_URL,
     siteName: SITE_NAME,
-    title: "Por Mí | The New Technological Republic",
+    title: "The New Technological Republic",
     description: DEFAULT_DESCRIPTION,
     images: [
       {
@@ -193,7 +193,7 @@ export const rootMetadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Por Mí | The New Technological Republic",
+    title: "The New Technological Republic",
     description: DEFAULT_DESCRIPTION,
   },
   robots: {

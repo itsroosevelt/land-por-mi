@@ -38,6 +38,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import BillingForm from "@/components/payments/BillingForm";
+import DiscountCodeInput from "@/components/store/DiscountCodeInput";
+import { getMonthlyDiscountUsd } from "@/lib/payments/discount-codes";
 import CryptoPaymentTabs from "@/components/payments/CryptoPaymentTabs";
 import {
   clearStripeCheckoutIntent,
@@ -102,6 +104,9 @@ function PortalLayoutContent({ children }: { children: React.ReactNode }) {
     // Functions
     getItemPrice,
     getCartTotal,
+    getCartDiscount,
+    discountCode,
+    setDiscountCode,
     removeFromCart,
     addToCart,
     decreaseQuantity,
@@ -152,6 +157,7 @@ function PortalLayoutContent({ children }: { children: React.ReactNode }) {
           email,
           userId: user?.uid || '',
           itemIds: cart,
+          discountCode,
         }),
       });
       const data = await response.json();
@@ -164,7 +170,7 @@ function PortalLayoutContent({ children }: { children: React.ReactNode }) {
       toast.error(message);
       setStripeRedirecting(false);
     }
-  }, [cart, checkoutEmail, user]);
+  }, [cart, checkoutEmail, user, discountCode]);
 
   useEffect(() => {
     if (loading || !user || stripeReturnHandled.current) {
@@ -279,7 +285,7 @@ function PortalLayoutContent({ children }: { children: React.ReactNode }) {
           </button>
           <Link href="/" className="flex items-center gap-2">
             <div className="w-6 h-6 relative shrink-0">
-              <img src="/icons/logo-por-mi-america.webp" alt="Por mí" className="object-contain w-full h-full" />
+              <img src="/icons/logo-por-mi-america.webp" alt="The New Technological Republic" className="object-contain w-full h-full" />
             </div>
             <span className="font-bold text-sm text-slate-900 tracking-tight">Portal</span>
           </Link>
@@ -602,6 +608,12 @@ function PortalLayoutContent({ children }: { children: React.ReactNode }) {
                           })}
                         </div>
                         <div className="pt-2 border-t border-slate-100 space-y-1.5 px-1">
+                          {getCartDiscount(checkoutMethod) > 0 && (
+                            <div className="flex justify-between items-center text-xs text-emerald-700">
+                              <span>Descuento {discountCode}</span>
+                              <span className="font-semibold">-${getCartDiscount(checkoutMethod).toFixed(2)} USD</span>
+                            </div>
+                          )}
                           <div className="flex justify-between items-center">
                             <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
                               {checkoutMethod === 'card' ? 'Subtotal neto' : 'Total a pagar'}
@@ -626,6 +638,14 @@ function PortalLayoutContent({ children }: { children: React.ReactNode }) {
                               </div>
                             </>
                           )}
+                          {/* Código de descuento, debajo del total y a la derecha */}
+                          <DiscountCodeInput
+                            className="pt-2"
+                            code={discountCode}
+                            onChange={setDiscountCode}
+                            discountUsd={getCartDiscount(checkoutMethod)}
+                            monthlyDiscountUsd={getMonthlyDiscountUsd(cart, discountCode)}
+                          />
                         </div>
                       </div>
 
@@ -700,6 +720,7 @@ function PortalLayoutContent({ children }: { children: React.ReactNode }) {
                               plan={cryptoCheckoutPlan}
                               cartItems={cart.length > 1 ? cart : undefined}
                               priceUSD={checkoutTotal}
+                              discountCode={discountCode}
                               sessionId={checkoutSessionId}
                               billingData={billingData}
                               isBillingValid={isBillingValid}

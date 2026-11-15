@@ -9,10 +9,11 @@ import Header from "@/components/landing/Header";
 import Footer from "@/components/landing/Footer";
 import { sendMetaEvent } from "@/lib/meta-events";
 import { calculateStripeProcessingFee } from "@/lib/payments/product-catalog";
-import { PORTAL_SERVICES, PORTAL_SERVICE_SECTIONS, type BusinessService } from "@/lib/business-services";
-import { readPendingCart, savePendingCart } from "@/lib/pending-cart";
-
-const formatUsd = (n: number) => `$${n.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+import { PORTAL_SERVICES, PORTAL_SERVICE_SECTIONS, billingSummary, formatUsd, type BusinessService } from "@/lib/business-services";
+import ServicePrice from "@/components/store/ServicePrice";
+import { readPendingCart, readSavedDiscountCode, saveDiscountCode, savePendingCart } from "@/lib/pending-cart";
+import { getCartDiscountUsd, getDiscountPercent, getMonthlyDiscountUsd, normalizeDiscountCode } from "@/lib/payments/discount-codes";
+import DiscountCodeInput from "@/components/store/DiscountCodeInput";
 
 function TiendaContent() {
   const searchParams = useSearchParams();
@@ -21,6 +22,7 @@ function TiendaContent() {
   const [cart, setCart] = useState<string[]>([]);
   const [openDetails, setOpenDetails] = useState<Record<string, boolean>>({});
   const [checkoutLoading, setCheckoutLoading] = useState(false);
+  const [discountCode, setDiscountCode] = useState<string | null>(null);
 
   const toggleCart = (service: BusinessService) => {
     setCart((current) => {
@@ -31,7 +33,10 @@ function TiendaContent() {
   };
 
   const cartServices = PORTAL_SERVICES.filter((s) => cart.includes(s.id));
-  const subtotal = cartServices.reduce((sum, s) => sum + s.price, 0);
+  const priceOf = (id: string) => PORTAL_SERVICES.find((s) => s.id === id)?.price ?? 0;
+  // El código solo descuenta pagos únicos e iniciales (ver src/lib/payments/discount-codes.ts).
+  const discountUsd = getCartDiscountUsd(cart, priceOf, discountCode);
+  const subtotal = Math.round((cartServices.reduce((sum, s) => sum + s.price, 0) - discountUsd) * 100) / 100;
   const processingFee = calculateStripeProcessingFee(subtotal);
 
   // El carrito se guarda en el navegador: si la persona se va y vuelve, sigue ahí,
@@ -40,11 +45,15 @@ function TiendaContent() {
   useEffect(() => {
     const valid = new Set(PORTAL_SERVICES.map((s) => s.id));
     setCart(readPendingCart().filter((id) => valid.has(id)));
+    setDiscountCode(normalizeDiscountCode(readSavedDiscountCode()));
     setCartLoaded(true);
   }, []);
   useEffect(() => {
     if (cartLoaded) savePendingCart(cart);
   }, [cart, cartLoaded]);
+  useEffect(() => {
+    if (cartLoaded) saveDiscountCode(discountCode);
+  }, [discountCode, cartLoaded]);
 
   // Para pagar siempre hay que registrarse o iniciar sesión (objetivo principal: capturar el registro).
   const handleCheckout = () => {
@@ -61,7 +70,7 @@ function TiendaContent() {
 
       {/* Encabezado */}
       <section className="bg-black text-white pt-28 pb-6 md:pt-40 md:pb-10 px-6 text-center">
-        <p className="text-xs font-medium uppercase tracking-[0.25em] text-gray-400 mb-4">Tienda · Por Mí</p>
+        <p className="text-xs font-medium uppercase tracking-[0.25em] text-gray-400 mb-4">Tienda · The New Technological Republic</p>
         <h1 className="text-4xl md:text-5xl font-medium tracking-tighter leading-[1.05]">
           Servicios para tu{" "}
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-indigo-300 to-blue-600">empresa</span>
@@ -70,6 +79,16 @@ function TiendaContent() {
           Todo lo que necesitas para crear y hacer crecer tu negocio, a un costo inferior al del mercado.
           Añade los servicios que necesitas al carrito y paga de forma segura.
         </p>
+        {/* Código de descuento: al aplicarlo, los precios de las tarjetas ya salen rebajados */}
+        <div className="mt-10 md:mt-12 pt-8 border-t border-white/10 max-w-md mx-auto">
+          <DiscountCodeInput
+            variant="store"
+            theme="dark"
+            align="center"
+            code={discountCode}
+            onChange={setDiscountCode}
+          />
+        </div>
       </section>
 
       <main className="max-w-[1500px] mx-auto px-4 sm:px-6 pt-8 md:pt-16 pb-48 md:pb-40">
@@ -119,18 +138,7 @@ function TiendaContent() {
                   <h3 className="text-sm font-semibold text-slate-900 leading-snug mb-1 min-h-[2.5rem]">{service.name}</h3>
                   <p className="text-[11px] text-slate-500 leading-relaxed mb-3 flex-1">{service.description}</p>
 
-                  <p className="text-[11px] text-slate-400 line-through leading-none" title="Precio promedio en el mercado">
-                    {formatUsd(service.marketPrice)}{service.priceNote?.startsWith("/") ? ` ${service.priceNote}` : ""}
-                  </p>
-                  <div className="flex items-baseline gap-1.5 mb-2.5">
-                    {service.priceNote === "Desde" && (
-                      <span className="text-[10px] text-slate-400 uppercase">Desde</span>
-                    )}
-                    <span className="text-xl font-semibold text-slate-900 tracking-tight">{formatUsd(service.price)}</span>
-                    <span className="text-[10px] text-slate-400 uppercase">
-                      USD{service.priceNote?.startsWith("/") ? ` ${service.priceNote}` : ""}
-                    </span>
-                  </div>
+                  <ServicePrice service={service} discountCode={discountCode} />
 
                   <div className="border-t border-slate-100 pt-2 mb-3">
                     <button
@@ -190,6 +198,7 @@ function TiendaContent() {
                   {cartServices.map((s) => (
                     <span key={s.id} className="shrink-0 whitespace-nowrap inline-flex items-center gap-1 px-2 py-1 sm:py-0.5 rounded-full bg-slate-100 text-[11px] text-slate-700">
                       {s.name}
+                      <span className="text-slate-400">· {billingSummary(s, getDiscountPercent(discountCode))}</span>
                       <button type="button" onClick={() => toggleCart(s)} aria-label={`Quitar ${s.name}`} className="text-slate-400 hover:text-slate-700 p-0.5 -m-0.5">
                         <X className="w-3 h-3" />
                       </button>
@@ -198,7 +207,7 @@ function TiendaContent() {
                 </div>
               </div>
               <div className="text-right shrink-0">
-                <p className="text-[10px] uppercase tracking-widest text-slate-400">Subtotal</p>
+                <p className="text-[10px] uppercase tracking-widest text-slate-400">Pagas hoy</p>
                 <p className="text-xl font-semibold text-slate-900 tracking-tight">{formatUsd(subtotal)}</p>
                 {processingFee > 0 && (
                   <p className="text-[10px] text-slate-400">+ {formatUsd(processingFee)} procesamiento</p>
@@ -206,6 +215,21 @@ function TiendaContent() {
               </div>
             </div>
 
+            {/* Código de descuento, debajo del total y a la derecha */}
+            <DiscountCodeInput
+              className="mt-3"
+              code={discountCode}
+              onChange={setDiscountCode}
+              discountUsd={discountUsd}
+              monthlyDiscountUsd={getMonthlyDiscountUsd(cart, discountCode)}
+            />
+
+
+            {cartServices.some((s) => s.billing !== "unico" || s.recurring) && (
+              <p className="mt-3 text-[11px] text-slate-500 leading-snug">
+                Hoy pagas el primer pago de cada servicio. Las mensualidades, el mantenimiento y las renovaciones anuales se cobran después, en cada periodo.
+              </p>
+            )}
 
             <button
               type="button"
@@ -217,7 +241,7 @@ function TiendaContent() {
               {!checkoutLoading && <ArrowRight className="w-4 h-4" />}
             </button>
             <p className="mt-2 text-[11px] text-slate-400 text-center flex items-center justify-center gap-1">
-              <ShieldCheck className="w-3.5 h-3.5 text-emerald-500" /> Tu carrito se guarda: lo pagas de forma segura dentro de la plataforma Por Mí
+              <ShieldCheck className="w-3.5 h-3.5 text-emerald-500" /> Tu carrito se guarda: lo pagas de forma segura dentro de la plataforma The New Technological Republic
             </p>
           </div>
         </div>

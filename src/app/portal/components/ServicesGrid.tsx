@@ -5,23 +5,30 @@ import { Check, ChevronDown, ChevronUp, ShoppingCart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { usePortal } from "../PortalContext";
 import { PORTAL_SERVICE_SECTIONS } from "@/lib/business-services";
-
-const formatUsd = (n: number) =>
-  `$${n.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+import ServicePrice from "@/components/store/ServicePrice";
+import DiscountCodeInput from "@/components/store/DiscountCodeInput";
 
 /** Tienda del portal: los mismos servicios que la tienda pública (/tienda), con el carrito del portal. */
 export default function ServicesGrid() {
-  const { addToCart, setIsCartOpen, getCartItemQuantity } = usePortal();
+  const { addToCart, setIsCartOpen, getCartItemQuantity, discountCode, setDiscountCode } = usePortal();
   const [openDetails, setOpenDetails] = useState<Record<string, boolean>>({});
 
   return (
     <div className="space-y-10 w-full min-w-0">
       {/* Page Header */}
       <div className="border-b border-slate-200 pb-6 w-full">
-        <h2 className="text-2xl md:text-3xl font-semibold tracking-tight text-slate-900">Tienda Por mí</h2>
+        <h2 className="text-2xl md:text-3xl font-semibold tracking-tight text-slate-900">Tienda The New Technological Republic</h2>
         <p className="text-xs md:text-sm text-slate-500 mt-1 font-normal">
           Servicios para crear y hacer crecer tu empresa, a un costo inferior al del mercado.
         </p>
+        {/* Código de descuento: al aplicarlo, los precios de las tarjetas ya salen rebajados */}
+        <DiscountCodeInput
+          variant="store"
+          align="left"
+          className="mt-6 max-w-md"
+          code={discountCode}
+          onChange={setDiscountCode}
+        />
       </div>
 
       {PORTAL_SERVICE_SECTIONS.map((section) => (
@@ -57,18 +64,7 @@ export default function ServicesGrid() {
                   {service.description}
                 </p>
 
-                <p className="text-[11px] text-slate-400 line-through leading-none" title="Precio promedio en el mercado">
-                  {formatUsd(service.marketPrice)}{service.priceNote?.startsWith("/") ? ` ${service.priceNote}` : ""}
-                </p>
-                <div className="flex items-baseline gap-1.5 mb-2.5">
-                  {service.priceNote === "Desde" && (
-                    <span className="text-[10px] text-slate-400 uppercase">Desde</span>
-                  )}
-                  <span className="text-xl font-semibold text-slate-900 tracking-tight">{formatUsd(service.price)}</span>
-                  <span className="text-[10px] text-slate-400 font-normal uppercase">
-                    USD{service.priceNote?.startsWith("/") ? ` ${service.priceNote}` : ""}
-                  </span>
-                </div>
+                <ServicePrice service={service} discountCode={discountCode} />
 
                 <div className="border-t border-slate-100 pt-2 mb-2">
                   <button

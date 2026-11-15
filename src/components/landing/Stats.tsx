@@ -80,7 +80,7 @@ export default function Stats() {
       number: 95,
       suffix: "%",
       title: "Satisfacción",
-      description: "De nuestros miembros recomiendan Por Mí",
+      description: "De nuestros miembros recomiendan The New Technological Republic",
     },
   ];
 
