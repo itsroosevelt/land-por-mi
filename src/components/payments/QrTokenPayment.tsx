@@ -23,6 +23,8 @@ interface QrTokenPaymentProps {
   plan: string;
   cartItems?: string[];
   priceUSD: number;
+  /** Código de descuento aplicado; el servidor recalcula el precio con él. */
+  discountCode?: string | null;
   paymentMethod: CryptoPaymentMethod;
   isProcessing: boolean;
   setIsProcessing: (value: boolean) => void;
@@ -88,6 +90,7 @@ export default function QrTokenPayment({
   plan,
   cartItems,
   priceUSD,
+  discountCode,
   paymentMethod,
   isProcessing,
   setIsProcessing,
@@ -283,6 +286,7 @@ export default function QrTokenPayment({
           items: plan === 'cart' && cartItems?.length ? cartItems : undefined,
           paymentMethod,
           chargeUSD: priceUSD,
+          discountCode: discountCode || undefined,
           expectedAmountUi: preciseAmount.uiAmount,
           expectedAmountRaw: preciseAmount.rawAmount,
           billingData: billingData || null,

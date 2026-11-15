@@ -14,6 +14,7 @@ import {
 } from '@/backend/payments/payment-config';
 import { encodeCompactSolanaPayQrUrl } from '@/backend/payments/solana-pay';
 import { upsertVisaCryptoSession, validatePaymentOrderPayload } from '@/backend/payments/qr-payment';
+import { applyDiscount, getMonthlyDiscountUsd, normalizeDiscountCode } from '@/lib/payments/discount-codes';
 
 export async function POST(request: NextRequest) {
   try {
@@ -37,7 +38,11 @@ export async function POST(request: NextRequest) {
       billingData,
       items,
       userId,
+      discountCode: rawDiscountCode,
     } = await request.json();
+    // Código de descuento: solo baja el pago único / pago inicial de los servicios (ver discount-codes.ts).
+    const discountCode = normalizeDiscountCode(rawDiscountCode);
+    let catalogBeforeDiscountUSD = 0;
 
     if (!sessionId || !plan || !paymentMethod || !expectedAmountUi || !expectedAmountRaw) {
       return NextResponse.json(
@@ -61,12 +66,16 @@ export async function POST(request: NextRequest) {
         if (!itemPrice) {
           return NextResponse.json({ error: `Invalid item in cart: ${itemId}` }, { status: 400 });
         }
-        catalogPlanPriceUSD += itemPrice;
+        catalogBeforeDiscountUSD += itemPrice;
+        catalogPlanPriceUSD += applyDiscount(itemId, itemPrice, discountCode);
       }
     } else {
       cartItemIds = [planKey];
-      catalogPlanPriceUSD = VISA_PLAN_CATALOG_USD[planKey];
+      catalogBeforeDiscountUSD = VISA_PLAN_CATALOG_USD[planKey] ?? 0;
+      catalogPlanPriceUSD = applyDiscount(planKey, catalogBeforeDiscountUSD, discountCode);
     }
+    catalogPlanPriceUSD = Math.round(catalogPlanPriceUSD * 100) / 100;
+    const discountUSD = Math.round((catalogBeforeDiscountUSD - catalogPlanPriceUSD) * 100) / 100;
 
     if (!catalogPlanPriceUSD) {
       return NextResponse.json({ error: 'Invalid plan or empty checkout value' }, { status: 400 });
@@ -122,6 +131,10 @@ export async function POST(request: NextRequest) {
       qrUrl,
       planPriceUSD: catalogPlanPriceUSD,
       chargeUSD: catalogPlanPriceUSD,
+      discountCode: discountUSD > 0 ? discountCode : null,
+      discountUSD,
+      // En las secciones con descuento en todos los pagos, el código también baja la mensualidad (se cobra aparte cada mes).
+      monthlyDiscountUSD: getMonthlyDiscountUsd(cartItemIds, discountCode),
       expectedAmountUi: String(expectedAmountUi),
       expectedAmountRaw: String(expectedAmountRaw),
       tokenDecimals: config.decimals,

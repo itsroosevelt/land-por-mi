@@ -51,7 +51,7 @@ Si tienes cualquier duda o consulta, por favor no dudes en contactarme.
 Saludos,
 Karen Oyarce
 Departamento de Postulaciones
-Por mí LLC`;
+Luxor Intelligence LLC`;
 
 export type SchoolType = 'lumos' | 'mila' | 'uceda' | 'talk';
 

@@ -158,7 +158,7 @@ export default function BasicPlanShowcase() {
                     <div className="h-px w-12 bg-white/20" />
                     <p className="text-sm font-medium text-slate-400 flex items-center gap-2">
                         <span className="w-1.5 h-1.5 rounded-full bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.6)]" />
-                        Gestión garantizada por expertos Por mí
+                        Gestión garantizada por expertos The New Technological Republic
                     </p>
                     <div className="h-px w-12 bg-white/20" />
                 </div>

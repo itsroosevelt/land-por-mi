@@ -3,12 +3,19 @@ import { getStripeClient } from '@/backend/payments/stripe';
 import {
   calculateStripeGrossTotal,
   calculateStripeProcessingFee,
-  getCartTotalUsd,
   getItemPriceUsd,
   getProductEntry,
   PRODUCT_CATALOG,
 } from '@/lib/payments/product-catalog';
 import { PORTAL_STRIPE_SUCCESS_URL } from '@/lib/payments/stripe-links';
+import {
+  applyDiscount,
+  getCartDiscountUsd,
+  getDiscountedRecurringUsd,
+  getMonthlyDiscountUsd,
+  getDiscountPercent,
+  normalizeDiscountCode,
+} from '@/lib/payments/discount-codes';
 
 export async function POST(request: NextRequest) {
   try {
@@ -48,7 +55,21 @@ export async function POST(request: NextRequest) {
     }
 
     const allValidItems = itemIds.filter((id) => id in PRODUCT_CATALOG);
-    const subtotalUsd = getCartTotalUsd(allValidItems, 'card');
+    // Código de descuento: solo baja el pago único / pago inicial de los servicios (ver discount-codes.ts).
+    const discountCode = normalizeDiscountCode(body.discountCode);
+    const discountPercent = getDiscountPercent(discountCode);
+    const basePrice = (itemId: string) => getItemPriceUsd(itemId, 'card');
+    const unitPrice = (itemId: string) => applyDiscount(itemId, basePrice(itemId), discountCode);
+    const discountUsd = getCartDiscountUsd(allValidItems, basePrice, discountCode);
+    const subtotalUsd = Math.round(allValidItems.reduce((sum, id) => sum + unitPrice(id), 0) * 100) / 100;
+    // En las secciones con descuento en todos los pagos, el código también baja la mensualidad (se cobra aparte cada mes).
+    const monthlyDiscountUsd = getMonthlyDiscountUsd(allValidItems, discountCode);
+    const lineName = (itemId: string, name: string) => {
+      if (unitPrice(itemId) >= basePrice(itemId)) return name;
+      const monthly = monthlyDiscountUsd > 0 ? getDiscountedRecurringUsd(itemId, discountCode) : null;
+      const tag = `Código ${discountCode} (-${Math.round(discountPercent * 100)}%)`;
+      return monthly !== null ? `${name} · ${tag}, mensualidad con descuento: $${monthly.toFixed(2)} / mes` : `${name} · ${tag}`;
+    };
     const processingFeeUsd = calculateStripeProcessingFee(subtotalUsd);
     const grossTotalUsd = calculateStripeGrossTotal(subtotalUsd);
 
@@ -70,9 +91,9 @@ export async function POST(request: NextRequest) {
             quantity: qty,
             price_data: {
               currency: 'usd',
-              unit_amount: Math.round(getItemPriceUsd(itemId, 'card') * 100),
+              unit_amount: Math.round(unitPrice(itemId) * 100),
               product_data: {
-                name: entry.name,
+                name: lineName(itemId, entry.name),
                 metadata: { item_id: itemId },
               },
             },
@@ -96,6 +117,9 @@ export async function POST(request: NextRequest) {
         product_id: uniqueItemIds.length === 1 && counts[uniqueItemIds[0]] === 1 ? uniqueItemIds[0] : 'cart',
         billing_email: email.toLowerCase(),
         subtotal_usd: String(subtotalUsd),
+        discount_code: discountUsd > 0 ? discountCode || '' : '',
+        discount_usd: String(discountUsd),
+        monthly_discount_usd: String(monthlyDiscountUsd),
         processing_fee_usd: String(processingFeeUsd),
         charge_usd: String(grossTotalUsd),
       },
@@ -112,6 +136,8 @@ export async function POST(request: NextRequest) {
       sessionId: session.id,
       itemIds: allValidItems,
       subtotalUsd,
+      discountUsd,
+      monthlyDiscountUsd,
       processingFeeUsd,
       totalUsd: grossTotalUsd,
     });

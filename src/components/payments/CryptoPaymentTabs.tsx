@@ -14,6 +14,8 @@ interface CryptoPaymentTabsProps {
   plan: string;
   cartItems?: string[];
   priceUSD: number;
+  /** Código de descuento aplicado; el servidor recalcula el precio con él. */
+  discountCode?: string | null;
   sessionId: string;
   billingData: BillingData | null;
   isBillingValid: boolean;
@@ -30,6 +32,7 @@ export default function CryptoPaymentTabs({
   plan,
   cartItems,
   priceUSD,
+  discountCode,
   sessionId,
   billingData,
   isBillingValid,
@@ -92,6 +95,7 @@ export default function CryptoPaymentTabs({
             plan={plan}
             cartItems={cartItems}
             priceUSD={priceUSD}
+            discountCode={discountCode}
             paymentMethod={method}
             isProcessing={isProcessing}
             setIsProcessing={setIsProcessing}

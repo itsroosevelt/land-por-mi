@@ -255,7 +255,7 @@ function LoginContent() {
             >
               <div className="flex flex-col items-center text-center max-w-4xl mb-8 sm:mb-12">
                 <div className="flex flex-wrap justify-center gap-x-[0.25em] text-3xl md:text-5xl font-light tracking-tight text-white leading-[1.15] justify-center px-4">
-                  {"Bienvenido a Por mí".split(' ').map((word, wordIndex) => (
+                  {"Bienvenido a The New Technological Republic".split(' ').map((word, wordIndex) => (
                     <motion.span
                       key={`welcome-word-${wordIndex}`}
                       initial={{ opacity: 0, y: 10, filter: 'blur(4px)' }}
@@ -285,17 +285,17 @@ function LoginContent() {
               <Button
                 variant="outline"
                 onClick={() => { setShowForm(true); setIsRegistering(true); }}
-                className="w-full max-w-sm h-14 rounded-full bg-transparent border border-white/40 text-white hover:bg-gradient-to-r hover:from-blue-700 hover:to-blue-500 hover:text-white hover:border-blue-600 hover:[transition-property:transform,box-shadow] hover:scale-105 active:scale-95 font-light text-xs md:text-sm tracking-widest transition-all duration-300 shadow-lg"
+                className="w-full max-w-sm h-auto min-h-14 py-3 px-6 whitespace-normal leading-snug rounded-full bg-transparent border border-white/40 text-white hover:bg-gradient-to-r hover:from-blue-700 hover:to-blue-500 hover:text-white hover:border-blue-600 hover:[transition-property:transform,box-shadow] hover:scale-105 active:scale-95 font-light text-xs md:text-sm tracking-widest transition-all duration-300 shadow-lg"
               >
-                COMENZAR EN POR MÍ
+                COMENZAR EN THE NEW TECHNOLOGICAL REPUBLIC
               </Button>
 
               <Button
                 variant="outline"
-                className="w-full max-w-sm h-14 rounded-full bg-transparent border border-white/40 text-white hover:bg-gradient-to-r hover:from-blue-700 hover:to-blue-500 hover:text-white hover:border-blue-600 hover:[transition-property:transform,box-shadow] hover:scale-105 active:scale-95 font-light text-xs md:text-sm tracking-widest transition-all duration-300 shadow-lg"
+                className="w-full max-w-sm h-auto min-h-14 py-3 px-6 whitespace-normal leading-snug rounded-full bg-transparent border border-white/40 text-white hover:bg-gradient-to-r hover:from-blue-700 hover:to-blue-500 hover:text-white hover:border-blue-600 hover:[transition-property:transform,box-shadow] hover:scale-105 active:scale-95 font-light text-xs md:text-sm tracking-widest transition-all duration-300 shadow-lg"
                 onClick={() => { setShowForm(true); setIsRegistering(false); }}
               >
-                YA TENGO MI CUENTA EN POR MÍ
+                YA TENGO MI CUENTA EN THE NEW TECHNOLOGICAL REPUBLIC
               </Button>
 
               <button
@@ -342,7 +342,7 @@ function LoginContent() {
 
               <div className="text-center px-4 max-w-2xl mx-auto flex flex-col gap-2 min-h-[4.5rem] sm:min-h-[6rem] justify-center mb-4">
                 {(isRegistering 
-                  ? ["Tu futuro comienza hoy con Por mí", "Crea tu cuenta para comenzar"]
+                  ? ["Tu futuro comienza hoy con The New Technological Republic", "Crea tu cuenta para comenzar"]
                   : ["¡Te damos la bienvenida de nuevo!", "Inicia sesión con tu cuenta para continuar"]
                 ).map((line, lineIndex) => (
                   <div
@@ -395,7 +395,7 @@ function LoginContent() {
                   className="w-full h-12 rounded-full bg-white text-black hover:bg-white/90 font-semibold text-sm tracking-wider transition-all duration-300 shadow-lg active:scale-95 disabled:opacity-50 mt-2"
                   disabled={loading}
                 >
-                  {loading ? 'Sincronizando...' : (isRegistering ? 'Registrarse en Por mí' : 'Iniciar Sesión')}
+                  {loading ? 'Sincronizando...' : (isRegistering ? 'Registrarse en The New Technological Republic' : 'Iniciar Sesión')}
                 </Button>
               </form>
 
@@ -499,7 +499,7 @@ function LoginContent() {
         transition={{ delay: 1, duration: 1 }}
         className="relative z-10 mt-8 mb-4 text-center text-[9px] tracking-[0.6em] uppercase text-white/40 whitespace-nowrap"
       >
-        Plataforma Por mí
+        Plataforma The New Technological Republic
       </motion.div>
     </div>
   );

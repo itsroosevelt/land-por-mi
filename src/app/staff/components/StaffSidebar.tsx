@@ -54,7 +54,7 @@ export const StaffSidebar: React.FC<StaffSidebarProps> = ({
       }`}
     >
       <div className="flex flex-col gap-2">
-        {/* Header with Por mí Logo & Hamburger Toggle */}
+        {/* Header with The New Technological Republic Logo & Hamburger Toggle */}
         {isSidebarCollapsed ? (
           <div className="hidden md:flex flex-col items-center gap-3 mb-4 pb-3 border-b border-slate-100 px-1">
             <button
@@ -65,10 +65,10 @@ export const StaffSidebar: React.FC<StaffSidebarProps> = ({
             >
               <Menu className="w-4 h-4 shrink-0 text-black" />
             </button>
-            <div title="Por mí" className="w-7 h-7 relative cursor-pointer group overflow-hidden rounded-full bg-black/5">
+            <div title="The New Technological Republic" className="w-7 h-7 relative cursor-pointer group overflow-hidden rounded-full bg-black/5">
               <img
                 src="/icons/logo-por-mi-america.webp"
-                alt="Por mí"
+                alt="The New Technological Republic"
                 className="w-full h-full object-cover object-center group-hover:scale-110 transition-transform"
               />
             </div>
@@ -79,11 +79,11 @@ export const StaffSidebar: React.FC<StaffSidebarProps> = ({
               <div className="w-7 h-7 relative shrink-0 overflow-hidden rounded-full bg-black/5">
                 <img
                   src="/icons/logo-por-mi-america.webp"
-                  alt="Por mí"
+                  alt="The New Technological Republic"
                   className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform"
                 />
               </div>
-              <span className="text-sm font-bold tracking-tight text-black leading-tight">Por Mí | The New Technological Republic</span>
+              <span className="text-sm font-bold tracking-tight text-black leading-tight">The New Technological Republic</span>
             </div>
             <button
               type="button"

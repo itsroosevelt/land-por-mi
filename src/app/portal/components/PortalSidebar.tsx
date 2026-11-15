@@ -26,7 +26,7 @@ import React, { useState, useEffect } from 'react';
 import { usePortal, cartItemsConfig } from '../PortalContext';
 import { Button } from '@/components/ui/button';
 
-// Redes de la comunidad Por Mí (botón "Comunidad" de la barra lateral).
+// Redes de la comunidad The New Technological Republic (botón "Comunidad" de la barra lateral).
 const COMMUNITY_SOCIALS = [
   { label: 'WhatsApp', imgSrc: '/assets/w.jpg', href: 'https://chat.whatsapp.com/CAeBvhShHLC7VyBy8yZzVk' },
   { label: 'Instagram', imgSrc: '/assets/i.jpg', href: 'https://www.instagram.com/itspormi' },
@@ -134,9 +134,9 @@ export default function PortalSidebar({
           <div className="flex lg:hidden items-center justify-between mb-3 pb-3 border-b border-slate-100 px-2">
             <Link href="/" className="flex items-center gap-2 cursor-pointer" onClick={onCloseMobile}>
               <div className="w-7 h-7 relative shrink-0 overflow-hidden rounded-full bg-black/5">
-                <img src="/icons/logo-por-mi-america.webp" alt="Por mí" className="w-full h-full object-cover object-center" />
+                <img src="/icons/logo-por-mi-america.webp" alt="The New Technological Republic" className="w-full h-full object-cover object-center" />
               </div>
-              <span className="text-sm font-bold tracking-tight text-black leading-tight">Por Mí | The New Technological Republic</span>
+              <span className="text-sm font-bold tracking-tight text-black leading-tight">The New Technological Republic</span>
             </Link>
             <button
               onClick={onCloseMobile}
@@ -147,7 +147,7 @@ export default function PortalSidebar({
             </button>
           </div>
 
-          {/* Desktop/Tablet Header with Por mí Logo & Hamburger Toggle */}
+          {/* Desktop/Tablet Header with The New Technological Republic Logo & Hamburger Toggle */}
           {isSidebarCollapsed ? (
             <div className="hidden lg:flex flex-col items-center gap-3 mb-4 pb-3 border-b border-slate-100 px-1">
               <button
@@ -157,10 +157,10 @@ export default function PortalSidebar({
               >
                 <Menu className="w-4 h-4 shrink-0 text-black" />
               </button>
-              <Link href="/" title="Por mí" className="w-7 h-7 relative cursor-pointer group overflow-hidden rounded-full bg-black/5">
+              <Link href="/" title="The New Technological Republic" className="w-7 h-7 relative cursor-pointer group overflow-hidden rounded-full bg-black/5">
                 <img
                   src="/icons/logo-por-mi-america.webp"
-                  alt="Por mí"
+                  alt="The New Technological Republic"
                   className="w-full h-full object-cover object-center group-hover:scale-110 transition-transform"
                 />
               </Link>
@@ -171,11 +171,11 @@ export default function PortalSidebar({
                 <div className="w-7 h-7 relative shrink-0 overflow-hidden rounded-full bg-black/5">
                   <img
                     src="/icons/logo-por-mi-america.webp"
-                    alt="Por mí"
+                    alt="The New Technological Republic"
                     className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform"
                   />
                 </div>
-                <span className="text-sm font-bold tracking-tight text-black leading-tight">Por Mí | The New Technological Republic</span>
+                <span className="text-sm font-bold tracking-tight text-black leading-tight">The New Technological Republic</span>
               </Link>
               <button
                 onClick={onToggleSidebar}
@@ -494,7 +494,7 @@ export default function PortalSidebar({
               {!isSidebarCollapsed && (
                 <div className="min-w-0 text-left flex-1">
                   <p className="text-xs font-bold text-black truncate leading-tight">
-                    {user.displayName || 'Usuario Por mí'}
+                    {user.displayName || 'Usuario The New Technological Republic'}
                   </p>
                   <p className="text-[10px] text-slate-500 truncate leading-tight mt-0.5 font-medium">
                     {user.email}
@@ -523,7 +523,7 @@ export default function PortalSidebar({
                         Tu Cuenta
                       </p>
                       <p className="text-sm font-bold truncate text-black">
-                        {user.displayName || 'Usuario Por mí'}
+                        {user.displayName || 'Usuario The New Technological Republic'}
                       </p>
                       <p className="text-xs truncate text-slate-500 font-medium">{user.email}</p>
                     </div>

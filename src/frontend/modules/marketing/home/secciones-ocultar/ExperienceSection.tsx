@@ -98,7 +98,7 @@ export default function ExperienceSection() {
                 {/* Header Title for Video & List */}
                 <div className="mb-12">
                     <h3 className="text-3xl md:text-5xl font-medium tracking-tighter mb-6 leading-none text-white max-w-5xl">
-                        Por mí Reality: <br /> Construida para ti
+                        The New Technological Republic Reality: <br /> Construida para ti
                     </h3>
                     <div className="flex items-center gap-6 text-gray-400 text-sm">
                         <span className="text-white font-medium tracking-tight">FEBRERO 2026</span>

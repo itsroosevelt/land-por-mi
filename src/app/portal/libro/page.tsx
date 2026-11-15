@@ -26,7 +26,7 @@ export default function LibroPage() {
         <div className="bg-white border border-slate-200 shadow-xl rounded-3xl p-6 md:p-8 flex flex-col md:flex-row items-center gap-8 w-full font-sans">
           {/* Book Mockup cover */}
           <div className="w-48 h-64 shrink-0 rounded-2xl bg-gradient-to-tr from-slate-900 via-slate-800 to-black border border-slate-700 flex flex-col justify-between p-4 shadow-xl hover:scale-105 transition-transform duration-300 relative group overflow-hidden text-white">
-            <span className="text-[10px] font-bold tracking-widest text-slate-300 uppercase">Por mí Ebook</span>
+            <span className="text-[10px] font-bold tracking-widest text-slate-300 uppercase">The New Technological Republic Ebook</span>
             <div className="space-y-1 z-10">
               <h4 className="text-xs font-bold leading-tight text-slate-200">
                 {isStudent ? "OBTÉN TU" : "TU VIAJE EN"}
@@ -53,8 +53,8 @@ export default function LibroPage() {
               </h3>
               <p className="text-sm text-slate-600 leading-relaxed whitespace-pre-line font-normal">
                 {isStudent
-                  ? "Descubre cómo obtener tu visa de estudiante para Estados Unidos con el libro digital Por mí.\n\nEsta guía completa y actualizada te enseña a gestionar de forma autónoma y exitosa todo el proceso para obtener tu visa F1. Aprenderás paso a paso cómo preparar correctamente tu documentación oficial, llenar los formularios oficiales y presentarte a la entrevista en la embajada con total confianza.\n\nCon consejos prácticos basados en nuestra experiencia como agentes oficiales de escuelas en EE.UU. y enlaces oficiales actualizados, evitarás errores comunes que suelen retrasar o invalidar las solicitudes, ahorrando tiempo y dinero. Este libro está diseñado especialmente para personas de Latinoamérica que desean información clara, confiable y práctica para tomar el control de su trámite y cumplir su sueño de estudiar en Estados Unidos."
-                  : "Este libro digital contiene los secretos prácticos de Por mí para responder con precisión sobre tus planes turísticos, justificar fondos y garantizar tu retorno."}
+                  ? "Descubre cómo obtener tu visa de estudiante para Estados Unidos con el libro digital The New Technological Republic.\n\nEsta guía completa y actualizada te enseña a gestionar de forma autónoma y exitosa todo el proceso para obtener tu visa F1. Aprenderás paso a paso cómo preparar correctamente tu documentación oficial, llenar los formularios oficiales y presentarte a la entrevista en la embajada con total confianza.\n\nCon consejos prácticos basados en nuestra experiencia como agentes oficiales de escuelas en EE.UU. y enlaces oficiales actualizados, evitarás errores comunes que suelen retrasar o invalidar las solicitudes, ahorrando tiempo y dinero. Este libro está diseñado especialmente para personas de Latinoamérica que desean información clara, confiable y práctica para tomar el control de su trámite y cumplir su sueño de estudiar en Estados Unidos."
+                  : "Este libro digital contiene los secretos prácticos de The New Technological Republic para responder con precisión sobre tus planes turísticos, justificar fondos y garantizar tu retorno."}
               </p>
             </div>
 

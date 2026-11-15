@@ -15,7 +15,7 @@ export default function StudentShowcase() {
               </h2>
               <img
                 src="/icons/logo-por-mi-america-840.webp"
-                alt="Por Mí | The New Technological Republic"
+                alt="The New Technological Republic"
                 loading="lazy"
                 className="mt-8 block mx-auto lg:mx-0 w-56 sm:w-72 md:w-80 lg:w-full lg:max-w-sm h-auto"
               />
@@ -42,7 +42,7 @@ export default function StudentShowcase() {
 
             <p className="mt-8 text-gray-600 text-base leading-[1.7] font-light">
               Lo que comenzó como una iniciativa comunitaria para conectar a nuestra gente evoluciona hoy hacia una
-              plataforma de alcance continental. Por Mí | The New Technological Republic asume el mandato cívico y
+              plataforma de alcance continental. The New Technological Republic asume el mandato cívico y
               económico de construir lo que la burocracia nunca supo sostener: una integración de facto impulsada por la
               tecnología, el comercio libre y el talento individual, respetando plenamente las fronteras, identidades
               soberanas y marcos legales de cada nación.

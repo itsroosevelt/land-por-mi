@@ -18,7 +18,7 @@ const requirements = [
     },
     {
         title: "Formulario I-20",
-        description: "Certificado de elegibilidad emitido por una institución educativa autorizada por el SEVP (Por mí te ayuda a obtenerlo).",
+        description: "Certificado de elegibilidad emitido por una institución educativa autorizada por el SEVP (The New Technological Republic te ayuda a obtenerlo).",
         icon: FileCheck,
     },
     {
@@ -151,7 +151,7 @@ export default function StudentRequirements() {
                                     </p>
                                     <div className="mt-8 flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.25em] text-slate-400 opacity-80 group-hover:opacity-100 transition-opacity">
                                         <CheckCircle size={14} className="text-emerald-500" />
-                                        <span>Verificado Por mí</span>
+                                        <span>Verificado The New Technological Republic</span>
                                     </div>
                                 </motion.div>
                             );

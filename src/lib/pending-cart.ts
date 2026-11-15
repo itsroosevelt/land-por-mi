@@ -28,6 +28,26 @@ export function clearPendingCart() {
   savePendingCart([]);
 }
 
+const DISCOUNT_CODE_KEY = "pormi_discount_code";
+
+/** Código de descuento elegido en la tienda o en el portal (se recuerda en este navegador). */
+export function readSavedDiscountCode(): string | null {
+  try {
+    return localStorage.getItem(DISCOUNT_CODE_KEY);
+  } catch {
+    return null;
+  }
+}
+
+export function saveDiscountCode(code: string | null) {
+  try {
+    if (code) localStorage.setItem(DISCOUNT_CODE_KEY, code);
+    else localStorage.removeItem(DISCOUNT_CODE_KEY);
+  } catch {
+    // almacenamiento no disponible (modo privado, etc.)
+  }
+}
+
 /** A dónde llevar a la persona después de registrarse o iniciar sesión. */
 export function getPostLoginPath(): string {
   return readPendingCart().length > 0 ? "/portal/tienda" : "/portal";

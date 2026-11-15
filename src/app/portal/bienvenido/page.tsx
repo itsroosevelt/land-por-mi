@@ -59,11 +59,11 @@ export default function BienvenidoPage() {
       <div className="space-y-5 text-center">
         <p className="text-xs font-semibold uppercase tracking-[0.25em] text-slate-400">The New Technological Republic</p>
         <h1 className="text-2xl sm:text-3xl md:text-4xl font-semibold text-slate-900 tracking-tight">
-          ¡Bienvenido a Por Mí, {userName}!
+          ¡Bienvenido a The New Technological Republic, {userName}!
         </h1>
         <div className="space-y-3 text-slate-600 text-sm md:text-base leading-relaxed max-w-4xl mx-auto">
           <p>
-            Nos alegra mucho tenerte aquí. Por Mí es la plataforma de The New Technological Republic: el lugar donde
+            Nos alegra mucho tenerte aquí. The New Technological Republic es el lugar donde
             emprendedores y empresarios de toda Latinoamérica encuentran todo lo necesario para crear, organizar y hacer
             crecer sus negocios, con el respaldo de la tecnología, la inteligencia artificial y las finanzas
             descentralizadas creadas en los Estados Unidos.

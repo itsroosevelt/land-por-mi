@@ -36,7 +36,7 @@ export function getCountrySocialLinks(countryCode: string, countryName: string):
     if (custom) return { ...link, href: custom };
     // Sin grupo propio, el WhatsApp general lleva el país en el mensaje para segmentar.
     if (link.network === "whatsapp") {
-      return { ...link, href: `${link.href}?text=${encodeURIComponent(`Hola, soy de ${countryName} y quiero unirme a la red Por mí`)}` };
+      return { ...link, href: `${link.href}?text=${encodeURIComponent(`Hola, soy de ${countryName} y quiero unirme a la red The New Technological Republic`)}` };
     }
     return link;
   });

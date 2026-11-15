@@ -11,7 +11,7 @@ const categories = [
     title: "The New Technological Republic",
     faqs: [
       {
-        question: "¿Qué es Por Mí | The New Technological Republic?",
+        question: "¿Qué es The New Technological Republic?",
         answer: "Es una comunidad occidental que brinda productos y servicios tecnológicos accesibles a emprendedores y empresarios de toda Latinoamérica, respaldados por inteligencia artificial, tecnología y finanzas descentralizadas creadas en los Estados Unidos. Nuestro objetivo es unir con tecnología lo que las barreras políticas no lograron unir por años."
       },
       {
@@ -67,7 +67,7 @@ const categories = [
         answer: "Nuestro objetivo es ofrecer servicios tecnológicos a un costo inferior al del mercado actual, para eliminar las barreras de entrada a los negocios. Puedes ver los planes disponibles en la Tienda."
       },
       {
-        question: "¿Qué es Por Mí Streaming?",
+        question: "¿Qué es The New Technological Republic Streaming?",
         answer: "Es el canal de The New Technological Republic: entrevistas con empresarios e inversionistas, historias reales de emprendedores, masterclasses para crear y hacer crecer tu empresa, y contenido sobre tecnología, inteligencia artificial y finanzas descentralizadas."
       }
     ]
@@ -77,8 +77,8 @@ const categories = [
     title: "Plataforma y Pagos",
     faqs: [
       {
-        question: "¿Cómo accedo a la plataforma Por Mí?",
-        answer: "Si ya tienes cuenta, haz clic en \"Ingresar\" en la barra superior. Si aún no la tienes, haz clic en \"Ingresa a la plataforma Por Mí\" y regístrate. Desde ahí podrás acceder a las guías, los cursos y los servicios."
+        question: "¿Cómo accedo a la plataforma The New Technological Republic?",
+        answer: "Si ya tienes cuenta, haz clic en \"Ingresar\" en la barra superior. Si aún no la tienes, haz clic en \"Ingresa a la plataforma The New Technological Republic\" y regístrate. Desde ahí podrás acceder a las guías, los cursos y los servicios."
       },
       {
         question: "¿Qué métodos de pago aceptan?",
@@ -86,7 +86,7 @@ const categories = [
       },
       {
         question: "¿Qué es Luxor (LXR)?",
-        answer: "Luxor es la moneda digital del ecosistema Por Mí. Puedes usarla como método de pago dentro de la plataforma, junto con USDC, USDT y SOL."
+        answer: "Luxor es la moneda digital del ecosistema The New Technological Republic. Puedes usarla como método de pago dentro de la plataforma, junto con USDC, USDT y SOL."
       }
     ]
   }
@@ -118,7 +118,7 @@ export default function FAQsSection() {
             <span className="text-gray-400">de forma directa</span>
           </h2>
           <p className="text-base md:text-lg text-gray-400 font-normal leading-relaxed max-w-2xl mx-auto">
-            Todo sobre The New Technological Republic, la comunidad, nuestros servicios y la plataforma Por Mí. Transparencia total desde el primer momento.
+            Todo sobre The New Technological Republic, la comunidad, nuestros servicios y nuestra plataforma. Transparencia total desde el primer momento.
           </p>
         </div>
 

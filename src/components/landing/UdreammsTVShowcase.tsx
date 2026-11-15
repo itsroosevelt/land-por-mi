@@ -148,7 +148,7 @@ export default function UdreammsTVShowcase() {
                             {/* Título Principal */}
                             <div className="relative inline-block w-fit">
                                 <h2 className="text-6xl sm:text-7xl md:text-[5.5rem] lg:text-[6.5rem] font-bold text-white tracking-tighter leading-none select-none">
-                                    POR MÍ
+                                    THE NEW TECHNOLOGICAL REPUBLIC
                                 </h2>
                             </div>
 
@@ -160,7 +160,7 @@ export default function UdreammsTVShowcase() {
                                 </h3>
 
                                 <p className="text-base text-slate-400 font-light leading-relaxed mb-8 max-w-xl mx-auto lg:mx-0">
-                                    Entrevistas con empresarios e inversionistas, historias reales de emprendedores de la nueva Gran Colombia, masterclasses para crear y hacer crecer tu empresa, y lo último en tecnología, inteligencia artificial y finanzas descentralizadas. Todo el contenido audiovisual de Por Mí unificado en una sola plataforma.
+                                    Entrevistas con empresarios e inversionistas, historias reales de emprendedores de la nueva Gran Colombia, masterclasses para crear y hacer crecer tu empresa, y lo último en tecnología, inteligencia artificial y finanzas descentralizadas. Todo el contenido audiovisual de The New Technological Republic unificado en una sola plataforma.
                                 </p>
                             </div>
                         </motion.div>
@@ -175,7 +175,7 @@ export default function UdreammsTVShowcase() {
                         whileTap={{ scale: 0.95 }}
                         className="w-full sm:w-auto sm:min-w-[400px] md:min-w-[480px] px-12 md:px-16 py-3.5 bg-transparent hover:bg-white/10 text-white border border-white/30 backdrop-blur-md rounded-full text-base md:text-lg font-medium tracking-wide transition-all shadow-xl flex items-center justify-center gap-3"
                     >
-                        Por mí Streaming
+                        The New Technological Republic Streaming
                     </motion.button>
                 </div>
             </div>

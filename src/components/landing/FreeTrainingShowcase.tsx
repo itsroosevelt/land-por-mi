@@ -98,7 +98,7 @@ export default function FreeTrainingShowcase() {
                     </div>
 
                     <p className="mt-10 text-gray-600 text-base leading-[1.7] font-light max-w-2xl">
-                        Para acceder a todo esto creamos la plataforma <strong className="font-medium text-black">POR MÍ</strong>.
+                        Para acceder a todo esto creamos la plataforma <strong className="font-medium text-black">THE NEW TECHNOLOGICAL REPUBLIC</strong>.
                         Ahí encontrarás todo lo necesario para convertirte en empresario. Solo regístrate y accede a todos
                         estos servicios, donde sea que te encuentres.
                     </p>
@@ -109,10 +109,10 @@ export default function FreeTrainingShowcase() {
 
                     <Link
                         href="/login?register=true"
-                        onClick={() => sendMetaEvent('Lead', { source: 'FreeTrainingShowcase: Ingresa a la plataforma Por Mí' })}
+                        onClick={() => sendMetaEvent('Lead', { source: 'FreeTrainingShowcase: Ingresa a la plataforma The New Technological Republic' })}
                         className="mt-10 w-full sm:w-auto inline-flex items-center justify-center px-8 py-3.5 sm:py-3 bg-transparent border border-black text-black rounded-full hover:bg-gradient-to-r hover:from-blue-700 hover:to-blue-500 hover:border-blue-600 hover:text-white transition-all duration-300 hover:scale-105 hover:shadow-lg text-sm md:text-base font-medium"
                     >
-                        Ingresa a la plataforma Por Mí
+                        Ingresa a la plataforma The New Technological Republic
                     </Link>
                 </div>
             </div>
