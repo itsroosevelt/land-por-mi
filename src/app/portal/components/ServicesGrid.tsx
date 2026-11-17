@@ -7,6 +7,7 @@ import { usePortal } from "../PortalContext";
 import { PORTAL_SERVICE_SECTIONS } from "@/lib/business-services";
 import ServicePrice from "@/components/store/ServicePrice";
 import DiscountCodeInput from "@/components/store/DiscountCodeInput";
+import CustomChargeCard from "@/components/store/CustomChargeCard";
 
 /** Tienda del portal: los mismos servicios que la tienda pública (/tienda), con el carrito del portal. */
 export default function ServicesGrid() {
@@ -123,6 +124,21 @@ export default function ServicesGrid() {
       </div>
       </section>
       ))}
+
+      <section className="space-y-4">
+        <div>
+          <h3 className="text-lg md:text-xl font-semibold tracking-tight text-slate-900">Cobro personalizado</h3>
+          <p className="text-xs md:text-sm text-slate-500 mt-0.5">Para precios especiales acordados con nuestro equipo que no están en la tabla de precios.</p>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-5 gap-5 items-stretch w-full min-w-0">
+          <CustomChargeCard
+            onAdd={(itemId) => {
+              addToCart(itemId);
+              setIsCartOpen(true);
+            }}
+          />
+        </div>
+      </section>
     </div>
   );
 }

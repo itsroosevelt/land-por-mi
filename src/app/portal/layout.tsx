@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useEffect, useCallback, useRef, useState, Suspense } from "react";
-import { PortalProvider, usePortal, cartItemsConfig, studentPlans, touristPlans } from "./PortalContext";
+import { PortalProvider, usePortal, getCartItemInfo, studentPlans, touristPlans } from "./PortalContext";
+import { cartHasRecurring } from "@/lib/payments/billing";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -572,7 +573,7 @@ function PortalLayoutContent({ children }: { children: React.ReactNode }) {
                         <p className="text-xs font-semibold tracking-wider text-slate-400 uppercase">Resumen del Carrito</p>
                         <div className="space-y-2 max-h-40 overflow-y-auto pr-1 no-scrollbar">
                           {getUniqueCartItems().map((itemId) => {
-                            const item = cartItemsConfig[itemId];
+                            const item = getCartItemInfo(itemId);
                             if (!item) return null;
                             const qty = getCartItemQuantity(itemId);
                             return (
@@ -646,6 +647,11 @@ function PortalLayoutContent({ children }: { children: React.ReactNode }) {
                             discountUsd={getCartDiscount(checkoutMethod)}
                             monthlyDiscountUsd={getMonthlyDiscountUsd(cart, discountCode)}
                           />
+                          {cartHasRecurring(cart) && (
+                            <p className="pt-2 text-[11px] text-slate-500 leading-snug">
+                              Las suscripciones se cobran hoy y luego automáticamente en la misma tarjeta, cada mes o cada año desde la fecha de compra. Puedes cancelarlas cuando quieras escribiéndonos.
+                            </p>
+                          )}
                         </div>
                       </div>
 

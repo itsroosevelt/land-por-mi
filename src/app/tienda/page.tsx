@@ -14,6 +14,9 @@ import ServicePrice from "@/components/store/ServicePrice";
 import { readPendingCart, readSavedDiscountCode, saveDiscountCode, savePendingCart } from "@/lib/pending-cart";
 import { getCartDiscountUsd, getDiscountPercent, getMonthlyDiscountUsd, normalizeDiscountCode } from "@/lib/payments/discount-codes";
 import DiscountCodeInput from "@/components/store/DiscountCodeInput";
+import CustomChargeCard from "@/components/store/CustomChargeCard";
+import { customChargeName, parseCustomChargeId, CUSTOM_CHARGE_BILLING_LABEL } from "@/lib/payments/custom-charge";
+import { cartHasRecurring } from "@/lib/payments/billing";
 
 function TiendaContent() {
   const searchParams = useSearchParams();
@@ -32,11 +35,22 @@ function TiendaContent() {
     });
   };
 
-  const cartServices = PORTAL_SERVICES.filter((s) => cart.includes(s.id));
-  const priceOf = (id: string) => PORTAL_SERVICES.find((s) => s.id === id)?.price ?? 0;
+  const addCustomCharge = (itemId: string) => {
+    setCart((current) => (current.includes(itemId) ? current : [...current, itemId]));
+    sendMetaEvent("AddToCart", { source: "Tienda", item_id: "cobro-personalizado", value: parseCustomChargeId(itemId)?.amountUsd ?? 0, currency: "USD" });
+  };
+
+  // Cada producto del carrito: un servicio de la tienda o un cobro personalizado.
+  const cartLines = cart.flatMap((id) => {
+    const service = PORTAL_SERVICES.find((s) => s.id === id);
+    if (service) return [{ id, name: service.name, summary: billingSummary(service, getDiscountPercent(discountCode)) }];
+    const custom = parseCustomChargeId(id);
+    return custom ? [{ id, name: customChargeName(id)!, summary: CUSTOM_CHARGE_BILLING_LABEL[custom.billing] }] : [];
+  });
+  const priceOf = (id: string) => PORTAL_SERVICES.find((s) => s.id === id)?.price ?? parseCustomChargeId(id)?.amountUsd ?? 0;
   // El código solo descuenta pagos únicos e iniciales (ver src/lib/payments/discount-codes.ts).
   const discountUsd = getCartDiscountUsd(cart, priceOf, discountCode);
-  const subtotal = Math.round((cartServices.reduce((sum, s) => sum + s.price, 0) - discountUsd) * 100) / 100;
+  const subtotal = Math.round((cart.reduce((sum, id) => sum + priceOf(id), 0) - discountUsd) * 100) / 100;
   const processingFee = calculateStripeProcessingFee(subtotal);
 
   // El carrito se guarda en el navegador: si la persona se va y vuelve, sigue ahí,
@@ -44,7 +58,7 @@ function TiendaContent() {
   const [cartLoaded, setCartLoaded] = useState(false);
   useEffect(() => {
     const valid = new Set(PORTAL_SERVICES.map((s) => s.id));
-    setCart(readPendingCart().filter((id) => valid.has(id)));
+    setCart(readPendingCart().filter((id) => valid.has(id) || parseCustomChargeId(id) !== null));
     setDiscountCode(normalizeDiscountCode(readSavedDiscountCode()));
     setCartLoaded(true);
   }, []);
@@ -181,6 +195,16 @@ function TiendaContent() {
         </div>
         </section>
         ))}
+
+        <section className="space-y-5">
+          <div className="text-center sm:text-left">
+            <h2 className="text-xl md:text-2xl font-medium tracking-tight text-white">Cobro personalizado</h2>
+            <p className="text-sm text-gray-400 mt-1">Para precios especiales acordados con nuestro equipo que no están en la tabla de precios.</p>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 sm:gap-5 items-stretch">
+            <CustomChargeCard onAdd={addCustomCharge} />
+          </div>
+        </section>
         </div>
       </main>
 
@@ -195,11 +219,11 @@ function TiendaContent() {
                   {cart.length} {cart.length === 1 ? "servicio" : "servicios"} en tu carrito
                 </p>
                 <div className="mt-2 flex flex-nowrap sm:flex-wrap gap-1.5 overflow-x-auto no-scrollbar max-w-[calc(100vw-10rem)] sm:max-w-none">
-                  {cartServices.map((s) => (
+                  {cartLines.map((s) => (
                     <span key={s.id} className="shrink-0 whitespace-nowrap inline-flex items-center gap-1 px-2 py-1 sm:py-0.5 rounded-full bg-slate-100 text-[11px] text-slate-700">
                       {s.name}
-                      <span className="text-slate-400">· {billingSummary(s, getDiscountPercent(discountCode))}</span>
-                      <button type="button" onClick={() => toggleCart(s)} aria-label={`Quitar ${s.name}`} className="text-slate-400 hover:text-slate-700 p-0.5 -m-0.5">
+                      <span className="text-slate-400">· {s.summary}</span>
+                      <button type="button" onClick={() => setCart((c) => c.filter((id) => id !== s.id))} aria-label={`Quitar ${s.name}`} className="text-slate-400 hover:text-slate-700 p-0.5 -m-0.5">
                         <X className="w-3 h-3" />
                       </button>
                     </span>
@@ -225,9 +249,9 @@ function TiendaContent() {
             />
 
 
-            {cartServices.some((s) => s.billing !== "unico" || s.recurring) && (
+            {cartHasRecurring(cart) && (
               <p className="mt-3 text-[11px] text-slate-500 leading-snug">
-                Hoy pagas el primer pago de cada servicio. Las mensualidades, el mantenimiento y las renovaciones anuales se cobran después, en cada periodo.
+                Las suscripciones se cobran hoy y luego automáticamente en la misma tarjeta, cada mes o cada año desde la fecha de compra. Puedes cancelarlas cuando quieras escribiéndonos.
               </p>
             )}
 

@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getStripeClient, resolveItemIdsFromCheckoutSessionAsync } from '@/backend/payments/stripe';
 import { unlockPurchasesByEmail } from '@/backend/payments/unlock-purchase';
-import { PRODUCT_CATALOG } from '@/lib/payments/product-catalog';
+import { createSubscriptionsForCheckoutSession } from '@/backend/payments/subscriptions';
 
 export const runtime = 'nodejs';
 
@@ -57,6 +57,13 @@ export async function POST(request: NextRequest) {
         });
       } else if (!userId) {
         console.warn(`[Stripe Webhook] Could not unlock: email=${email}, itemIds=${JSON.stringify(itemIds)}`);
+      }
+
+      // Suscripciones mensuales / anuales del carrito: se cobran solas desde el próximo periodo.
+      // Si falla, el webhook responde 500 y Stripe lo reintenta (no se duplican).
+      const subscriptionIds = await createSubscriptionsForCheckoutSession(session);
+      if (subscriptionIds.length) {
+        console.log(`[Stripe Webhook] Subscriptions for session ${session.id}: ${subscriptionIds.join(',')}`);
       }
     }
 

@@ -5,13 +5,14 @@ import {
   calculateStripeProcessingFee,
   getItemPriceUsd,
   getProductEntry,
-  PRODUCT_CATALOG,
+  isPurchasableItem,
 } from '@/lib/payments/product-catalog';
+import { getItemBilling } from '@/lib/payments/billing';
+import { buildRecurringPlans } from '@/backend/payments/subscriptions';
 import { PORTAL_STRIPE_SUCCESS_URL } from '@/lib/payments/stripe-links';
 import {
   applyDiscount,
   getCartDiscountUsd,
-  getDiscountedRecurringUsd,
   getMonthlyDiscountUsd,
   getDiscountPercent,
   normalizeDiscountCode,
@@ -44,7 +45,7 @@ export async function POST(request: NextRequest) {
 
     const counts: Record<string, number> = {};
     for (const id of itemIds) {
-      if (id in PRODUCT_CATALOG) {
+      if (isPurchasableItem(id)) {
         counts[id] = (counts[id] || 0) + 1;
       }
     }
@@ -54,7 +55,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'El carrito no tiene productos válidos' }, { status: 400 });
     }
 
-    const allValidItems = itemIds.filter((id) => id in PRODUCT_CATALOG);
+    const allValidItems = itemIds.filter(isPurchasableItem);
     // Código de descuento: solo baja el pago único / pago inicial de los servicios (ver discount-codes.ts).
     const discountCode = normalizeDiscountCode(body.discountCode);
     const discountPercent = getDiscountPercent(discountCode);
@@ -64,11 +65,20 @@ export async function POST(request: NextRequest) {
     const subtotalUsd = Math.round(allValidItems.reduce((sum, id) => sum + unitPrice(id), 0) * 100) / 100;
     // En las secciones con descuento en todos los pagos, el código también baja la mensualidad (se cobra aparte cada mes).
     const monthlyDiscountUsd = getMonthlyDiscountUsd(allValidItems, discountCode);
-    const lineName = (itemId: string, name: string) => {
+    // Suscripciones: hoy se cobra el primer mes / año, la tarjeta queda guardada y el webhook
+    // crea la suscripción que cobra sola cada periodo (ver src/backend/payments/subscriptions.ts).
+    const recurringPlans = buildRecurringPlans(allValidItems, discountCode);
+    const hasSubscriptions = recurringPlans.length > 0;
+    const periodNote = (itemId: string) => {
+      const billing = getItemBilling(itemId);
+      if (billing === 'mensual') return ' · se renueva sola cada mes en esta tarjeta';
+      if (billing === 'anual') return ' · se renueva sola cada año en esta tarjeta';
+      return '';
+    };
+    const lineName = (itemId: string, name: string) => `${baseLineName(itemId, name)}${periodNote(itemId)}`;
+    const baseLineName = (itemId: string, name: string) => {
       if (unitPrice(itemId) >= basePrice(itemId)) return name;
-      const monthly = monthlyDiscountUsd > 0 ? getDiscountedRecurringUsd(itemId, discountCode) : null;
-      const tag = `Código ${discountCode} (-${Math.round(discountPercent * 100)}%)`;
-      return monthly !== null ? `${name} · ${tag}, mensualidad con descuento: $${monthly.toFixed(2)} / mes` : `${name} · ${tag}`;
+      return `${name} · Código ${discountCode} (-${Math.round(discountPercent * 100)}%)`;
     };
     const processingFeeUsd = calculateStripeProcessingFee(subtotalUsd);
     const grossTotalUsd = calculateStripeGrossTotal(subtotalUsd);
@@ -80,9 +90,35 @@ export async function POST(request: NextRequest) {
       `${origin}/portal?stripe=success`;
     const cancelUrl = customCancelUrl || `${origin}/portal?stripe=cancelled`;
 
+    // Cliente de Stripe: se reutiliza el del mismo correo para que sus tarjetas y suscripciones queden juntas.
+    let customerId: string | null = null;
+    if (hasSubscriptions && email.includes('@')) {
+      const found = await stripe.customers.list({ email: email.toLowerCase(), limit: 1 });
+      customerId = found.data[0]?.id ?? null;
+    }
+    const renewalText = recurringPlans
+      .map((plan) => `$${(plan.netUsd + plan.feeUsd).toFixed(2)} USD cada ${plan.interval === 'month' ? 'mes' : 'año'}`)
+      .join(' y ');
+
     const session = await stripe.checkout.sessions.create({
       mode: 'payment',
-      ...(email.includes('@') ? { customer_email: email } : {}),
+      ...(customerId
+        ? { customer: customerId }
+        : {
+            ...(email.includes('@') ? { customer_email: email } : {}),
+            ...(hasSubscriptions ? { customer_creation: 'always' as const } : {}),
+          }),
+      ...(hasSubscriptions
+        ? {
+            // La tarjeta queda guardada para cobrar las suscripciones automáticamente.
+            payment_intent_data: { setup_future_usage: 'off_session' as const },
+            custom_text: {
+              submit: {
+                message: `Al pagar autorizas que tus suscripciones se cobren automáticamente en esta tarjeta: ${renewalText} (incluye la comisión de procesamiento), desde la fecha de hoy. Puedes cancelarlas cuando quieras escribiéndonos.`,
+              },
+            },
+          }
+        : {}),
       line_items: [
         ...uniqueItemIds.map((itemId) => {
           const entry = getProductEntry(itemId)!;
@@ -117,7 +153,8 @@ export async function POST(request: NextRequest) {
         product_id: uniqueItemIds.length === 1 && counts[uniqueItemIds[0]] === 1 ? uniqueItemIds[0] : 'cart',
         billing_email: email.toLowerCase(),
         subtotal_usd: String(subtotalUsd),
-        discount_code: discountUsd > 0 ? discountCode || '' : '',
+        discount_code: discountCode || '',
+        subscriptions: hasSubscriptions ? '1' : '0',
         discount_usd: String(discountUsd),
         monthly_discount_usd: String(monthlyDiscountUsd),
         processing_fee_usd: String(processingFeeUsd),
