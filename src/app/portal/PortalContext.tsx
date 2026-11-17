@@ -32,6 +32,8 @@ import {
   cartSupportsCrypto,
   getCartTotalUsd,
   getItemPriceUsd,
+  getProductEntry,
+  isPurchasableItem,
   PRODUCT_CATALOG,
 } from "@/lib/payments/product-catalog";
 
@@ -78,6 +80,14 @@ function buildCartItemsConfig() {
 }
 
 export const cartItemsConfig = buildCartItemsConfig();
+
+/** Datos de un producto del carrito: del catálogo fijo, o de un cobro personalizado. */
+export function getCartItemInfo(itemId: string) {
+  const fixed = cartItemsConfig[itemId];
+  if (fixed) return fixed;
+  const entry = getProductEntry(itemId);
+  return entry ? { name: entry.name, price: entry.cardPriceUsd, type: 'plan' as const, visa: 'estudiante' as const } : undefined;
+}
 
 export const studentModules = [
   {
@@ -716,7 +726,7 @@ export function PortalProvider({ children }: { children: ReactNode }) {
         const parsed = JSON.parse(raw) as unknown;
         if (Array.isArray(parsed)) {
           const valid = parsed.filter(
-            (id): id is string => typeof id === 'string' && id in PRODUCT_CATALOG
+            (id): id is string => typeof id === 'string' && isPurchasableItem(id)
           );
           setCart(valid);
         }
@@ -726,7 +736,7 @@ export function PortalProvider({ children }: { children: ReactNode }) {
     }
 
     // Carrito armado en la tienda pública antes de registrarse/iniciar sesión: se suma al del portal.
-    const pending = readPendingCart().filter((id) => id in PRODUCT_CATALOG);
+    const pending = readPendingCart().filter(isPurchasableItem);
     if (pending.length > 0) {
       setCart((prev) => [...prev, ...pending.filter((id) => !prev.includes(id))]);
       clearPendingCart();

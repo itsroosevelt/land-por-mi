@@ -44,7 +44,6 @@ const roundCents = (n: number) => Math.round(n * 100) / 100;
 /** Mensualidad base de cada servicio con descuento en todos los pagos que tiene pagos mensuales. */
 const RECURRING_ELIGIBLE = new Map<string, number>(
   PORTAL_SERVICES.filter((s) => s.discountAppliesToRecurring).flatMap((s): [string, number][] => {
-    if (s.recurring?.period === "mes") return [[s.id, s.recurring.price]];
     if (s.billing === "mensual") return [[s.id, s.price]];
     return [];
   }),

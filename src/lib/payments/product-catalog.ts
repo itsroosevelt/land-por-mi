@@ -1,7 +1,10 @@
 /**
  * Catálogo único de precios — fuente de verdad para portal, crypto y Stripe.
  * Precios tarjeta alineados con instructions-payment-student / tourist.
+ * Además del catálogo fijo, `getProductEntry` acepta los cobros personalizados (custom-charge.ts).
  */
+import { customChargeName, parseCustomChargeId } from '@/lib/payments/custom-charge';
+
 export interface ProductCatalogEntry {
   name: string;
   cardPriceUsd: number;
@@ -134,32 +137,47 @@ export const UTAH_SCHOOLS_CATALOG: SchoolProductInfo[] = [
 
 export const PRODUCT_CATALOG: Record<string, ProductCatalogEntry> = {
   // ── Servicios para empresas (tiendas /tienda y /portal/tienda). Se cobra el primer pago. ──
-  'servicio-crear-empresa-usa': { name: "Crear Empresa en EE. UU. + EIN + DUNS + Renovación Anual (primer pago; luego $50 / año)", cardPriceUsd: 450, cryptoPriceUsd: 450, stripePaymentLink: null },
+  'servicio-crear-empresa-usa': { name: "Crear Empresa en EE. UU. + EIN + DUNS (pago inicial)", cardPriceUsd: 450, cryptoPriceUsd: 450, stripePaymentLink: null },
+  'servicio-renovacion-empresa': { name: "Renovación Anual de Empresa (suscripción anual, 1 año)", cardPriceUsd: 50, cryptoPriceUsd: 50, stripePaymentLink: null },
   'servicio-agente-registrado': { name: "Agente Registrado y Dirección Comercial (suscripción anual, 1 año)", cardPriceUsd: 400, cryptoPriceUsd: 400, stripePaymentLink: null },
   'servicio-cuenta-bancaria': { name: "Cuenta Bancaria Empresarial en EE. UU. (pago único por cuenta)", cardPriceUsd: 200, cryptoPriceUsd: 200, stripePaymentLink: null },
   'servicio-telefono-whatsapp': { name: "Teléfono Comercial de EE. UU. + WhatsApp Business (suscripción mensual, 1 mes)", cardPriceUsd: 100, cryptoPriceUsd: 100, stripePaymentLink: null },
   'servicio-identidad-visual': { name: "Identidad Visual: Logo + Manual de Marca (pago único)", cardPriceUsd: 1000, cryptoPriceUsd: 1000, stripePaymentLink: null },
   'servicio-registro-marca': { name: "Registro de Marca (Trademark) (pago único)", cardPriceUsd: 500, cryptoPriceUsd: 500, stripePaymentLink: null },
   'servicio-impuestos-personales': { name: "Impuestos Personales (suscripción anual, 1 año)", cardPriceUsd: 200, cryptoPriceUsd: 200, stripePaymentLink: null },
-  'servicio-meta-business': { name: "Configuración de Meta Business Suite (pago inicial; luego $20 / mes)", cardPriceUsd: 500, cryptoPriceUsd: 500, stripePaymentLink: null },
-  'servicio-pasarela-pagos': { name: "Instalación de Pasarela de Pagos (pago inicial; luego $20 / mes)", cardPriceUsd: 500, cryptoPriceUsd: 500, stripePaymentLink: null },
-  'servicio-seo-local': { name: "Google Business Profile + Search Console + Analytics + SEO (pago inicial; luego $20 / mes)", cardPriceUsd: 500, cryptoPriceUsd: 500, stripePaymentLink: null },
+  'servicio-meta-business': { name: "Configuración de Meta Business Suite (pago inicial)", cardPriceUsd: 500, cryptoPriceUsd: 500, stripePaymentLink: null },
+  'servicio-meta-business-mensual': { name: "Mantenimiento de Meta Business Suite (suscripción mensual, 1 mes)", cardPriceUsd: 20, cryptoPriceUsd: 20, stripePaymentLink: null },
+  'servicio-pasarela-pagos': { name: "Instalación de Pasarela de Pagos (pago inicial)", cardPriceUsd: 500, cryptoPriceUsd: 500, stripePaymentLink: null },
+  'servicio-pasarela-pagos-mensual': { name: "Mantenimiento de Pasarela de Pagos (suscripción mensual, 1 mes)", cardPriceUsd: 20, cryptoPriceUsd: 20, stripePaymentLink: null },
+  'servicio-seo-local': { name: "Google Business Profile + Search Console + Analytics + SEO (pago inicial)", cardPriceUsd: 500, cryptoPriceUsd: 500, stripePaymentLink: null },
+  'servicio-seo-local-mensual': { name: "Mantenimiento de Google Business + SEO (suscripción mensual, 1 mes)", cardPriceUsd: 20, cryptoPriceUsd: 20, stripePaymentLink: null },
   'servicio-automatizacion-whatsapp': { name: "Automatización de Respuestas para WhatsApp, Instagram, Messenger y Comentarios (pago único)", cardPriceUsd: 500, cryptoPriceUsd: 500, stripePaymentLink: null },
-  'servicio-diseno-web': { name: "Diseño Web (pago inicial; luego $500 / mes de mantenimiento)", cardPriceUsd: 500, cryptoPriceUsd: 500, stripePaymentLink: null },
-  'servicio-plataforma-web': { name: "Plataforma Web (pago inicial; luego $1,000 / mes de mantenimiento)", cardPriceUsd: 1000, cryptoPriceUsd: 1000, stripePaymentLink: null },
-  'servicio-app-ios': { name: "App iOS (pago inicial; luego $500 / mes de mantenimiento)", cardPriceUsd: 500, cryptoPriceUsd: 500, stripePaymentLink: null },
-  'servicio-app-android': { name: "App Android (pago inicial; luego $500 / mes de mantenimiento)", cardPriceUsd: 500, cryptoPriceUsd: 500, stripePaymentLink: null },
+  'servicio-diseno-web': { name: "Diseño Web · Pago Inicial", cardPriceUsd: 500, cryptoPriceUsd: 500, stripePaymentLink: null },
+  'servicio-diseno-web-mensual': { name: "Diseño Web · Mensualidad (suscripción mensual, 1 mes)", cardPriceUsd: 500, cryptoPriceUsd: 500, stripePaymentLink: null },
+  'servicio-plataforma-web': { name: "Plataforma Web · Pago Inicial", cardPriceUsd: 1000, cryptoPriceUsd: 1000, stripePaymentLink: null },
+  'servicio-plataforma-web-mensual': { name: "Plataforma Web · Mensualidad (suscripción mensual, 1 mes)", cardPriceUsd: 1000, cryptoPriceUsd: 1000, stripePaymentLink: null },
+  'servicio-app-ios': { name: "App iOS · Pago Inicial", cardPriceUsd: 500, cryptoPriceUsd: 500, stripePaymentLink: null },
+  'servicio-app-ios-mensual': { name: "App iOS · Mensualidad (suscripción mensual, 1 mes)", cardPriceUsd: 500, cryptoPriceUsd: 500, stripePaymentLink: null },
+  'servicio-app-android': { name: "App Android · Pago Inicial", cardPriceUsd: 500, cryptoPriceUsd: 500, stripePaymentLink: null },
+  'servicio-app-android-mensual': { name: "App Android · Mensualidad (suscripción mensual, 1 mes)", cardPriceUsd: 500, cryptoPriceUsd: 500, stripePaymentLink: null },
   'servicio-diseno-web-unico': { name: "Diseño Web · Pago Único", cardPriceUsd: 6000, cryptoPriceUsd: 6000, stripePaymentLink: null },
   'servicio-plataforma-web-unico': { name: "Plataforma Web · Pago Único", cardPriceUsd: 12000, cryptoPriceUsd: 12000, stripePaymentLink: null },
   'servicio-app-ios-unico': { name: "App iOS · Pago Único", cardPriceUsd: 6000, cryptoPriceUsd: 6000, stripePaymentLink: null },
   'servicio-app-android-unico': { name: "App Android · Pago Único", cardPriceUsd: 6000, cryptoPriceUsd: 6000, stripePaymentLink: null },
   'servicio-tienda-online-unico': { name: "Tienda en Línea (E-commerce) · Pago Único", cardPriceUsd: 12000, cryptoPriceUsd: 12000, stripePaymentLink: null },
   'servicio-mantenimiento-web-apps': { name: "Mantenimiento de Web y Apps (suscripción mensual, 1 mes)", cardPriceUsd: 500, cryptoPriceUsd: 500, stripePaymentLink: null },
-  'servicio-tienda-online': { name: "Tienda en Línea (E-commerce) (pago inicial; luego $1,000 / mes de mantenimiento)", cardPriceUsd: 1000, cryptoPriceUsd: 1000, stripePaymentLink: null },
-  'servicio-campana-publicitaria': { name: "Campañas Publicitarias en Facebook (pago inicial; luego $500 / mes)", cardPriceUsd: 500, cryptoPriceUsd: 500, stripePaymentLink: null },
-  'servicio-campana-x': { name: "Campañas Publicitarias en X (pago inicial; luego $500 / mes)", cardPriceUsd: 500, cryptoPriceUsd: 500, stripePaymentLink: null },
-  'servicio-campana-google': { name: "Campañas Publicitarias en Google (pago inicial; luego $500 / mes)", cardPriceUsd: 500, cryptoPriceUsd: 500, stripePaymentLink: null },
-  'servicio-campana-tiktok': { name: "Campañas Publicitarias en TikTok (pago inicial; luego $500 / mes)", cardPriceUsd: 500, cryptoPriceUsd: 500, stripePaymentLink: null },
+  'servicio-kyc-instalacion': { name: "Instalación de KYC (Verificación de Identidad) (pago inicial)", cardPriceUsd: 1000, cryptoPriceUsd: 1000, stripePaymentLink: null },
+  'servicio-kyc-mensual': { name: "Suscripción de KYC (suscripción mensual, 1 mes)", cardPriceUsd: 50, cryptoPriceUsd: 50, stripePaymentLink: null },
+  'servicio-tienda-online': { name: "Tienda en Línea (E-commerce) · Pago Inicial", cardPriceUsd: 1000, cryptoPriceUsd: 1000, stripePaymentLink: null },
+  'servicio-tienda-online-mensual': { name: "Tienda en Línea (E-commerce) · Mensualidad (suscripción mensual, 1 mes)", cardPriceUsd: 1000, cryptoPriceUsd: 1000, stripePaymentLink: null },
+  'servicio-campana-publicitaria': { name: "Configuración de Campañas en Facebook (pago inicial)", cardPriceUsd: 500, cryptoPriceUsd: 500, stripePaymentLink: null },
+  'servicio-campana-publicitaria-mensual': { name: "Gestión Mensual de Campañas en Facebook (suscripción mensual, 1 mes)", cardPriceUsd: 500, cryptoPriceUsd: 500, stripePaymentLink: null },
+  'servicio-campana-x': { name: "Configuración de Campañas en X (pago inicial)", cardPriceUsd: 500, cryptoPriceUsd: 500, stripePaymentLink: null },
+  'servicio-campana-x-mensual': { name: "Gestión Mensual de Campañas en X (suscripción mensual, 1 mes)", cardPriceUsd: 500, cryptoPriceUsd: 500, stripePaymentLink: null },
+  'servicio-campana-google': { name: "Configuración de Campañas en Google (pago inicial)", cardPriceUsd: 500, cryptoPriceUsd: 500, stripePaymentLink: null },
+  'servicio-campana-google-mensual': { name: "Gestión Mensual de Campañas en Google (suscripción mensual, 1 mes)", cardPriceUsd: 500, cryptoPriceUsd: 500, stripePaymentLink: null },
+  'servicio-campana-tiktok': { name: "Configuración de Campañas en TikTok (pago inicial)", cardPriceUsd: 500, cryptoPriceUsd: 500, stripePaymentLink: null },
+  'servicio-campana-tiktok-mensual': { name: "Gestión Mensual de Campañas en TikTok (suscripción mensual, 1 mes)", cardPriceUsd: 500, cryptoPriceUsd: 500, stripePaymentLink: null },
   'servicio-administracion-empresarial': { name: "Administración Empresarial (suscripción mensual, 1 mes)", cardPriceUsd: 500, cryptoPriceUsd: 500, stripePaymentLink: null },
   'servicio-contabilidad': { name: "Contabilidad / Bookkeeping (suscripción mensual, 1 mes)", cardPriceUsd: 500, cryptoPriceUsd: 500, stripePaymentLink: null },
   'servicio-nomina': { name: "Servicio de Pago de Nómina (suscripción mensual, 1 mes)", cardPriceUsd: 500, cryptoPriceUsd: 500, stripePaymentLink: null },
@@ -269,7 +287,19 @@ export const PRODUCT_CATALOG: Record<string, ProductCatalogEntry> = {
 export type PaymentMethodKind = 'card' | 'crypto';
 
 export function getProductEntry(itemId: string): ProductCatalogEntry | null {
-  return PRODUCT_CATALOG[itemId] ?? null;
+  const fixed = PRODUCT_CATALOG[itemId];
+  if (fixed) return fixed;
+  const custom = parseCustomChargeId(itemId);
+  if (custom) {
+    // Solo con tarjeta: así se puede cobrar de forma recurrente.
+    return { name: customChargeName(itemId)!, cardPriceUsd: custom.amountUsd, cryptoPriceUsd: null, stripePaymentLink: null };
+  }
+  return null;
+}
+
+/** ¿Es un producto que se puede poner en el carrito y cobrar? (catálogo fijo o cobro personalizado) */
+export function isPurchasableItem(itemId: string): boolean {
+  return getProductEntry(itemId) !== null;
 }
 
 export function getItemPriceUsd(itemId: string, method: PaymentMethodKind): number {

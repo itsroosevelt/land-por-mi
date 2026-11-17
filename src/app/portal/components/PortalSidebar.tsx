@@ -23,7 +23,7 @@ import {
   ChevronDown,
 } from 'lucide-react';
 import React, { useState, useEffect } from 'react';
-import { usePortal, cartItemsConfig } from '../PortalContext';
+import { usePortal, getCartItemInfo } from '../PortalContext';
 import { Button } from '@/components/ui/button';
 
 // Redes de la comunidad The New Technological Republic (botón "Comunidad" de la barra lateral).
@@ -391,7 +391,7 @@ export default function PortalSidebar({
                 ) : (
                   <div className="space-y-2 max-h-52 overflow-y-auto pr-0.5 no-scrollbar">
                     {getUniqueCartItems().map((itemId) => {
-                      const item = cartItemsConfig[itemId];
+                      const item = getCartItemInfo(itemId);
                       if (!item) return null;
                       const qty = getCartItemQuantity(itemId);
                       return (

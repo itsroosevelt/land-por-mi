@@ -29,6 +29,7 @@ const STAGE_BY_SERVICE: Record<string, { id: string; desc: string }> = {
   'servicio-app-android-unico': { id: 'app_android_unico', desc: "Estamos desarrollando tu app para Android (pago único)." },
   'servicio-tienda-online-unico': { id: 'tienda_online_unico', desc: "Estamos construyendo tu tienda en línea (pago único)." },
   'servicio-mantenimiento-web-apps': { id: 'mantenimiento_web_apps', desc: "Mantenemos tu web o app al día cada mes." },
+  'servicio-kyc-instalacion': { id: 'kyc', desc: "Estamos instalando la verificación de identidad (KYC) de tus clientes." },
   'servicio-tienda-online': { id: 'tienda_online', desc: "Estamos construyendo tu tienda en línea." },
   'servicio-pasarela-pagos': { id: 'pasarela_pagos', desc: "Configuramos tus cobros con Stripe, PayPal y stablecoins." },
   'servicio-seo-local': { id: 'seo_local', desc: "Tu negocio está ganando visibilidad en Google y Google Maps." },

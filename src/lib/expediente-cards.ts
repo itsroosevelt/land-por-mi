@@ -274,6 +274,13 @@ CARD_FIELDS['servicio-mantenimiento-web-apps'] = [
   notas,
 ];
 
+CARD_FIELDS['servicio-kyc-instalacion'] = [
+  { key: 'plataforma', label: 'Web, plataforma o app donde va el KYC' },
+  { key: 'url', label: 'Enlace', type: 'url' },
+  { key: 'proveedor', label: 'Proveedor de KYC' },
+  notas,
+];
+
 export function getCardFields(cardId: string): CardField[] {
   return CARD_FIELDS[cardId] ?? [notas];
 }
