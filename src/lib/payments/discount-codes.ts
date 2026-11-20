@@ -2,11 +2,11 @@
  * Códigos de descuento de la tienda de servicios. Fuente única para las pantallas
  * (/tienda, carrito y pago del portal) y para el servidor que cobra (Stripe y cripto).
  *
- * El descuento se aplica al pago único o al pago inicial de cada servicio.
+ * El descuento se aplica al pago único de cada servicio.
  * No se aplica a las suscripciones (mensuales o anuales), ni a las mensualidades,
- * mantenimientos o renovaciones que se cobran después. EXCEPCIÓN: en la sección
- * secciones Web y aplicaciones, Publicidad, Para crecer y Escalada mundial (servicios con `discountAppliesToRecurring`) aplica a todo:
- * pago inicial, pago único, mensualidad y suscripción de mantenimiento. Las mensualidades
+ * mantenimientos o renovaciones que se cobran después. EXCEPCIÓN: en los servicios con
+ * `discountAppliesToRecurring` (lo marcan las secciones en business-services.ts) aplica a todo:
+ * pago único, mensualidad y suscripción de mantenimiento. Las mensualidades
  * no las cobra este sitio: el monto con descuento queda registrado en el pago
  * (Stripe / Firestore) para cobrarlas así cada mes.
  */
@@ -30,7 +30,7 @@ export function getDiscountPercent(code: string | null | undefined): number {
   return valid ? DISCOUNT_CODES[valid] : 0;
 }
 
-/** Servicios que admiten descuento en lo que se paga hoy: pagos únicos/iniciales y todo lo de Web y aplicaciones, Publicidad, Para crecer y Escalada mundial. */
+/** Servicios que admiten descuento en lo que se paga hoy: pagos únicos y los servicios con `discountAppliesToRecurring`. */
 const ELIGIBLE_IDS = new Set(
   PORTAL_SERVICES.filter((s) => s.billing === "unico" || s.discountAppliesToRecurring).map((s) => s.id),
 );
@@ -49,7 +49,7 @@ const RECURRING_ELIGIBLE = new Map<string, number>(
   }),
 );
 
-/** ¿El código también baja la mensualidad de este servicio? (solo Web y aplicaciones, Publicidad, Para crecer y Escalada mundial) */
+/** ¿El código también baja la mensualidad de este servicio? (solo los servicios con `discountAppliesToRecurring`) */
 export function discountAppliesToRecurring(itemId: string): boolean {
   return RECURRING_ELIGIBLE.has(itemId);
 }

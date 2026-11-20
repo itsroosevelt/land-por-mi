@@ -8,11 +8,13 @@ import { PORTAL_SERVICE_SECTIONS } from "@/lib/business-services";
 import ServicePrice from "@/components/store/ServicePrice";
 import DiscountCodeInput from "@/components/store/DiscountCodeInput";
 import CustomChargeCard from "@/components/store/CustomChargeCard";
+import MoreProductsCard from "@/components/store/MoreProductsCard";
 
 /** Tienda del portal: los mismos servicios que la tienda pública (/tienda), con el carrito del portal. */
 export default function ServicesGrid() {
   const { addToCart, setIsCartOpen, getCartItemQuantity, discountCode, setDiscountCode } = usePortal();
   const [openDetails, setOpenDetails] = useState<Record<string, boolean>>({});
+  const [openMore, setOpenMore] = useState<Record<string, boolean>>({});
 
   return (
     <div className="space-y-10 w-full min-w-0">
@@ -39,7 +41,16 @@ export default function ServicesGrid() {
           <p className="text-xs md:text-sm text-slate-500 mt-0.5">{section.subtitle}</p>
         </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-5 gap-5 items-stretch w-full min-w-0">
-        {section.services.map((service) => {
+        {/* Cobro Personalizado: primera tarjeta de "Para arrancar la empresa" */}
+        {section.title === "Para arrancar la empresa" && (
+          <CustomChargeCard
+            onAdd={(itemId) => {
+              addToCart(itemId);
+              setIsCartOpen(true);
+            }}
+          />
+        )}
+        {section.services.filter((s) => !s.more || openMore[section.title]).map((service) => {
           const Icon = service.icon;
           const quantity = getCartItemQuantity(service.id);
           const detailsOpen = !!openDetails[service.id];
@@ -121,24 +132,16 @@ export default function ServicesGrid() {
             </div>
           );
         })}
+        <MoreProductsCard
+          tone="light"
+          count={section.services.filter((s) => s.more).length}
+          open={!!openMore[section.title]}
+          onToggle={() => setOpenMore((m) => ({ ...m, [section.title]: !m[section.title] }))}
+        />
       </div>
       </section>
       ))}
 
-      <section className="space-y-4">
-        <div>
-          <h3 className="text-lg md:text-xl font-semibold tracking-tight text-slate-900">Cobro personalizado</h3>
-          <p className="text-xs md:text-sm text-slate-500 mt-0.5">Para precios especiales acordados con nuestro equipo que no están en la tabla de precios.</p>
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-5 gap-5 items-stretch w-full min-w-0">
-          <CustomChargeCard
-            onAdd={(itemId) => {
-              addToCart(itemId);
-              setIsCartOpen(true);
-            }}
-          />
-        </div>
-      </section>
     </div>
   );
 }

@@ -15,6 +15,7 @@ import { readPendingCart, readSavedDiscountCode, saveDiscountCode, savePendingCa
 import { getCartDiscountUsd, getDiscountPercent, getMonthlyDiscountUsd, normalizeDiscountCode } from "@/lib/payments/discount-codes";
 import DiscountCodeInput from "@/components/store/DiscountCodeInput";
 import CustomChargeCard from "@/components/store/CustomChargeCard";
+import MoreProductsCard from "@/components/store/MoreProductsCard";
 import { customChargeName, parseCustomChargeId, CUSTOM_CHARGE_BILLING_LABEL } from "@/lib/payments/custom-charge";
 import { cartHasRecurring } from "@/lib/payments/billing";
 
@@ -24,6 +25,7 @@ function TiendaContent() {
   const stripeStatus = searchParams.get("stripe");
   const [cart, setCart] = useState<string[]>([]);
   const [openDetails, setOpenDetails] = useState<Record<string, boolean>>({});
+  const [openMore, setOpenMore] = useState<Record<string, boolean>>({});
   const [checkoutLoading, setCheckoutLoading] = useState(false);
   const [discountCode, setDiscountCode] = useState<string | null>(null);
 
@@ -48,7 +50,7 @@ function TiendaContent() {
     return custom ? [{ id, name: customChargeName(id)!, summary: CUSTOM_CHARGE_BILLING_LABEL[custom.billing] }] : [];
   });
   const priceOf = (id: string) => PORTAL_SERVICES.find((s) => s.id === id)?.price ?? parseCustomChargeId(id)?.amountUsd ?? 0;
-  // El código solo descuenta pagos únicos e iniciales (ver src/lib/payments/discount-codes.ts).
+  // El código solo descuenta pagos únicos (ver src/lib/payments/discount-codes.ts).
   const discountUsd = getCartDiscountUsd(cart, priceOf, discountCode);
   const subtotal = Math.round((cart.reduce((sum, id) => sum + priceOf(id), 0) - discountUsd) * 100) / 100;
   const processingFee = calculateStripeProcessingFee(subtotal);
@@ -130,7 +132,9 @@ function TiendaContent() {
             <p className="text-sm text-gray-400 mt-1">{section.subtitle}</p>
           </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 sm:gap-5 items-stretch">
-          {section.services.map((service) => {
+          {/* Cobro Personalizado: primera tarjeta de "Para arrancar la empresa" */}
+          {section.title === "Para arrancar la empresa" && <CustomChargeCard onAdd={addCustomCharge} />}
+          {section.services.filter((s) => !s.more || openMore[section.title]).map((service) => {
             const Icon = service.icon;
             const inCart = cart.includes(service.id);
             const detailsOpen = !!openDetails[service.id];
@@ -192,19 +196,16 @@ function TiendaContent() {
               </div>
             );
           })}
+          <MoreProductsCard
+            tone="dark"
+            count={section.services.filter((s) => s.more).length}
+            open={!!openMore[section.title]}
+            onToggle={() => setOpenMore((m) => ({ ...m, [section.title]: !m[section.title] }))}
+          />
         </div>
         </section>
         ))}
 
-        <section className="space-y-5">
-          <div className="text-center sm:text-left">
-            <h2 className="text-xl md:text-2xl font-medium tracking-tight text-white">Cobro personalizado</h2>
-            <p className="text-sm text-gray-400 mt-1">Para precios especiales acordados con nuestro equipo que no están en la tabla de precios.</p>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 sm:gap-5 items-stretch">
-            <CustomChargeCard onAdd={addCustomCharge} />
-          </div>
-        </section>
         </div>
       </main>
 

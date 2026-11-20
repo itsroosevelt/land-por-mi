@@ -56,7 +56,7 @@ export async function POST(request: NextRequest) {
     }
 
     const allValidItems = itemIds.filter(isPurchasableItem);
-    // Código de descuento: solo baja el pago único / pago inicial de los servicios (ver discount-codes.ts).
+    // Código de descuento: solo baja el pago único de los servicios (ver discount-codes.ts).
     const discountCode = normalizeDiscountCode(body.discountCode);
     const discountPercent = getDiscountPercent(discountCode);
     const basePrice = (itemId: string) => getItemPriceUsd(itemId, 'card');
