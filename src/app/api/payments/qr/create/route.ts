@@ -40,7 +40,7 @@ export async function POST(request: NextRequest) {
       userId,
       discountCode: rawDiscountCode,
     } = await request.json();
-    // Código de descuento: solo baja el pago único / pago inicial de los servicios (ver discount-codes.ts).
+    // Código de descuento: solo baja el pago único de los servicios (ver discount-codes.ts).
     const discountCode = normalizeDiscountCode(rawDiscountCode);
     let catalogBeforeDiscountUSD = 0;
 

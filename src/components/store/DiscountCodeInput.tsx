@@ -22,7 +22,7 @@ type Props = {
 };
 
 const STORE_HINT =
-  "Aplica a pagos únicos y pagos iniciales. En Web y aplicaciones, Publicidad, Para crecer, Escalada mundial, Teléfono + WhatsApp, Impuestos Personales y Agente Registrado también a las mensualidades y suscripciones.";
+  "Aplica a pagos únicos. En Web y aplicaciones, Publicidad, Administración, finanzas e impuestos, Escalada mundial, Teléfono + WhatsApp, Agente Registrado y Redes Sociales también a las mensualidades y suscripciones.";
 
 /** Campo "Tu código de descuento" para la tienda (encabezado), el carrito de /tienda y el pago del portal. */
 export default function DiscountCodeInput({

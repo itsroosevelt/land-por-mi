@@ -3,6 +3,7 @@ import {
   Landmark, MapPin, Phone, Calculator, BadgeCheck, ShoppingCart, CreditCard, Search,
   Presentation, Coins, GraduationCap, LayoutDashboard, Smartphone, Briefcase, MessageCircle, Wrench,
   ShieldCheck,
+  BookOpen, Bot, BrainCircuit, Camera, ClipboardCheck, FileSignature, Handshake, IdCard, LineChart, Lock, Mail, PiggyBank, Plane, Rocket, Scale, Star, Store, Truck, Umbrella, UserPlus, Wallet,
 } from "lucide-react";
 
 /**
@@ -13,9 +14,10 @@ import {
  *  - Pago único ............ billing: "unico"
  *  - Suscripción mensual ... billing: "mensual"  (price = lo que se paga cada mes)
  *  - Suscripción anual ..... billing: "anual"    (price = lo que se paga cada año)
- * Un servicio con pago inicial + mensualidad son DOS tarjetas: la de pago inicial (unico) y la
- * de suscripción (mensual/anual), unidas con `pairedWith`. Así cada suscripción es un producto
- * propio que se puede cobrar de forma recurrente.
+ * No hay "pagos iniciales": si un servicio tiene un cobro de una vez y una mensualidad, son DOS
+ * tarjetas, una de pago único y otra de suscripción, y cada una se compra por separado.
+ * En cada sección van primero los pagos únicos, después las suscripciones mensuales y al final
+ * las anuales (dentro de cada grupo, en el orden de la lista `ids` de la sección).
  */
 export type BillingType = "unico" | "mensual" | "anual";
 export type BillingPeriod = "mes" | "año";
@@ -29,17 +31,14 @@ export type BusinessService = {
   /** Precio de referencia en el mercado de EE. UU. (se muestra tachado). Debe ser un precio real comparable. */
   marketPrice: number;
   billing: BillingType;
-  /**
-   * Tarjeta que va con esta: la suscripción de un pago inicial, o el pago inicial de una suscripción.
-   * Se muestra como aviso en la tarjeta; cada una se compra y se cobra por separado.
-   */
-  pairedWith?: string;
   /** El precio final puede ser mayor según el alcance. */
   fromPrice?: boolean;
+  /** Va detrás de la tarjeta "Ver más productos" de su sección. */
+  more?: boolean;
   /** Costo adicional que se explica aparte (p. ej. actualizaciones o suscripciones de terceros). */
   extraNote?: string;
   /**
-   * El código de descuento aplica a TODOS los pagos del servicio (pago inicial, pago único,
+   * El código de descuento aplica a TODOS los pagos del servicio (pago único,
    * mensualidades y suscripciones). Lo pone la sección (`discountAllPayments`): no lo marques a mano.
    */
   discountAppliesToRecurring?: boolean;
@@ -60,11 +59,11 @@ export function pricePeriodSuffix(service: BusinessService): string {
   return "";
 }
 
-/** Etiqueta del tipo de cobro: "Pago único", "Pago inicial", "Suscripción mensual", "Suscripción anual". */
+/** Etiqueta del tipo de cobro: "Pago único", "Suscripción mensual", "Suscripción anual". */
 export function billingLabel(service: BusinessService): string {
   if (service.billing === "mensual") return "Suscripción mensual";
   if (service.billing === "anual") return "Suscripción anual";
-  return service.pairedWith ? "Pago inicial" : "Pago único";
+  return "Pago único";
 }
 
 /** Periodo de una suscripción: "mes", "año" o null si es pago único. */
@@ -76,12 +75,12 @@ export function billingPeriod(service: BusinessService): BillingPeriod | null {
 
 /**
  * Resumen corto para el carrito: "Pago único", "Primer mes · se renueva cada mes"…
- * `discountPercent` (0–1) es el del código aplicado: baja el pago de hoy si es único o inicial,
- * y las mensualidades y suscripciones solo en las secciones Web y aplicaciones, Publicidad, Para crecer y Escalada mundial.
+ * `discountPercent` (0–1) es el del código aplicado: baja el pago de hoy si es único,
+ * y las mensualidades y suscripciones solo en los servicios con `discountAppliesToRecurring`.
  */
 export function billingSummary(service: BusinessService, discountPercent = 0): string {
   const off = (n: number) => Math.round(n * (1 - discountPercent) * 100) / 100;
-  const once = service.pairedWith ? "Pago inicial" : "Pago único";
+  const once = "Pago único";
   if (service.billing === "unico" && discountPercent > 0) return `${once} · ${formatUsd(off(service.price))}`;
   if (service.billing === "mensual" && service.discountAppliesToRecurring && discountPercent > 0) {
     return `${formatUsd(off(service.price))} / mes · se renueva cada mes`;
@@ -96,22 +95,21 @@ export function billingSummary(service: BusinessService, discountPercent = 0): s
 
 const NO_AD_BUDGET = "No incluye el presupuesto de los anuncios: lo define y paga el cliente";
 
-/** Campañas en una plataforma: tarjeta de configuración (pago inicial) + tarjeta de gestión mensual. */
+/** Campañas en una plataforma: tarjeta de configuración (pago único) + tarjeta de gestión mensual. */
 const adCampaign = (id: string, platform: string, iconColor: string, badgeColor: string): BusinessService[] => [
   {
     id,
     name: `Configuración de Campañas en ${platform}`,
-    description: `Configuramos tu cuenta publicitaria y tus primeras campañas en ${platform}. Pago inicial. La gestión mensual va en su propia tarjeta. No incluye el presupuesto de los anuncios.`,
+    description: `Configuramos tu cuenta publicitaria y tus primeras campañas en ${platform}. Pago único. La gestión mensual va en su propia tarjeta. No incluye el presupuesto de los anuncios.`,
     price: 500,
     marketPrice: 1500,
     billing: "unico",
-    pairedWith: `${id}-mensual`,
     badge: "Publicidad",
     badgeColor,
     icon: Megaphone,
     iconColor,
     features: [
-      "Pago inicial: $500 USD",
+      "Pago único: $500 USD",
       `Configuración de la cuenta publicitaria en ${platform}`,
       "Creación de las primeras campañas",
       NO_AD_BUDGET,
@@ -124,7 +122,6 @@ const adCampaign = (id: string, platform: string, iconColor: string, badgeColor:
     price: 500,
     marketPrice: 1500,
     billing: "mensual",
-    pairedWith: id,
     badge: "Publicidad",
     badgeColor,
     icon: Megaphone,
@@ -138,7 +135,7 @@ const adCampaign = (id: string, platform: string, iconColor: string, badgeColor:
   },
 ];
 
-/** Web y aplicaciones en mensualidades: tarjeta de pago inicial + tarjeta de mensualidad. */
+/** Web y aplicaciones en mensualidades: tarjeta de activación (pago único) + tarjeta de mensualidad. */
 const softwareService = (
   id: string,
   name: string,
@@ -148,21 +145,20 @@ const softwareService = (
   badge: string,
   icon: React.ElementType,
   features: string[],
-  fee = 500, // pago inicial y mensualidad
+  fee = 500, // activación (pago único) y mensualidad
 ): BusinessService[] => [
   {
     id,
-    name: `${name} · Pago Inicial`,
-    description: `${description} Pago inicial; la mensualidad va en su propia tarjeta.`,
+    name: `${name} · Activación del Plan Mensual`,
+    description: `${description} Pago único para activar el plan en mensualidades; la mensualidad va en su propia tarjeta.`,
     price: fee,
     marketPrice,
     billing: "unico",
-    pairedWith: `${id}-mensual`,
     badge,
     badgeColor: "bg-blue-50 text-blue-700 border-blue-200",
     icon,
     iconColor: "bg-blue-50 text-blue-600",
-    features: [`Pago inicial: ${formatUsd(fee)} USD`, ...features],
+    features: [`Pago único: ${formatUsd(fee)} USD`, ...features],
   },
   {
     id: `${id}-mensual`,
@@ -171,7 +167,6 @@ const softwareService = (
     price: fee,
     marketPrice: monthlyMarketPrice,
     billing: "mensual",
-    pairedWith: id,
     badge,
     badgeColor: "bg-blue-50 text-blue-700 border-blue-200",
     icon: Wrench,
@@ -209,17 +204,16 @@ const SERVICES: BusinessService[] = [
   {
     id: "servicio-crear-empresa-usa",
     name: "Crear Empresa en EE. UU. + EIN + DUNS",
-    description: "Constituimos tu empresa en Estados Unidos, obtenemos su EIN ante el IRS y la registramos en DUNS. Pago inicial de $450 USD; la renovación anual va en su propia tarjeta. No incluye el pago al estado por crearla.",
-    price: 450,
+    description: "Constituimos tu empresa en Estados Unidos, obtenemos su EIN ante el IRS y la registramos en DUNS. Pago único de $400 USD; la renovación anual va en su propia tarjeta. No incluye el pago al estado por crearla.",
+    price: 400,
     marketPrice: 700,
     billing: "unico",
-    pairedWith: "servicio-renovacion-empresa",
     badge: "Empresa USA",
     badgeColor: "bg-indigo-50 text-indigo-700 border-indigo-200",
     icon: Building2,
     iconColor: "bg-indigo-50 text-indigo-600",
     features: [
-      "Pago inicial: $450 USD",
+      "Pago único: $400 USD",
       "Constitución de la empresa",
       "EIN (Número de Identificación Fiscal)",
       "Registro en DUNS",
@@ -233,7 +227,6 @@ const SERVICES: BusinessService[] = [
     price: 50,
     marketPrice: 150,
     billing: "anual",
-    pairedWith: "servicio-crear-empresa-usa",
     badge: "Empresa USA",
     badgeColor: "bg-indigo-50 text-indigo-700 border-indigo-200",
     icon: Building2,
@@ -324,16 +317,15 @@ const SERVICES: BusinessService[] = [
   {
     id: "servicio-meta-business",
     name: "Configuración de Meta Business Suite",
-    description: "Configuramos tu Meta Business Suite para administrar Facebook e Instagram de tu negocio. Pago inicial; el mantenimiento mensual va en su propia tarjeta.",
+    description: "Configuramos tu Meta Business Suite para administrar Facebook e Instagram de tu negocio. Pago único; el mantenimiento mensual va en su propia tarjeta.",
     price: 500,
     marketPrice: 800,
     billing: "unico",
-    pairedWith: "servicio-meta-business-mensual",
     badge: "Meta",
     badgeColor: "bg-sky-50 text-sky-700 border-sky-200",
     icon: Settings,
     iconColor: "bg-sky-50 text-sky-600",
-    features: ["Pago inicial: $500 USD", "Cuenta comercial de Meta", "Conexión de Facebook e Instagram", "Configuración de accesos"],
+    features: ["Pago único: $500 USD", "Cuenta comercial de Meta", "Conexión de Facebook e Instagram", "Configuración de accesos"],
   },
   {
     id: "servicio-meta-business-mensual",
@@ -342,7 +334,6 @@ const SERVICES: BusinessService[] = [
     price: 20,
     marketPrice: 50,
     billing: "mensual",
-    pairedWith: "servicio-meta-business",
     badge: "Meta",
     badgeColor: "bg-sky-50 text-sky-700 border-sky-200",
     icon: Settings,
@@ -352,16 +343,15 @@ const SERVICES: BusinessService[] = [
   {
     id: "servicio-pasarela-pagos",
     name: "Instalación de Pasarela de Pagos",
-    description: "Instalamos Stripe, PayPal y cobros con stablecoins para que recibas pagos. Pago inicial; el mantenimiento mensual va en su propia tarjeta. No incluye las comisiones de cada pasarela.",
+    description: "Instalamos Stripe, PayPal y cobros con stablecoins para que recibas pagos. Pago único; el mantenimiento mensual va en su propia tarjeta. No incluye las comisiones de cada pasarela.",
     price: 500,
     marketPrice: 1000,
     billing: "unico",
-    pairedWith: "servicio-pasarela-pagos-mensual",
     badge: "Ventas",
     badgeColor: "bg-blue-50 text-blue-700 border-blue-200",
     icon: CreditCard,
     iconColor: "bg-blue-50 text-blue-600",
-    features: ["Pago inicial: $500 USD", "Stripe y PayPal", "Cobros con stablecoins", "No incluye comisiones"],
+    features: ["Pago único: $500 USD", "Stripe y PayPal", "Cobros con stablecoins", "No incluye comisiones"],
   },
   {
     id: "servicio-pasarela-pagos-mensual",
@@ -370,7 +360,6 @@ const SERVICES: BusinessService[] = [
     price: 20,
     marketPrice: 50,
     billing: "mensual",
-    pairedWith: "servicio-pasarela-pagos",
     badge: "Ventas",
     badgeColor: "bg-blue-50 text-blue-700 border-blue-200",
     icon: CreditCard,
@@ -380,16 +369,15 @@ const SERVICES: BusinessService[] = [
   {
     id: "servicio-seo-local",
     name: "Google Business Profile + Search Console + Analytics + SEO",
-    description: "Configuramos Google Business Profile, Google Search Console y Google Analytics, y posicionamos tu negocio en Google (SEO). Pago inicial; el mantenimiento mensual va en su propia tarjeta.",
+    description: "Configuramos Google Business Profile, Google Search Console y Google Analytics, y posicionamos tu negocio en Google (SEO). Pago único; el mantenimiento mensual va en su propia tarjeta.",
     price: 500,
     marketPrice: 1200,
     billing: "unico",
-    pairedWith: "servicio-seo-local-mensual",
     badge: "Google",
     badgeColor: "bg-emerald-50 text-emerald-700 border-emerald-200",
     icon: Search,
     iconColor: "bg-emerald-50 text-emerald-600",
-    features: ["Pago inicial: $500 USD", "Google Business Profile", "Google Search Console", "Google Analytics", "SEO"],
+    features: ["Pago único: $500 USD", "Google Business Profile", "Google Search Console", "Google Analytics", "SEO"],
   },
   {
     id: "servicio-seo-local-mensual",
@@ -398,7 +386,6 @@ const SERVICES: BusinessService[] = [
     price: 20,
     marketPrice: 100,
     billing: "mensual",
-    pairedWith: "servicio-seo-local",
     badge: "Google",
     badgeColor: "bg-emerald-50 text-emerald-700 border-emerald-200",
     icon: Search,
@@ -540,16 +527,15 @@ const SERVICES: BusinessService[] = [
   {
     id: "servicio-kyc-instalacion",
     name: "Instalación de KYC (Verificación de Identidad)",
-    description: "Instalamos la verificación de identidad (KYC) de tus clientes en tu web, plataforma o app. Pago inicial; la suscripción mensual va en su propia tarjeta.",
+    description: "Instalamos la verificación de identidad (KYC) de tus clientes en tu web, plataforma o app. Pago único; la suscripción mensual va en su propia tarjeta.",
     price: 1000,
     marketPrice: 3000,
     billing: "unico",
-    pairedWith: "servicio-kyc-mensual",
     badge: "KYC",
     badgeColor: "bg-indigo-50 text-indigo-700 border-indigo-200",
     icon: ShieldCheck,
     iconColor: "bg-indigo-50 text-indigo-600",
-    features: ["Pago inicial: $1,000 USD", "Verificación de identidad de tus clientes", "Integración en tu web, plataforma o app", "Configuración del flujo de verificación"],
+    features: ["Pago único: $1,000 USD", "Verificación de identidad de tus clientes", "Integración en tu web, plataforma o app", "Configuración del flujo de verificación"],
   },
   {
     id: "servicio-kyc-mensual",
@@ -558,7 +544,6 @@ const SERVICES: BusinessService[] = [
     price: 50,
     marketPrice: 150,
     billing: "mensual",
-    pairedWith: "servicio-kyc-instalacion",
     badge: "KYC",
     badgeColor: "bg-indigo-50 text-indigo-700 border-indigo-200",
     icon: ShieldCheck,
@@ -697,6 +682,460 @@ const SERVICES: BusinessService[] = [
     iconColor: "bg-amber-50 text-amber-600",
     features: ["Pago único: $10,000 USD", "Sesiones 1 a 1", "Plan de acción para tu empresa", "Seguimiento personalizado"],
   },
+
+  // ── Más productos (detrás de "Ver más productos" en cada sección) ──
+  // Precios de referencia del mercado de EE. UU.: luego se ajustan a los nuestros.
+  {
+    id: "servicio-estudio-mercado",
+    name: "Estudio de Mercado y Competencia",
+    description: "Analizamos tu mercado, tus clientes ideales y a tu competencia en Estados Unidos antes de invertir. Pago único.",
+    price: 2500,
+    marketPrice: 2500,
+    billing: "unico",
+    more: true,
+    badge: "Empresa USA",
+    badgeColor: "bg-indigo-50 text-indigo-700 border-indigo-200",
+    icon: LineChart,
+    iconColor: "bg-indigo-50 text-indigo-600",
+    features: ["Pago único: $2,500 USD", "Tamaño y tendencias del mercado", "Perfil de tu cliente ideal", "Análisis de la competencia", "Recomendaciones de precio y posicionamiento"],
+  },
+  {
+    id: "servicio-operating-agreement",
+    name: "Operating Agreement y Acuerdo entre Socios",
+    description: "Redactamos el acuerdo operativo de tu LLC y el acuerdo entre socios: quién es dueño de qué, cómo se decide y qué pasa si alguien sale. Pago único.",
+    price: 500,
+    marketPrice: 500,
+    billing: "unico",
+    more: true,
+    badge: "Empresa USA",
+    badgeColor: "bg-indigo-50 text-indigo-700 border-indigo-200",
+    icon: FileSignature,
+    iconColor: "bg-indigo-50 text-indigo-600",
+    features: ["Pago único: $500 USD", "Operating Agreement de la LLC", "Acuerdo entre socios", "Reparto de participación y decisiones", "Revisado por abogados aliados"],
+  },
+  {
+    id: "servicio-itin",
+    name: "ITIN para Dueños No Residentes",
+    description: "Tramitamos el ITIN ante el IRS para los dueños que no viven en Estados Unidos. Pago único por persona.",
+    price: 500,
+    marketPrice: 500,
+    billing: "unico",
+    more: true,
+    badge: "Empresa USA",
+    badgeColor: "bg-indigo-50 text-indigo-700 border-indigo-200",
+    icon: IdCard,
+    iconColor: "bg-indigo-50 text-indigo-600",
+    features: ["Pago único: $500 USD", "Formulario W-7", "Revisión de documentos", "Envío al IRS", "Pago único por persona"],
+  },
+  {
+    id: "servicio-licencias-permisos",
+    name: "Licencias y Permisos de Negocio",
+    description: "Identificamos y tramitamos las licencias y permisos que tu negocio necesita en tu ciudad y estado. Pago único. No incluye las tarifas del gobierno.",
+    price: 300,
+    marketPrice: 300,
+    billing: "unico",
+    more: true,
+    badge: "Empresa USA",
+    badgeColor: "bg-indigo-50 text-indigo-700 border-indigo-200",
+    icon: ClipboardCheck,
+    iconColor: "bg-indigo-50 text-indigo-600",
+    features: ["Pago único: $300 USD", "Revisión de licencias necesarias", "Trámite ante la ciudad y el estado", "No incluye las tarifas del gobierno"],
+  },
+  {
+    id: "servicio-sales-tax",
+    name: "Registro de Sales Tax (Permiso de Vendedor)",
+    description: "Registramos tu empresa para cobrar sales tax en el estado donde vendes. Pago único por estado.",
+    price: 250,
+    marketPrice: 250,
+    billing: "unico",
+    more: true,
+    badge: "Empresa USA",
+    badgeColor: "bg-indigo-50 text-indigo-700 border-indigo-200",
+    icon: Receipt,
+    iconColor: "bg-indigo-50 text-indigo-600",
+    features: ["Pago único: $250 USD", "Permiso de vendedor (Seller's Permit)", "Registro ante el estado", "Pago único por estado"],
+  },
+  {
+    id: "servicio-registro-otro-estado",
+    name: "Registro en Otro Estado (Foreign Qualification)",
+    description: "Registramos tu empresa para operar legalmente en otro estado de EE. UU. Pago único por estado. No incluye la tarifa del estado.",
+    price: 400,
+    marketPrice: 400,
+    billing: "unico",
+    more: true,
+    badge: "Empresa USA",
+    badgeColor: "bg-indigo-50 text-indigo-700 border-indigo-200",
+    icon: MapPin,
+    iconColor: "bg-indigo-50 text-indigo-600",
+    features: ["Pago único: $400 USD", "Foreign Qualification", "Registro ante el nuevo estado", "No incluye la tarifa del estado"],
+  },
+  {
+    id: "servicio-plantillas-legales",
+    name: "Términos, Política de Privacidad y Contratos",
+    description: "Preparamos los documentos legales de tu negocio: términos y condiciones, política de privacidad y contratos con clientes y proveedores. Pago único.",
+    price: 800,
+    marketPrice: 800,
+    billing: "unico",
+    more: true,
+    badge: "Empresa USA",
+    badgeColor: "bg-indigo-50 text-indigo-700 border-indigo-200",
+    icon: Scale,
+    iconColor: "bg-indigo-50 text-indigo-600",
+    features: ["Pago único: $800 USD", "Términos y condiciones", "Política de privacidad", "Contratos con clientes y proveedores"],
+  },
+  {
+    id: "servicio-dominio-correo",
+    name: "Dominio y Correo Profesional",
+    description: "Compramos y configuramos tu dominio y tu correo profesional con Google Workspace (tu@tuempresa.com). Pago único. No incluye la licencia de Google Workspace.",
+    price: 200,
+    marketPrice: 200,
+    billing: "unico",
+    more: true,
+    badge: "Marca",
+    badgeColor: "bg-rose-50 text-rose-700 border-rose-200",
+    icon: Mail,
+    iconColor: "bg-rose-50 text-rose-600",
+    features: ["Pago único: $200 USD", "Registro del dominio", "Correo con Google Workspace", "Configuración de seguridad (SPF, DKIM)", "No incluye la licencia de Google"],
+  },
+  {
+    id: "servicio-foto-video",
+    name: "Fotos y Videos de Producto",
+    description: "Sesión de fotos y videos profesionales de tus productos o servicios para tu web, tienda y redes. Pago único.",
+    price: 1500,
+    marketPrice: 1500,
+    billing: "unico",
+    fromPrice: true,
+    more: true,
+    badge: "Marca",
+    badgeColor: "bg-rose-50 text-rose-700 border-rose-200",
+    icon: Camera,
+    iconColor: "bg-rose-50 text-rose-600",
+    features: ["Pago único: desde $1,500 USD", "Fotos de producto", "Videos cortos para redes", "Edición profesional"],
+  },
+  {
+    id: "servicio-email-marketing",
+    name: "Email Marketing y Newsletters",
+    description: "Creamos y enviamos tus campañas de correo y newsletters para vender más a tus clientes. Suscripción mensual.",
+    price: 1000,
+    marketPrice: 1000,
+    billing: "mensual",
+    more: true,
+    badge: "Marca",
+    badgeColor: "bg-rose-50 text-rose-700 border-rose-200",
+    icon: Mail,
+    iconColor: "bg-rose-50 text-rose-600",
+    features: ["Suscripción mensual: $1,000 USD / mes", "Diseño de correos", "Envíos y automatizaciones", "Reporte de resultados"],
+  },
+  {
+    id: "servicio-reputacion-online",
+    name: "Reputación en Línea y Reseñas de Google",
+    description: "Conseguimos más reseñas, respondemos las de tus clientes y cuidamos la imagen de tu negocio en internet. Suscripción mensual.",
+    price: 500,
+    marketPrice: 500,
+    billing: "mensual",
+    more: true,
+    badge: "Marca",
+    badgeColor: "bg-rose-50 text-rose-700 border-rose-200",
+    icon: Star,
+    iconColor: "bg-rose-50 text-rose-600",
+    features: ["Suscripción mensual: $500 USD / mes", "Más reseñas en Google", "Respuesta a reseñas", "Monitoreo de tu reputación"],
+  },
+  {
+    id: "servicio-ciberseguridad",
+    name: "Ciberseguridad y Respaldo de Datos",
+    description: "Protegemos tus cuentas, tu web y los datos de tu empresa, con copias de seguridad automáticas. Suscripción mensual.",
+    price: 500,
+    marketPrice: 500,
+    billing: "mensual",
+    more: true,
+    badge: "Seguridad",
+    badgeColor: "bg-blue-50 text-blue-700 border-blue-200",
+    icon: Lock,
+    iconColor: "bg-blue-50 text-blue-600",
+    features: ["Suscripción mensual: $500 USD / mes", "Protección de cuentas y accesos", "Copias de seguridad automáticas", "Monitoreo y alertas"],
+  },
+  {
+    id: "servicio-arm-rsi",
+    name: "ARM con Roosevelt Super Intelligence (RSI) · Implementación",
+    description: "Implementamos ARM, la gestión de relaciones con clientes impulsada por nuestra IA, Roosevelt Super Intelligence (RSI): contactos, embudos de venta y seguimiento automático. Pago único.",
+    price: 2000,
+    marketPrice: 2000,
+    billing: "unico",
+    more: true,
+    badge: "IA",
+    badgeColor: "bg-emerald-50 text-emerald-700 border-emerald-200",
+    icon: BrainCircuit,
+    iconColor: "bg-emerald-50 text-emerald-600",
+    features: ["Pago único: $2,000 USD", "Configuración de ARM con RSI", "Embudos de venta", "Importación de tus clientes", "Automatizaciones de seguimiento"],
+  },
+  {
+    id: "servicio-arm-rsi-mensual",
+    name: "ARM con Roosevelt Super Intelligence (RSI) · Suscripción",
+    description: "Tu ARM con Roosevelt Super Intelligence (RSI) funcionando cada mes: la IA da seguimiento a tus clientes, prioriza ventas y te dice a quién contactar. Suscripción mensual.",
+    price: 500,
+    marketPrice: 500,
+    billing: "mensual",
+    more: true,
+    badge: "IA",
+    badgeColor: "bg-emerald-50 text-emerald-700 border-emerald-200",
+    icon: BrainCircuit,
+    iconColor: "bg-emerald-50 text-emerald-600",
+    features: ["Suscripción mensual: $500 USD / mes", "Seguimiento automático con IA", "Prioridad de oportunidades de venta", "Soporte y mejoras"],
+  },
+  {
+    id: "servicio-cobros-internacionales",
+    name: "Cuentas para Cobrar Internacionalmente",
+    description: "Abrimos y configuramos cuentas como Mercury, Wise y Stripe para cobrar y pagar en todo el mundo. Pago único.",
+    price: 300,
+    marketPrice: 300,
+    billing: "unico",
+    more: true,
+    badge: "Ventas",
+    badgeColor: "bg-emerald-50 text-emerald-700 border-emerald-200",
+    icon: Wallet,
+    iconColor: "bg-emerald-50 text-emerald-600",
+    features: ["Pago único: $300 USD", "Mercury, Wise y Stripe", "Cobros en varias monedas", "La aprobación depende de cada plataforma"],
+  },
+  {
+    id: "servicio-facturacion-automatica",
+    name: "Facturación y Cobros Automáticos",
+    description: "Configuramos tu facturación y los cobros recurrentes para que tus clientes paguen a tiempo sin perseguirlos. Pago único.",
+    price: 800,
+    marketPrice: 800,
+    billing: "unico",
+    more: true,
+    badge: "Ventas",
+    badgeColor: "bg-emerald-50 text-emerald-700 border-emerald-200",
+    icon: Receipt,
+    iconColor: "bg-emerald-50 text-emerald-600",
+    features: ["Pago único: $800 USD", "Facturas automáticas", "Cobros recurrentes", "Recordatorios de pago"],
+  },
+  {
+    id: "servicio-marketplaces",
+    name: "Vender en Amazon, Mercado Libre y Walmart",
+    description: "Abrimos y configuramos tu tienda en Amazon, Mercado Libre o Walmart Marketplace y publicamos tus productos. Pago único por plataforma.",
+    price: 1500,
+    marketPrice: 1500,
+    billing: "unico",
+    more: true,
+    badge: "Ventas",
+    badgeColor: "bg-emerald-50 text-emerald-700 border-emerald-200",
+    icon: Store,
+    iconColor: "bg-emerald-50 text-emerald-600",
+    features: ["Pago único: $1,500 USD", "Apertura de la cuenta de vendedor", "Publicación de productos", "Pago único por plataforma"],
+  },
+  {
+    id: "servicio-logistica",
+    name: "Logística y Envíos Internacionales",
+    description: "Organizamos cómo almacenas y envías tus productos: bodegas, transportistas y envíos a otros países. Pago único.",
+    price: 1000,
+    marketPrice: 1000,
+    billing: "unico",
+    more: true,
+    badge: "Ventas",
+    badgeColor: "bg-emerald-50 text-emerald-700 border-emerald-200",
+    icon: Truck,
+    iconColor: "bg-emerald-50 text-emerald-600",
+    features: ["Pago único: $1,000 USD", "Elección de bodega y transportistas", "Envíos nacionales e internacionales", "Tarifas y procesos de envío"],
+  },
+  {
+    id: "servicio-influencers",
+    name: "Marketing con Influencers",
+    description: "Buscamos influencers para tu marca, negociamos con ellos y medimos los resultados. Suscripción mensual. No incluye el pago a los influencers.",
+    price: 2000,
+    marketPrice: 2000,
+    billing: "mensual",
+    more: true,
+    badge: "Publicidad",
+    badgeColor: "bg-orange-50 text-orange-700 border-orange-200",
+    icon: Users,
+    iconColor: "bg-orange-50 text-orange-600",
+    features: ["Suscripción mensual: $2,000 USD / mes", "Búsqueda de influencers", "Negociación y campañas", "Reporte de resultados", "No incluye el pago a los influencers"],
+  },
+  {
+    id: "servicio-credito-empresarial",
+    name: "Construcción de Crédito Empresarial",
+    description: "Construimos el historial de crédito de tu empresa (D&B, Paydex) para que acceda a tarjetas corporativas y financiamiento. Pago único.",
+    price: 1500,
+    marketPrice: 1500,
+    billing: "unico",
+    more: true,
+    badge: "Finanzas",
+    badgeColor: "bg-amber-50 text-amber-700 border-amber-200",
+    icon: PiggyBank,
+    iconColor: "bg-amber-50 text-amber-600",
+    features: ["Pago único: $1,500 USD", "Perfil en Dun & Bradstreet (Paydex)", "Cuentas que reportan crédito", "Tarjetas corporativas"],
+  },
+  {
+    id: "servicio-prestamos-sba",
+    name: "Préstamos SBA y Líneas de Crédito",
+    description: "Preparamos tu solicitud de préstamo SBA o línea de crédito y te acompañamos con el banco. Pago único. La aprobación depende del banco.",
+    price: 2500,
+    marketPrice: 2500,
+    billing: "unico",
+    more: true,
+    badge: "Finanzas",
+    badgeColor: "bg-amber-50 text-amber-700 border-amber-200",
+    icon: Landmark,
+    iconColor: "bg-amber-50 text-amber-600",
+    features: ["Pago único: $2,500 USD", "Preparación de la solicitud", "Documentos y estados financieros", "Acompañamiento con el banco", "La aprobación depende del banco"],
+  },
+  {
+    id: "servicio-seguros-empresariales",
+    name: "Asesoría en Seguros Empresariales",
+    description: "Te ayudamos a elegir y contratar los seguros que tu empresa necesita (responsabilidad general, ciberseguridad y más) con aseguradoras aliadas. Pago único. No incluye la póliza.",
+    price: 300,
+    marketPrice: 300,
+    billing: "unico",
+    more: true,
+    badge: "Finanzas",
+    badgeColor: "bg-amber-50 text-amber-700 border-amber-200",
+    icon: Umbrella,
+    iconColor: "bg-amber-50 text-amber-600",
+    features: ["Pago único: $300 USD", "Revisión de riesgos", "Cotizaciones con aseguradoras", "No incluye el costo de la póliza"],
+  },
+  {
+    id: "servicio-manuales-procesos",
+    name: "Manuales de Procesos (SOPs)",
+    description: "Documentamos cómo funciona tu empresa paso a paso para que tu equipo trabaje igual siempre. Pago único.",
+    price: 2000,
+    marketPrice: 2000,
+    billing: "unico",
+    more: true,
+    badge: "Finanzas",
+    badgeColor: "bg-amber-50 text-amber-700 border-amber-200",
+    icon: BookOpen,
+    iconColor: "bg-amber-50 text-amber-600",
+    features: ["Pago único: $2,000 USD", "Procesos clave documentados", "Organigrama y responsabilidades", "Plantillas para tu equipo"],
+  },
+  {
+    id: "servicio-reclutamiento",
+    name: "Reclutamiento y Contratación de Talento",
+    description: "Buscamos, entrevistamos y te presentamos candidatos, incluso talento remoto de Latinoamérica. Pago único por puesto.",
+    price: 3000,
+    marketPrice: 3000,
+    billing: "unico",
+    more: true,
+    badge: "Finanzas",
+    badgeColor: "bg-amber-50 text-amber-700 border-amber-200",
+    icon: UserPlus,
+    iconColor: "bg-amber-50 text-amber-600",
+    features: ["Pago único: $3,000 USD", "Búsqueda de candidatos", "Entrevistas y filtros", "Talento remoto de Latinoamérica", "Pago único por puesto"],
+  },
+  {
+    id: "servicio-capacitacion-ia",
+    name: "Capacitación del Equipo en IA y Herramientas Digitales",
+    description: "Entrenamos a tu equipo para usar IA y herramientas digitales en su trabajo diario. Pago único.",
+    price: 1500,
+    marketPrice: 1500,
+    billing: "unico",
+    more: true,
+    badge: "Finanzas",
+    badgeColor: "bg-amber-50 text-amber-700 border-amber-200",
+    icon: GraduationCap,
+    iconColor: "bg-amber-50 text-amber-600",
+    features: ["Pago único: $1,500 USD", "Talleres prácticos", "IA para cada área de tu empresa", "Material de apoyo"],
+  },
+  {
+    id: "servicio-cfo-fraccional",
+    name: "CFO Fraccional: Presupuesto y Flujo de Caja",
+    description: "Un director financiero por horas: presupuesto, flujo de caja y modelo financiero para decidir con números. Suscripción mensual.",
+    price: 3000,
+    marketPrice: 3000,
+    billing: "mensual",
+    more: true,
+    badge: "Finanzas",
+    badgeColor: "bg-amber-50 text-amber-700 border-amber-200",
+    icon: Calculator,
+    iconColor: "bg-amber-50 text-amber-600",
+    features: ["Suscripción mensual: $3,000 USD / mes", "Presupuesto y flujo de caja", "Modelo financiero", "Reunión mensual de resultados"],
+  },
+  {
+    id: "servicio-asistente-virtual",
+    name: "Asistente Virtual",
+    description: "Un asistente que te ayuda con correos, agenda, clientes y tareas administrativas. Suscripción mensual (medio tiempo).",
+    price: 1500,
+    marketPrice: 1500,
+    billing: "mensual",
+    more: true,
+    badge: "Finanzas",
+    badgeColor: "bg-amber-50 text-amber-700 border-amber-200",
+    icon: Bot,
+    iconColor: "bg-amber-50 text-amber-600",
+    features: ["Suscripción mensual: $1,500 USD / mes", "Correos y agenda", "Atención a clientes", "Tareas administrativas", "Medio tiempo"],
+  },
+  {
+    id: "servicio-levantar-capital",
+    name: "Preparación para Levantar Capital",
+    description: "Preparamos tu empresa para recibir inversión: data room, SAFE o notas convertibles y tabla de capitalización (cap table). Pago único.",
+    price: 5000,
+    marketPrice: 5000,
+    billing: "unico",
+    more: true,
+    badge: "Escalada",
+    badgeColor: "bg-violet-50 text-violet-700 border-violet-200",
+    icon: Rocket,
+    iconColor: "bg-violet-50 text-violet-600",
+    features: ["Pago único: $5,000 USD", "Data room para inversionistas", "SAFE o notas convertibles", "Cap table", "Revisado por abogados aliados"],
+  },
+  {
+    id: "servicio-valuacion",
+    name: "Valuación de la Empresa",
+    description: "Calculamos cuánto vale tu empresa para negociar con inversionistas, socios o compradores. Pago único.",
+    price: 5000,
+    marketPrice: 5000,
+    billing: "unico",
+    more: true,
+    badge: "Escalada",
+    badgeColor: "bg-violet-50 text-violet-700 border-violet-200",
+    icon: TrendingUp,
+    iconColor: "bg-violet-50 text-violet-600",
+    features: ["Pago único: $5,000 USD", "Valuación con métodos reconocidos", "Informe para inversionistas", "Supuestos y escenarios"],
+  },
+  {
+    id: "servicio-expansion-internacional",
+    name: "Expansión a Otros Países",
+    description: "Llevamos tu empresa a Europa, Latinoamérica o Emiratos: estructura, registro y primeros pasos en cada país. Pago único por país.",
+    price: 5000,
+    marketPrice: 5000,
+    billing: "unico",
+    fromPrice: true,
+    more: true,
+    badge: "Escalada",
+    badgeColor: "bg-violet-50 text-violet-700 border-violet-200",
+    icon: Plane,
+    iconColor: "bg-violet-50 text-violet-600",
+    features: ["Pago único: desde $5,000 USD", "Estudio del país", "Estructura y registro", "Primeros pasos para operar", "Pago único por país"],
+  },
+  {
+    id: "servicio-visas-negocio",
+    name: "Visas de Negocio e Inversión (E-2, L-1, EB-5)",
+    description: "Te orientamos y preparamos tu caso de visa de negocio o inversión con abogados de inmigración aliados. Pago único. No incluye honorarios del abogado ni tarifas del gobierno.",
+    price: 3000,
+    marketPrice: 3000,
+    billing: "unico",
+    more: true,
+    badge: "Escalada",
+    badgeColor: "bg-violet-50 text-violet-700 border-violet-200",
+    icon: Briefcase,
+    iconColor: "bg-violet-50 text-violet-600",
+    features: ["Pago único: $3,000 USD", "Evaluación de tu caso", "Plan de negocio para la visa", "Abogados de inmigración aliados", "No incluye honorarios del abogado ni tarifas"],
+  },
+  {
+    id: "servicio-fusiones-adquisiciones",
+    name: "Compra y Venta de Empresas (M&A)",
+    description: "Te acompañamos a comprar o vender una empresa: búsqueda, valuación, negociación y cierre. Pago único.",
+    price: 10000,
+    marketPrice: 10000,
+    billing: "unico",
+    fromPrice: true,
+    more: true,
+    badge: "Escalada",
+    badgeColor: "bg-violet-50 text-violet-700 border-violet-200",
+    icon: Handshake,
+    iconColor: "bg-violet-50 text-violet-600",
+    features: ["Pago único: desde $10,000 USD", "Búsqueda de empresas o compradores", "Valuación y negociación", "Revisión (due diligence)", "Cierre con abogados aliados"],
+  },
 ];
 
 /** Tienda (pública y del portal): todos los servicios, del más barato al más caro. */
@@ -705,85 +1144,101 @@ export const PORTAL_SERVICES = [...SERVICES].sort((a, b) => a.price - b.price);
 /** Alias histórico: hoy la tienda pública y la del portal muestran lo mismo. */
 export const BUSINESS_SERVICES = PORTAL_SERVICES;
 
-/** Secciones de la tienda. Dentro de cada sección se ordena del más barato al más caro. */
+/** Secciones de la tienda. Dentro de cada sección: pagos únicos, luego mensuales y luego anuales; cada grupo en el orden de `ids`. */
 const PORTAL_SECTION_DEFINITIONS: {
   title: string;
   subtitle: string;
   ids: string[];
-  keepOrder?: boolean;
   /** El código de descuento aplica a todos los pagos de la sección, también a mensualidades y suscripciones. */
   discountAllPayments?: boolean;
   /** Igual que `discountAllPayments`, pero solo para estos servicios de la sección. */
   discountAllPaymentsFor?: string[];
 }[] = [
+  // Ordenadas como crece una empresa: idea y registro → marca y presencia → web → vender y cobrar
+  // → publicidad → administración e impuestos → escalada mundial.
   {
     title: "Para arrancar la empresa",
-    discountAllPaymentsFor: [
-      "servicio-telefono-whatsapp",
-      "servicio-impuestos-personales",
-      "servicio-agente-registrado",
-    ],
-    subtitle: "Todo lo legal, fiscal y de marca para que tu empresa exista en Estados Unidos.",
-    // Del más barato al más caro, con cada pago inicial junto a su suscripción.
-    keepOrder: true,
+    subtitle: "De la idea a una empresa real en Estados Unidos: plan de negocios, registro, banco y lo básico para operar.",
+    discountAllPaymentsFor: ["servicio-telefono-whatsapp", "servicio-agente-registrado"],
     ids: [
-      "servicio-telefono-whatsapp",
-      "servicio-cuenta-bancaria",
-      "servicio-impuestos-personales",
-      "servicio-agente-registrado",
+      "servicio-plan-negocios",
       "servicio-crear-empresa-usa",
+      "servicio-cuenta-bancaria",
+      "servicio-telefono-whatsapp",
       "servicio-renovacion-empresa",
-      "servicio-registro-marca",
-      "servicio-identidad-visual",
+      "servicio-agente-registrado",
+      "servicio-estudio-mercado",
+      "servicio-operating-agreement",
+      "servicio-itin",
+      "servicio-licencias-permisos",
+      "servicio-sales-tax",
+      "servicio-registro-otro-estado",
+      "servicio-plantillas-legales",
     ],
   },
   {
-    title: "Para vender",
-    subtitle: "Presencia digital y herramientas para atraer clientes y cobrar.",
-    keepOrder: true,
+    title: "Marca y presencia digital",
+    subtitle: "Protege tu marca, dale una imagen profesional y haz que te encuentren en Google y en redes.",
+    discountAllPaymentsFor: ["servicio-redes-sociales"],
     ids: [
+      "servicio-registro-marca",
+      "servicio-identidad-visual",
       "servicio-meta-business",
       "servicio-meta-business-mensual",
-      "servicio-pasarela-pagos",
-      "servicio-pasarela-pagos-mensual",
       "servicio-seo-local",
       "servicio-seo-local-mensual",
-      "servicio-automatizacion-whatsapp",
+      "servicio-redes-sociales",
+      "servicio-dominio-correo",
+      "servicio-foto-video",
+      "servicio-email-marketing",
+      "servicio-reputacion-online",
     ],
   },
   {
     title: "Web y aplicaciones",
-    subtitle: "Págalo en mensualidades o de una sola vez. Aquí tu código de descuento aplica al pago inicial y también a las mensualidades.",
-    // Primero los pagos únicos (pago completo), después las mismas opciones en mensualidades
-    // (pago inicial junto a su mensualidad), el mantenimiento y el KYC al final.
-    keepOrder: true,
+    subtitle: "Págalo en mensualidades o de una sola vez. Aquí tu código de descuento aplica a los pagos únicos y también a las mensualidades.",
     discountAllPayments: true,
     ids: [
+      "servicio-diseno-web",
+      "servicio-app-ios",
+      "servicio-app-android",
+      "servicio-plataforma-web",
+      "servicio-tienda-online",
+      "servicio-kyc-instalacion",
       "servicio-diseno-web-unico",
       "servicio-app-ios-unico",
       "servicio-app-android-unico",
       "servicio-plataforma-web-unico",
       "servicio-tienda-online-unico",
-      "servicio-diseno-web",
-      "servicio-diseno-web-mensual",
-      "servicio-app-ios",
-      "servicio-app-ios-mensual",
-      "servicio-app-android",
-      "servicio-app-android-mensual",
-      "servicio-plataforma-web",
-      "servicio-plataforma-web-mensual",
-      "servicio-tienda-online",
-      "servicio-tienda-online-mensual",
-      "servicio-mantenimiento-web-apps",
-      "servicio-kyc-instalacion",
       "servicio-kyc-mensual",
+      "servicio-diseno-web-mensual",
+      "servicio-app-ios-mensual",
+      "servicio-app-android-mensual",
+      "servicio-mantenimiento-web-apps",
+      "servicio-plataforma-web-mensual",
+      "servicio-tienda-online-mensual",
+      "servicio-ciberseguridad",
+    ],
+  },
+  {
+    title: "Para vender y cobrar",
+    subtitle: "Recibe pagos en línea y atiende a tus clientes de forma automática.",
+    ids: [
+      "servicio-pasarela-pagos",
+      "servicio-pasarela-pagos-mensual",
+      "servicio-automatizacion-whatsapp",
+      "servicio-arm-rsi",
+      "servicio-arm-rsi-mensual",
+      "servicio-cobros-internacionales",
+      "servicio-facturacion-automatica",
+      "servicio-marketplaces",
+      "servicio-logistica",
     ],
   },
   {
     title: "Publicidad",
     discountAllPayments: true,
     subtitle: "Campañas en cada plataforma. El presupuesto de los anuncios lo define y paga el cliente.",
-    keepOrder: true,
     ids: [
       "servicio-campana-publicitaria",
       "servicio-campana-publicitaria-mensual",
@@ -793,29 +1248,42 @@ const PORTAL_SECTION_DEFINITIONS: {
       "servicio-campana-google-mensual",
       "servicio-campana-tiktok",
       "servicio-campana-tiktok-mensual",
+      "servicio-influencers",
     ],
   },
   {
-    title: "Para crecer",
+    title: "Administración, finanzas e impuestos",
     discountAllPayments: true,
-    subtitle: "Organiza tu administración, tus finanzas y tu equipo a medida que tu empresa crece.",
+    subtitle: "Contabilidad, nómina e impuestos al día para que tu empresa crezca en orden.",
     ids: [
-      "servicio-administracion-empresarial",
       "servicio-contabilidad",
+      "servicio-administracion-empresarial",
       "servicio-nomina",
       "servicio-impuestos-estatales",
+      "servicio-impuestos-personales",
       "servicio-taxes-empresa",
+      "servicio-credito-empresarial",
+      "servicio-prestamos-sba",
+      "servicio-seguros-empresariales",
+      "servicio-manuales-procesos",
+      "servicio-reclutamiento",
+      "servicio-capacitacion-ia",
+      "servicio-cfo-fraccional",
+      "servicio-asistente-virtual",
     ],
   },
   {
     title: "Escalada mundial",
     discountAllPayments: true,
-    subtitle: "Lleva tu empresa al siguiente nivel: redes, inversionistas, tokenización y mentoría.",
+    subtitle: "Lleva tu empresa al siguiente nivel: tokenización y mentoría 1 a 1.",
     ids: [
-      "servicio-redes-sociales",
-      "servicio-plan-negocios",
       "servicio-tokenizacion",
       "servicio-mentoria",
+      "servicio-levantar-capital",
+      "servicio-valuacion",
+      "servicio-expansion-internacional",
+      "servicio-visas-negocio",
+      "servicio-fusiones-adquisiciones",
     ],
   },
 ];
@@ -828,10 +1296,13 @@ for (const section of PORTAL_SECTION_DEFINITIONS) {
   }
 }
 
+const BILLING_ORDER: Record<BillingType, number> = { unico: 0, mensual: 1, anual: 2 };
+
 export const PORTAL_SERVICE_SECTIONS = PORTAL_SECTION_DEFINITIONS.map((section) => ({
   title: section.title,
   subtitle: section.subtitle,
-  services: section.keepOrder
-    ? section.ids.flatMap((id) => PORTAL_SERVICES.filter((service) => service.id === id))
-    : PORTAL_SERVICES.filter((service) => section.ids.includes(service.id)),
+  // Primero por tipo de cobro (único → mensual → anual) y luego en el orden de la lista `ids`.
+  services: section.ids
+    .flatMap((id) => PORTAL_SERVICES.filter((service) => service.id === id))
+    .sort((a, b) => BILLING_ORDER[a.billing] - BILLING_ORDER[b.billing]),
 }));
